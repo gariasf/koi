@@ -22,7 +22,7 @@
   --ink:#1A1916;
   --ink-hover:#000;
   --text-2:#6B6862;     /* secondary */
-  --text-3:#9A968D;     /* subdued */
+  --text-3:#75726B;     /* subdued — darkened to clear WCAG AA (4.5:1) as small text */
   --prose:#4f4d47;      /* privacy body */
   --hair:rgba(17,16,12,.07);
   --hair-strong:rgba(17,16,12,.08);
@@ -61,7 +61,18 @@ a{ color:inherit; text-decoration:none; }
 img,svg{ display:block; }
 .mono{ font-family:var(--font-mono); font-variant-numeric:tabular-nums; }
 .container{ max-width:1100px; margin:0 auto; padding-left:var(--gutter); padding-right:var(--gutter); }
-.eyebrow{ font-size:12px; font-weight:600; text-transform:uppercase; letter-spacing:.09em; color:var(--sage); }
+.eyebrow{ font-size:12px; font-weight:600; text-transform:uppercase; letter-spacing:.09em; color:var(--sage-deep); }
+
+/* ---------- Accessibility ---------- */
+:focus-visible{ outline:2px solid var(--sage-deep); outline-offset:3px; border-radius:6px; }
+.panel-link:focus-visible{ outline-color:var(--sage-on-dark-2); }   /* on the dark panel */
+#get, #how, #private{ scroll-margin-top:84px; }                     /* clear the sticky nav */
+.skip{
+  position:absolute; left:8px; top:8px; transform:translateY(-150%);
+  background:var(--ink); color:var(--paper); padding:10px 16px; border-radius:10px;
+  font-size:14px; font-weight:500; z-index:50; transition:transform .15s ease-out;
+}
+.skip:focus{ transform:translateY(0); }
 
 /* ---------- Nav ---------- */
 .nav{
@@ -74,7 +85,7 @@ img,svg{ display:block; }
 .wordmark{ display:flex; align-items:center; gap:11px; }
 .wordmark span{ font-size:21px; font-weight:600; letter-spacing:.22em; }
 .nav-links{ display:flex; align-items:center; gap:30px; }
-.navlink{ font-size:14.5px; color:var(--text-2); transition:color .15s ease-out; }
+.navlink{ font-size:14.5px; color:var(--text-2); transition:color .15s ease-out; padding:8px 4px; }
 .navlink:hover{ color:var(--ink); }
 .nav-back{ display:inline-flex; align-items:center; gap:7px; }
 
@@ -82,11 +93,11 @@ img,svg{ display:block; }
 .btn-dark{
   display:inline-flex; align-items:center; gap:11px;
   background:var(--ink); color:var(--paper);
-  padding:13px 22px; border-radius:13px;
+  padding:13px 22px; border-radius:14px;
   font-weight:500; transition:background-color .15s ease-out;
 }
 .btn-dark:hover{ background:var(--ink-hover); }
-.btn-nav{ padding:9px 17px; border-radius:10px; font-size:14px; }
+.btn-nav{ padding:11px 17px; border-radius:10px; font-size:14px; }
 .btn-appstore-label{ text-align:left; line-height:1.1; }
 .btn-appstore-label small{ font-size:11px; display:block; opacity:.8; }
 .btn-appstore-label strong{ font-size:17px; font-weight:500; }
@@ -108,15 +119,22 @@ img,svg{ display:block; }
   margin:0; text-wrap:balance;
 }
 .hero p{
-  font-size:20px; line-height:1.55; color:var(--text-2);
-  margin:22px auto 0; max-width:540px; text-wrap:pretty;
+  font-size:20px; line-height:1.55; color:var(--prose);
+  margin:22px auto 0; max-width:500px; text-wrap:pretty;
 }
 .hero .cta-row{ margin-top:38px; }
 
 /* ---------- Glance preview ---------- */
 .preview-card{
+  position:relative;
   background:var(--card); border-radius:24px; padding:46px 40px 0;
   box-shadow:var(--card-shadow); overflow:hidden;
+}
+/* Soft fade so the phone mockups dissolve into the card's bottom edge — reads as an intentional
+   "peeking up from below," not a hard clip. (Canvas→transparent, not a decorative gradient.) */
+.preview-card::after{
+  content:""; position:absolute; left:0; right:0; bottom:0; height:72px;
+  background:linear-gradient(to top, var(--card), transparent); pointer-events:none;
 }
 .preview-head{ text-align:center; max-width:520px; margin:0 auto 40px; }
 .preview-head h2{ font-size:30px; font-weight:500; letter-spacing:-.015em; margin:10px 0 0; }
@@ -160,7 +178,7 @@ img,svg{ display:block; }
 /* ---------- Private by default (dark panel) ---------- */
 .dark-panel{
   background:var(--ink); color:var(--paper); border-radius:24px;
-  padding:60px 56px; display:grid; grid-template-columns:1.1fr 1fr; gap:48px; align-items:center;
+  padding:60px 56px; display:grid; grid-template-columns:1.1fr 1fr; gap:48px; align-items:start;
 }
 .badge{
   display:inline-flex; align-items:center; gap:8px;
@@ -219,7 +237,11 @@ img,svg{ display:block; }
   .section-head{ margin-bottom:36px; }
   .section-head h2,.dark-panel h2{ font-size:28px; }
   .features-grid{ grid-template-columns:1fr; gap:16px; }
-  .preview-card{ padding:36px 22px 0; }
+  .nav-links{ gap:16px; }
+  .navlink{ font-size:14px; }
+  .preview-card{ padding:36px 22px 36px; }
+  .preview-card::after{ display:none; }   /* contained on mobile — nothing to fade */
+  .phone{ border-radius:30px; }            /* fully rounded when stacked + contained */
   .phones{ flex-direction:column; align-items:center; gap:36px; }
   .closing{ padding:72px 20px 72px; }
   .closing h2{ font-size:32px; }
