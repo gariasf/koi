@@ -103,6 +103,7 @@ img,svg{ display:block; }
 .btn-appstore-label strong{ font-size:17px; font-weight:500; }
 .cta-row{ display:flex; align-items:center; justify-content:center; gap:14px; flex-wrap:wrap; }
 .meta{ font-size:13px; color:var(--text-3); }
+.soon{ font-size:13px; letter-spacing:.04em; color:var(--text-3); padding:9px 16px; border:1px solid var(--hair-strong); border-radius:999px; }
 
 /* ---------- Hero ---------- */
 .hero{ max-width:760px; margin:0 auto; padding:104px var(--gutter) 96px; text-align:center; }
