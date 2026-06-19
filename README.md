@@ -25,7 +25,7 @@ The site is fully relative-linked, so it also works from a subpath.
 - The privacy copy describes a **strictly local-first app** (no account, no servers, on-device
   only). If the shipped app ever adds cloud sync, accounts, or analytics, **rewrite the policy
   to match** before that ships, and bump the "Last updated" date.
-- Contact is `accounts@gariasf.com` (privacy page). Update if it changes.
+- Contact is `hello@gariasf.com` (privacy page). Update if it changes.
 
 ## Design
 Warm-paper canvas (`#F4F2EC`) + sage accent (`#7C8B6F`) over the Sure design language —

@@ -127,38 +127,19 @@ img,svg{ display:block; }
 /* ---------- Glance preview ---------- */
 .preview-card{
   position:relative;
-  background:var(--card); border-radius:24px; padding:46px 40px 0;
+  background:var(--card); border-radius:24px; padding:46px 40px 44px;
   box-shadow:var(--card-shadow); overflow:hidden;
-}
-/* Soft fade so the phone mockups dissolve into the card's bottom edge — reads as an intentional
-   "peeking up from below," not a hard clip. (Canvas→transparent, not a decorative gradient.) */
-.preview-card::after{
-  content:""; position:absolute; left:0; right:0; bottom:0; height:72px;
-  background:linear-gradient(to top, var(--card), transparent); pointer-events:none;
 }
 .preview-head{ text-align:center; max-width:520px; margin:0 auto 40px; }
 .preview-head h2{ font-size:30px; font-weight:500; letter-spacing:-.015em; margin:10px 0 0; }
 .preview-head p{ font-size:16px; line-height:1.55; color:var(--text-2); margin:12px 0 0; }
-.phones{ display:flex; justify-content:center; gap:28px; }
-.phone{ width:248px; height:300px; border-radius:30px 30px 0 0; padding:26px 22px 0; flex:0 0 auto; }
-.phone-light{ background:var(--paper); box-shadow:0 0 0 9px #14130F, 0 -20px 50px -28px rgba(20,18,14,.5); }
-.phone-dark{ background:#0C0B0A; color:var(--paper); box-shadow:0 0 0 9px #000, 0 -20px 50px -28px rgba(0,0,0,.6); padding:26px 20px 0; }
-.gp-label{ font-size:13px; color:var(--text-3); }
-.gp-label-dark{ font-size:13px; color:#6E6A62; }
-.gp-car{ display:flex; align-items:center; gap:8px; margin-top:14px; }
-.gp-dot{ width:8px; height:8px; border-radius:50%; background:var(--sage); }
-.gp-car span{ font-size:13px; color:var(--text-2); }
-.gp-clear{ text-align:center; margin-top:40px; }
-.gp-clear .big{ font-size:34px; font-weight:500; letter-spacing:-.02em; }
-.gp-clear .sub{ font-size:14px; color:var(--text-2); margin-top:8px; }
-.gp-next{ background:var(--ochre-tint-dark); border-radius:14px; padding:13px 14px; margin-top:16px; box-shadow:0 0 0 1px rgba(214,169,100,.22); }
-.gp-next .eb{ font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:.05em; color:var(--ochre); }
-.gp-next .ln{ font-size:14px; font-weight:500; margin-top:4px; }
-.gp-row{ display:flex; align-items:center; justify-content:space-between; padding:12px 2px; }
-.gp-row.divider{ border-bottom:1px solid rgba(255,255,255,.08); margin-top:8px; }
-.gp-row span{ font-size:13px; }
-.gp-row .ochre{ font-size:12.5px; color:var(--ochre); }
-.gp-row .muted{ font-size:12.5px; color:#A6A29A; }
+/* A real app screenshot, centered as a framed device. */
+.shots{ display:flex; justify-content:center; padding:8px 0 6px; }
+.shot{
+  width:300px; height:auto; display:block;
+  border-radius:48px;
+  box-shadow:0 0 0 9px #14130F, 0 30px 70px -38px rgba(20,18,14,.5);
+}
 
 /* ---------- Section heads ---------- */
 .section{ padding-top:104px; }
@@ -240,9 +221,7 @@ img,svg{ display:block; }
   .nav-links{ gap:16px; }
   .navlink{ font-size:14px; }
   .preview-card{ padding:36px 22px 36px; }
-  .preview-card::after{ display:none; }   /* contained on mobile — nothing to fade */
-  .phone{ border-radius:30px; }            /* fully rounded when stacked + contained */
-  .phones{ flex-direction:column; align-items:center; gap:36px; }
+  .shot{ width:min(280px,76vw); border-radius:44px; }
   .closing{ padding:72px 20px 72px; }
   .closing h2{ font-size:32px; }
   .privacy-body{ padding:56px 20px 88px; }
