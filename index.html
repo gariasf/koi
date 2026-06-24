@@ -25,7 +25,7 @@
       <span>koi</span>
     </a>
     <div class="nav-links">
-      <a class="navlink" href="mailto:hello@gariasf.com">Contact</a>
+      <a class="navlink eml" data-e="aGVsbG9AZ2FyaWFzZi5jb20=">Contact</a>
       <a class="navlink" href="privacy-policy/">Privacy</a>
     </div>
   </div>
@@ -89,12 +89,25 @@
       <span class="tag">your cars, calmly</span>
     </div>
     <div class="footer-links">
-      <a class="navlink" href="mailto:hello@gariasf.com">Contact</a>
+      <a class="navlink eml" data-e="aGVsbG9AZ2FyaWFzZi5jb20=">Contact</a>
       <a class="navlink" href="privacy-policy/">Privacy</a>
       <span class="mono meta">© 2026 koi</span>
     </div>
   </div>
 </footer>
+
+<script>
+  // Build the contact address at runtime — keeps plaintext + mailto: out of the served HTML,
+  // so the JS-less harvesters that do almost all email scraping find nothing to grab.
+  document.querySelectorAll("a.eml").forEach(function (a) {
+    var e = a.getAttribute("data-e");
+    if (!e) return;
+    var addr = atob(e);
+    a.setAttribute("href", "mailto:" + addr);
+    if (a.hasAttribute("data-show")) a.textContent = addr;
+    a.removeAttribute("data-e");
+  });
+</script>
 
 </body>
 </html>

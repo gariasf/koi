@@ -81,7 +81,7 @@
     </div>
     <div>
       <h2>Contact</h2>
-      <p>Questions about privacy? Reach us at <a class="plink" href="mailto:hello@gariasf.com">hello@gariasf.com</a>. We're a small team and we read everything.</p>
+      <p>Questions about privacy? Reach us at <a class="plink eml" data-e="aGVsbG9AZ2FyaWFzZi5jb20=" data-show>hello [at] gariasf [dot] com</a>. We're a small team and we read everything.</p>
     </div>
   </div>
 
@@ -90,6 +90,19 @@
   </div>
 
 </main>
+
+<script>
+  // Build the contact address at runtime — keeps plaintext + mailto: out of the served HTML,
+  // so the JS-less harvesters that do almost all email scraping find nothing to grab.
+  document.querySelectorAll("a.eml").forEach(function (a) {
+    var e = a.getAttribute("data-e");
+    if (!e) return;
+    var addr = atob(e);
+    a.setAttribute("href", "mailto:" + addr);
+    if (a.hasAttribute("data-show")) a.textContent = addr;
+    a.removeAttribute("data-e");
+  });
+</script>
 
 </body>
 </html>
