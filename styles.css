@@ -4,15 +4,11 @@
    (Geist type, flat surfaces, soft shadow + 1px hairline borders).
    ============================================================ */
 
-/* ---------- Fonts (bundled Geist / Geist Mono) ---------- */
-@font-face { font-family:"Geist"; font-weight:300; font-style:normal; font-display:swap; src:url("assets/fonts/geist/Geist-Light.woff2") format("woff2"); }
+/* ---------- Fonts (bundled Geist / Geist Mono — only the weights actually used) ---------- */
 @font-face { font-family:"Geist"; font-weight:400; font-style:normal; font-display:swap; src:url("assets/fonts/geist/Geist-Regular.woff2") format("woff2"); }
 @font-face { font-family:"Geist"; font-weight:500; font-style:normal; font-display:swap; src:url("assets/fonts/geist/Geist-Medium.woff2") format("woff2"); }
 @font-face { font-family:"Geist"; font-weight:600; font-style:normal; font-display:swap; src:url("assets/fonts/geist/Geist-SemiBold.woff2") format("woff2"); }
-@font-face { font-family:"Geist"; font-weight:700; font-style:normal; font-display:swap; src:url("assets/fonts/geist/Geist-Bold.woff2") format("woff2"); }
 @font-face { font-family:"Geist Mono"; font-weight:400; font-style:normal; font-display:swap; src:url("assets/fonts/geist_mono/GeistMono-Regular.woff2") format("woff2"); }
-@font-face { font-family:"Geist Mono"; font-weight:500; font-style:normal; font-display:swap; src:url("assets/fonts/geist_mono/GeistMono-Medium.woff2") format("woff2"); }
-@font-face { font-family:"Geist Mono"; font-weight:700; font-style:normal; font-display:swap; src:url("assets/fonts/geist_mono/GeistMono-Bold.woff2") format("woff2"); }
 
 /* ---------- Tokens (exact, from the handoff) ---------- */
 :root{
@@ -22,23 +18,19 @@
   --ink:#1A1916;
   --ink-hover:#000;
   --text-2:#6B6862;     /* secondary */
-  --text-3:#75726B;     /* subdued — darkened to clear WCAG AA (4.5:1) as small text */
+  --text-3:#6B6862;     /* subdued — same as secondary so small text clears WCAG AA (4.96:1 on paper) */
   --prose:#4f4d47;      /* privacy body */
   --hair:rgba(17,16,12,.07);
   --hair-strong:rgba(17,16,12,.08);
   --card-shadow:0 1px 2px rgba(17,16,12,.05), 0 0 0 1px rgba(17,16,12,.06);
-  --sage:#7C8B6F;
   --sage-deep:#5A6B49;
   --sage-deep-2:#6E8156;
   --sage-on-dark:#9DB082;
   --sage-on-dark-2:#B6C79C;
   --sage-tint:#E8EEDF;
-  --ochre:#D6A964;
   --ochre-text:#A06E22;
-  --ochre-tint-dark:#241D12;
   --ochre-tint-light:#F4E9D6;
   --dark-chip:#221F1C;
-  --ghost-hover:#ECEAE2;
   --bloom:#D8E2C7;
   --font-sans:"Geist", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --font-mono:"Geist Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, monospace;
@@ -47,7 +39,7 @@
 
 /* ---------- Base ---------- */
 *{ box-sizing:border-box; }
-html{ scroll-behavior:smooth; }
+html{ color-scheme:light; scroll-behavior:smooth; }
 html,body{ margin:0; }
 body{
   background:var(--paper);
@@ -89,18 +81,7 @@ img,svg{ display:block; }
 .navlink:hover{ color:var(--ink); }
 .nav-back{ display:inline-flex; align-items:center; gap:7px; }
 
-/* ---------- Buttons ---------- */
-.btn-dark{
-  display:inline-flex; align-items:center; gap:11px;
-  background:var(--ink); color:var(--paper);
-  padding:13px 22px; border-radius:14px;
-  font-weight:500; transition:background-color .15s ease-out;
-}
-.btn-dark:hover{ background:var(--ink-hover); }
-.btn-nav{ padding:11px 17px; border-radius:10px; font-size:14px; }
-.btn-appstore-label{ text-align:left; line-height:1.1; }
-.btn-appstore-label small{ font-size:11px; display:block; opacity:.8; }
-.btn-appstore-label strong{ font-size:17px; font-weight:500; }
+/* ---------- CTA row ---------- */
 .cta-row{ display:flex; align-items:center; justify-content:center; gap:14px; flex-wrap:wrap; }
 .meta{ font-size:13px; color:var(--text-3); }
 .soon{ font-size:13px; letter-spacing:.04em; color:var(--text-3); padding:9px 16px; border:1px solid var(--hair-strong); border-radius:999px; }
@@ -114,7 +95,7 @@ img,svg{ display:block; }
   animation:koiBloom 7s ease-in-out infinite;
 }
 @keyframes koiBloom{ 0%,100%{ transform:scale(1); opacity:.6; } 50%{ transform:scale(1.08); opacity:.8; } }
-@media (prefers-reduced-motion: reduce){ .bloom{ animation:none; } }
+@media (prefers-reduced-motion: reduce){ .bloom{ animation:none; } html{ scroll-behavior:auto; } }
 .hero h1{
   font-size:58px; line-height:1.06; font-weight:500; letter-spacing:-.028em;
   margin:0; text-wrap:balance;
@@ -188,6 +169,16 @@ img,svg{ display:block; }
 .footer-brand .tag{ font-size:13.5px; color:var(--text-3); margin-left:6px; }
 .footer-links{ display:flex; align-items:center; gap:26px; }
 .footer-links .navlink{ font-size:13.5px; }
+
+/* ---------- Language switcher ---------- */
+.langbar{ display:flex; align-items:center; flex-wrap:wrap; gap:4px; }
+.langbar a{
+  font-size:12px; font-weight:500; letter-spacing:.04em;
+  color:var(--text-3); padding:5px 9px; border-radius:8px;
+  transition:color .15s ease-out, background-color .15s ease-out;
+}
+.langbar a:hover{ color:var(--ink); background:var(--hair); }
+.langbar a[aria-current="true"]{ color:var(--ink); background:var(--hair); }
 
 /* ---------- Privacy page ---------- */
 .privacy-body{ max-width:680px; margin:0 auto; padding:80px var(--gutter) 110px; }

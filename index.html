@@ -3,71 +3,99 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#F4F2EC">
 <title>Koi. Your cars, calmly.</title>
-<meta name="description" content="A quiet home for every car in your life: owned, leased, on a subscription, or borrowed. Open it, see that everything's fine, and get on with your day. Private by default, on iPhone.">
-<link rel="icon" href="favicon.svg" type="image/svg+xml">
-<link rel="apple-touch-icon" href="assets/icon.png">
+<meta name="description" content="A quiet home for every car in your life: owned, leased, on a subscription, or borrowed. Open it, see that everything&#x27;s fine, and get on with your day. Private by default, on iPhone.">
+<link rel="canonical" href="https://koi.gariasf.com/">
+<link rel="alternate" hreflang="en" href="https://koi.gariasf.com/">
+<link rel="alternate" hreflang="es" href="https://koi.gariasf.com/es/">
+<link rel="alternate" hreflang="ca" href="https://koi.gariasf.com/ca/">
+<link rel="alternate" hreflang="nb" href="https://koi.gariasf.com/nb/">
+<link rel="alternate" hreflang="fr" href="https://koi.gariasf.com/fr/">
+<link rel="alternate" hreflang="x-default" href="https://koi.gariasf.com/">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="preload" href="/assets/fonts/geist/Geist-Regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/geist/Geist-Medium.woff2" as="font" type="font/woff2" crossorigin>
 <meta property="og:type" content="website">
+<meta property="og:site_name" content="Koi">
+<meta property="og:url" content="https://koi.gariasf.com/">
 <meta property="og:title" content="Koi. Your cars, calmly.">
 <meta property="og:description" content="A quiet home for every car in your life. Private by default, on iPhone.">
-<meta property="og:image" content="assets/icon.png">
-<meta name="twitter:card" content="summary">
-<link rel="stylesheet" href="styles.css">
+<meta property="og:image" content="https://koi.gariasf.com/assets/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Koi">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Koi. Your cars, calmly.">
+<meta name="twitter:description" content="A quiet home for every car in your life. Private by default, on iPhone.">
+<meta name="twitter:image" content="https://koi.gariasf.com/assets/og.png">
+<link rel="stylesheet" href="/styles.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Koi","applicationCategory":"LifestyleApplication","operatingSystem":"iOS","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"publisher":{"@type":"Organization","name":"gariasf","url":"https://koi.gariasf.com"}}</script>
+<script>
+/* Pre-render redirect: send a first-time visitor to the page in their browser language.
+   Runs only on the English (x-default) page; an explicit choice (saved by the switcher) wins. */
+(function(){try{
+  var saved=localStorage.getItem("koi_lang");
+  if(saved){ if(saved!=="en"){ location.replace("/"+saved+"/"); } return; }
+  var L=navigator.languages||[navigator.language||""];
+  for(var i=0;i<L.length;i++){ var c=String(L[i]).toLowerCase().split("-")[0];
+    if(c==="en") return;
+    if(c==="nb"||c==="nn"||c==="no"){ location.replace("/nb/"); return; }
+    if(c==="es"||c==="ca"||c==="fr"){ location.replace("/"+c+"/"); return; }
+  }
+}catch(e){}})();
+</script>
 </head>
-<body>
+<body data-page="home">
 <a class="skip" href="#main">Skip to content</a>
 
-<!-- NAV -->
 <nav class="nav">
   <div class="container nav-inner">
-    <a class="wordmark" href="index.html" aria-label="Koi home">
-      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9.2" stroke="#7C8B6F" stroke-width="1.6"/><circle cx="12" cy="12" r="5.1" stroke="#7C8B6F" stroke-width="1.6" opacity=".7"/><circle cx="12" cy="12" r="1.9" fill="#7C8B6F"/></svg>
-      <span>koi</span>
-    </a>
+    <a class="wordmark" href="/" aria-label="Koi home"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9.2" stroke="#7C8B6F" stroke-width="1.6"/><circle cx="12" cy="12" r="5.1" stroke="#7C8B6F" stroke-width="1.6" opacity=".7"/><circle cx="12" cy="12" r="1.9" fill="#7C8B6F"/></svg><span>koi</span></a>
     <div class="nav-links">
-      <a class="navlink eml" data-e="aGVsbG9AZ2FyaWFzZi5jb20=">Contact</a>
-      <a class="navlink" href="privacy-policy/">Privacy</a>
+      <a class="navlink eml" href="/privacy-policy/#contact" data-e="aGVsbG9AZ2FyaWFzZi5jb20=">Contact</a>
+      <a class="navlink" href="/privacy-policy/">Privacy</a>
     </div>
   </div>
 </nav>
 
-<main id="main">
-
-<!-- HERO -->
+<main id="main" tabindex="-1">
 <header class="hero">
   <div class="mark-wrap">
     <div class="bloom" aria-hidden="true"></div>
     <svg width="60" height="60" viewBox="0 0 24 24" fill="none" style="position:relative;" aria-hidden="true"><circle cx="12" cy="12" r="9.2" stroke="#7C8B6F" stroke-width="1.3"/><circle cx="12" cy="12" r="5.1" stroke="#7C8B6F" stroke-width="1.3" opacity=".65"/><circle cx="12" cy="12" r="1.9" fill="#7C8B6F"/></svg>
   </div>
   <h1>Your cars, calmly.</h1>
-  <p>A quiet home for every car in your life: owned, leased, on a subscription, or borrowed. Open it, see that everything's fine, and get on with your day.</p>
+  <p>A quiet home for every car in your life: owned, leased, on a subscription, or borrowed. Open it, see that everything&#x27;s fine, and get on with your day.</p>
   <div id="get" class="cta-row">
     <span class="mono soon">Coming soon to the App Store</span>
   </div>
 </header>
 
-<!-- GLANCE PREVIEW -->
 <section class="container">
   <div class="preview-card">
     <div class="preview-head">
       <div class="eyebrow">The Glance</div>
       <h2>Three seconds of reassurance.</h2>
-      <p>No dashboards to read, no logs to keep up with. Koi tells you what's fine and what's coming, then gets out of the way.</p>
+      <p>No dashboards to read, no logs to keep up with. Koi tells you what&#x27;s fine and what&#x27;s coming, then gets out of the way.</p>
     </div>
     <div class="shots">
-      <img class="shot" src="assets/shots/glance-coming.png" alt="Koi's Glance showing a few things coming up, mostly one car" loading="lazy">
+      <img class="shot" src="/assets/shots/glance-coming.png" width="414" height="900" alt="Koi&#x27;s Glance showing a few things coming up, mostly one car" loading="lazy">
     </div>
   </div>
 </section>
 
-<!-- PRIVATE BY DEFAULT -->
 <section id="private" class="container section">
   <div class="dark-panel">
     <div>
-      <div class="badge"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Private by default</div>
+      <div class="badge"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg><span>Private by default</span></div>
       <h2>Your cars are your business.</h2>
-      <p>Koi keeps everything on your iPhone. No account to create, no sign-in wall, no servers holding your data. We don't track you, and there's nothing to sell, because we never have it.</p>
-      <a class="panel-link" href="privacy-policy/">Read the privacy policy<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></a>
+      <p>Koi keeps everything on your iPhone. No account to create, no sign-in wall, no servers holding your data. We don&#x27;t track you, and there&#x27;s nothing to sell, because we never have it.</p>
+      <a class="panel-link" href="/privacy-policy/"><span>Read the privacy policy</span><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></a>
     </div>
     <div class="checks">
       <div class="check-row"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9DB082" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>No account, no email required</span></div>
@@ -77,20 +105,15 @@
     </div>
   </div>
 </section>
-
 </main>
 
-<!-- FOOTER -->
 <footer class="footer">
   <div class="container footer-inner">
-    <div class="footer-brand">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9.2" stroke="#7C8B6F" stroke-width="1.7"/><circle cx="12" cy="12" r="5.1" stroke="#7C8B6F" stroke-width="1.7" opacity=".7"/><circle cx="12" cy="12" r="1.9" fill="#7C8B6F"/></svg>
-      <span class="wm">koi</span>
-      <span class="tag">your cars, calmly</span>
-    </div>
+    <div class="footer-brand"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9.2" stroke="#7C8B6F" stroke-width="1.7"/><circle cx="12" cy="12" r="5.1" stroke="#7C8B6F" stroke-width="1.7" opacity=".7"/><circle cx="12" cy="12" r="1.9" fill="#7C8B6F"/></svg><span class="wm">koi</span><span class="tag">your cars, calmly</span></div>
     <div class="footer-links">
-      <a class="navlink eml" data-e="aGVsbG9AZ2FyaWFzZi5jb20=">Contact</a>
-      <a class="navlink" href="privacy-policy/">Privacy</a>
+      <a class="navlink eml" href="/privacy-policy/#contact" data-e="aGVsbG9AZ2FyaWFzZi5jb20=">Contact</a>
+      <a class="navlink" href="/privacy-policy/">Privacy</a>
+      <nav class="langbar" aria-label="Language"><a hreflang="en" href="/" data-lang="en" aria-current="true">EN</a><a hreflang="es" href="/es/" data-lang="es">ES</a><a hreflang="ca" href="/ca/" data-lang="ca">CA</a><a hreflang="nb" href="/nb/" data-lang="nb">NB</a><a hreflang="fr" href="/fr/" data-lang="fr">FR</a></nav>
       <span class="mono meta">© 2026 koi</span>
     </div>
   </div>
@@ -108,6 +131,11 @@
     a.removeAttribute("data-e");
   });
 </script>
-
+<script>
+/* Remember an explicit language choice so the autodetect redirect respects it next time. */
+document.querySelectorAll(".langbar a[data-lang]").forEach(function(a){
+  a.addEventListener("click", function(){ try{ localStorage.setItem("koi_lang", a.dataset.lang); }catch(e){} });
+});
+</script>
 </body>
 </html>
