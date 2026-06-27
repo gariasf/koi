@@ -83,7 +83,14 @@ EMAIL_SCRIPT = """<script>
   });
 </script>"""
 
-JSONLD = """<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Koi","applicationCategory":"LifestyleApplication","operatingSystem":"iOS","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"publisher":{"@type":"Organization","name":"gariasf","url":"https://koi.gariasf.com"}}</script>"""
+APPSTORE_URL = "https://apps.apple.com/app/id6782021898"
+APPLE_GLYPH = '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.365 1.43c0 1.14-.493 2.27-1.177 3.08-.744.9-1.99 1.57-2.987 1.57-.12 0-.23-.02-.3-.03-.01-.06-.04-.22-.04-.39 0-1.15.572-2.27 1.206-2.98.804-.94 2.142-1.64 3.248-1.68.03.13.04.28.04.43zm4.565 15.71c-.03.07-.463 1.58-1.518 3.12-.945 1.34-1.94 2.71-3.43 2.71-1.517 0-1.9-.88-3.63-.88-1.698 0-2.302.91-3.67.91-1.377 0-2.332-1.26-3.428-2.8-1.287-1.82-2.323-4.63-2.323-7.28 0-4.28 2.797-6.55 5.552-6.55 1.448 0 2.675.95 3.6.95.865 0 2.222-1.01 3.902-1.01.613 0 2.886.06 4.374 2.19-.13.09-2.383 1.37-2.383 4.19 0 3.26 2.854 4.42 2.955 4.45z"/></svg>'
+
+JSONLD = ('<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication",'
+          '"name":"Koi","applicationCategory":"LifestyleApplication","operatingSystem":"iOS",'
+          '"url":"https://koi.gariasf.com","installUrl":"' + APPSTORE_URL + '",'
+          '"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},'
+          '"publisher":{"@type":"Organization","name":"gariasf","url":"https://koi.gariasf.com"}}</script>')
 
 ICON_SVG = '<svg width="{s}" height="{s}" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9.2" stroke="#7C8B6F" stroke-width="{w}"/><circle cx="12" cy="12" r="5.1" stroke="#7C8B6F" stroke-width="{w}" opacity=".7"/><circle cx="12" cy="12" r="1.9" fill="#7C8B6F"/></svg>'
 
@@ -155,7 +162,7 @@ def home_template(locale):
   <h1>{{{{t:hero.title}}}}</h1>
   <p>{{{{t:hero.sub}}}}</p>
   <div id="get" class="cta-row">
-    <span class="mono soon">{{{{t:hero.soon}}}}</span>
+    <a class="appstore-btn" href="{APPSTORE_URL}">{APPLE_GLYPH}{{{{t:hero.cta}}}}</a>
   </div>
 </header>
 
@@ -193,12 +200,14 @@ def home_template(locale):
 <footer class="footer">
   <div class="container footer-inner">
     <div class="footer-brand">{ICON_SVG.format(s=20, w='1.7')}<span class="wm">koi</span><span class="tag">{{{{t:footer.tag}}}}</span></div>
+    {switcher(locale, "home")}
+  </div>
+  <div class="container footer-legal">
     <div class="footer-links">
       <a class="navlink eml" href="{priv}#contact" data-e="aGVsbG9AZ2FyaWFzZi5jb20=">{{{{t:nav.contact}}}}</a>
       <a class="navlink" href="{priv}">{{{{t:nav.privacy}}}}</a>
-      {switcher(locale, "home")}
-      <span class="mono meta">© 2026 koi</span>
     </div>
+    <span class="mono meta">© 2026 koi</span>
   </div>
 </footer>
 

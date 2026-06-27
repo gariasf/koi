@@ -55,7 +55,8 @@
     "pp.s9.h": "Contact",
     "pp.contact.p1": "Questions about privacy? Reach us at ",
     "pp.contact.p2": ". We're a small team and we read everything.",
-    "pp.backfoot": "Back to koi"
+    "pp.backfoot": "Back to koi",
+    "hero.cta": "Download on the App Store"
   },
   "es": {
     "meta.home.title": "Koi. Tus coches, con calma.",
@@ -113,7 +114,8 @@
     "pp.s9.h": "Contacto",
     "pp.contact.p1": "¿Dudas sobre privacidad? Escríbenos a ",
     "pp.contact.p2": ". Somos un equipo pequeño y lo leemos todo.",
-    "pp.backfoot": "Volver a koi"
+    "pp.backfoot": "Volver a koi",
+    "hero.cta": "Descárgala en la App Store"
   },
   "ca": {
     "meta.home.title": "Koi. Els teus cotxes, en calma.",
@@ -171,7 +173,8 @@
     "pp.s9.h": "Contacte",
     "pp.contact.p1": "Tens preguntes sobre la privadesa? Escriu-nos a ",
     "pp.contact.p2": ". Som un equip petit i ho llegim tot.",
-    "pp.backfoot": "Torna a koi"
+    "pp.backfoot": "Torna a koi",
+    "hero.cta": "Descarrega-la a l'App Store"
   },
   "nb": {
     "meta.home.title": "Koi. Bilene dine, i ro.",
@@ -229,7 +232,8 @@
     "pp.s9.h": "Kontakt",
     "pp.contact.p1": "Spørsmål om personvern? Nå oss på ",
     "pp.contact.p2": ". Vi er et lite team, og vi leser alt.",
-    "pp.backfoot": "Tilbake til Koi"
+    "pp.backfoot": "Tilbake til Koi",
+    "hero.cta": "Last ned i App Store"
   },
   "fr": {
     "meta.home.title": "Koi. Vos voitures, sereinement.",
@@ -287,6 +291,7 @@
     "pp.s9.h": "Contact",
     "pp.contact.p1": "Des questions sur la confidentialité ? Écrivez-nous à ",
     "pp.contact.p2": ". Nous sommes une petite équipe et nous lisons tout.",
-    "pp.backfoot": "Retour à Koi"
+    "pp.backfoot": "Retour à Koi",
+    "hero.cta": "Télécharger dans l'App Store"
   }
 }
