@@ -63,17 +63,16 @@
   </div>
 </header>
 
-<section class="container">
-  <div class="preview-card">
-    <div class="preview-head">
-      <div class="eyebrow">Le coup d&#x27;œil</div>
-      <h2>Trois secondes de tranquillité.</h2>
-      <p>Aucun tableau de bord à lire, aucun journal à tenir à jour. Koi vous dit ce qui va bien et ce qui arrive, puis se fait discret.</p>
-    </div>
-    <div class="shots">
-      <img class="shot" src="/assets/shots/glance-coming.png" width="414" height="900" alt="Le coup d&#x27;œil de Koi montrant quelques échéances à venir, surtout pour une voiture" loading="lazy">
-    </div>
+<section class="container section" aria-labelledby="screens-h">
+  <div class="section-head">
+    <div class="eyebrow">Un aperçu de l&#x27;intérieur</div>
+    <h2 id="screens-h">Trois secondes de tranquillité.</h2>
+    <p>Aucun tableau de bord à lire, aucun journal à tenir à jour. Koi vous dit ce qui va bien et ce qui arrive, puis se fait discret.</p>
   </div>
+  <ul class="carousel" tabindex="0" aria-label="Écrans de l&#x27;application">
+    <li class="slide"><figure><img class="shot" src="/assets/shots/glance.jpg" width="680" height="1478" alt="Ouvrez, respirez, fermez." loading="lazy"><figcaption>Ouvrez, respirez, fermez.</figcaption></figure></li><li class="slide"><figure><img class="shot" src="/assets/shots/mileage.jpg" width="680" height="1478" alt="Ne dépassez jamais votre plafond kilométrique." loading="lazy"><figcaption>Ne dépassez jamais votre plafond kilométrique.</figcaption></figure></li><li class="slide"><figure><img class="shot" src="/assets/shots/garage.jpg" width="680" height="1478" alt="Chaque voiture, un seul foyer paisible." loading="lazy"><figcaption>Chaque voiture, un seul foyer paisible.</figcaption></figure></li><li class="slide"><figure><img class="shot" src="/assets/shots/story.jpg" width="680" height="1478" alt="Toute l&#x27;histoire, mois par mois." loading="lazy"><figcaption>Toute l&#x27;histoire, mois par mois.</figcaption></figure></li>
+  </ul>
+  <div class="dots" aria-hidden="true"><button type="button" aria-label="1"></button><button type="button" aria-label="2"></button><button type="button" aria-label="3"></button><button type="button" aria-label="4"></button></div>
 </section>
 
 <section id="private" class="container section">
@@ -124,6 +123,28 @@
 /* Remember an explicit language choice so the autodetect redirect respects it next time. */
 document.querySelectorAll(".langbar a[data-lang]").forEach(function(a){
   a.addEventListener("click", function(){ try{ localStorage.setItem("koi_lang", a.dataset.lang); }catch(e){} });
+});
+</script>
+<script>
+/* Carousel: keep the dots in sync with the scroll position; click a dot to glide to that screen.
+   Pure progressive enhancement — without JS the strip still scroll-snaps and the captions read. */
+document.querySelectorAll(".carousel").forEach(function (track) {
+  var slides = Array.prototype.slice.call(track.children);
+  var dots = track.parentElement.querySelector(".dots");
+  if (!dots) return;
+  var btns = Array.prototype.slice.call(dots.children);
+  btns.forEach(function (b, i) {
+    b.addEventListener("click", function () { slides[i].scrollIntoView({ inline: "center", block: "nearest", behavior: "smooth" }); });
+  });
+  if (!("IntersectionObserver" in window)) return;
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (!e.isIntersecting) return;
+      var i = slides.indexOf(e.target);
+      btns.forEach(function (b, j) { b.setAttribute("aria-current", j === i ? "true" : "false"); });
+    });
+  }, { root: track, threshold: 0.6 });
+  slides.forEach(function (s) { io.observe(s); });
 });
 </script>
 </body>

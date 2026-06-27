@@ -56,7 +56,13 @@
     "pp.contact.p1": "Questions about privacy? Reach us at ",
     "pp.contact.p2": ". We're a small team and we read everything.",
     "pp.backfoot": "Back to koi",
-    "hero.cta": "Download on the App Store"
+    "hero.cta": "Download on the App Store",
+    "carousel.eyebrow": "A look inside",
+    "slide.glance": "Open, breathe, close.",
+    "slide.mileage": "Never blow your mileage cap.",
+    "slide.garage": "Every car, one quiet home.",
+    "slide.story": "The whole story, by month.",
+    "carousel.aria": "App screens"
   },
   "es": {
     "meta.home.title": "Koi. Tus coches, con calma.",
@@ -115,7 +121,13 @@
     "pp.contact.p1": "¿Dudas sobre privacidad? Escríbenos a ",
     "pp.contact.p2": ". Somos un equipo pequeño y lo leemos todo.",
     "pp.backfoot": "Volver a koi",
-    "hero.cta": "Descárgala en la App Store"
+    "hero.cta": "Descárgala en la App Store",
+    "carousel.eyebrow": "Un vistazo por dentro",
+    "slide.glance": "Abre, respira, cierra.",
+    "slide.mileage": "Nunca pases tu límite de kilometraje.",
+    "slide.garage": "Cada coche, un mismo hogar tranquilo.",
+    "slide.story": "Toda la historia, mes a mes.",
+    "carousel.aria": "Pantallas de la app"
   },
   "ca": {
     "meta.home.title": "Koi. Els teus cotxes, en calma.",
@@ -174,7 +186,13 @@
     "pp.contact.p1": "Tens preguntes sobre la privadesa? Escriu-nos a ",
     "pp.contact.p2": ". Som un equip petit i ho llegim tot.",
     "pp.backfoot": "Torna a koi",
-    "hero.cta": "Descarrega-la a l'App Store"
+    "hero.cta": "Descarrega-la a l'App Store",
+    "carousel.eyebrow": "Una ullada a dins",
+    "slide.glance": "Obre, respira, tanca.",
+    "slide.mileage": "No superis mai el límit de quilòmetres.",
+    "slide.garage": "Cada cotxe, una sola llar tranquil·la.",
+    "slide.story": "Tota la història, mes a mes.",
+    "carousel.aria": "Pantalles de l'app"
   },
   "nb": {
     "meta.home.title": "Koi. Bilene dine, i ro.",
@@ -233,7 +251,13 @@
     "pp.contact.p1": "Spørsmål om personvern? Nå oss på ",
     "pp.contact.p2": ". Vi er et lite team, og vi leser alt.",
     "pp.backfoot": "Tilbake til Koi",
-    "hero.cta": "Last ned i App Store"
+    "hero.cta": "Last ned i App Store",
+    "carousel.eyebrow": "Et blikk inni",
+    "slide.glance": "Åpne, pust, lukk.",
+    "slide.mileage": "Spreng aldri kilometergrensen.",
+    "slide.garage": "Hver bil, ett rolig hjem.",
+    "slide.story": "Hele historien, måned for måned.",
+    "carousel.aria": "App-skjermer"
   },
   "fr": {
     "meta.home.title": "Koi. Vos voitures, sereinement.",
@@ -292,6 +316,12 @@
     "pp.contact.p1": "Des questions sur la confidentialité ? Écrivez-nous à ",
     "pp.contact.p2": ". Nous sommes une petite équipe et nous lisons tout.",
     "pp.backfoot": "Retour à Koi",
-    "hero.cta": "Télécharger dans l'App Store"
+    "hero.cta": "Télécharger dans l'App Store",
+    "carousel.eyebrow": "Un aperçu de l'intérieur",
+    "slide.glance": "Ouvrez, respirez, fermez.",
+    "slide.mileage": "Ne dépassez jamais votre plafond kilométrique.",
+    "slide.garage": "Chaque voiture, un seul foyer paisible.",
+    "slide.story": "Toute l'histoire, mois par mois.",
+    "carousel.aria": "Écrans de l'application"
   }
 }

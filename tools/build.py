@@ -94,6 +94,38 @@ JSONLD = ('<script type="application/ld+json">{"@context":"https://schema.org","
 
 ICON_SVG = '<svg width="{s}" height="{s}" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9.2" stroke="#7C8B6F" stroke-width="{w}"/><circle cx="12" cy="12" r="5.1" stroke="#7C8B6F" stroke-width="{w}" opacity=".7"/><circle cx="12" cy="12" r="1.9" fill="#7C8B6F"/></svg>'
 
+# Screenshot carousel — (image basename, caption key). Captions are localized via {{t:...}}.
+SHOTS = [("glance", "slide.glance"), ("mileage", "slide.mileage"), ("garage", "slide.garage"), ("story", "slide.story")]
+CAROUSEL_SLIDES = "".join(
+    '<li class="slide"><figure>'
+    '<img class="shot" src="/assets/shots/' + img + '.jpg" width="680" height="1478" alt="{{t:' + cap + '}}" loading="lazy">'
+    '<figcaption>{{t:' + cap + '}}</figcaption></figure></li>'
+    for img, cap in SHOTS)
+CAROUSEL_DOTS = "".join('<button type="button" aria-label="' + str(i + 1) + '"></button>' for i in range(len(SHOTS)))
+
+CAROUSEL_JS = """<script>
+/* Carousel: keep the dots in sync with the scroll position; click a dot to glide to that screen.
+   Pure progressive enhancement — without JS the strip still scroll-snaps and the captions read. */
+document.querySelectorAll(".carousel").forEach(function (track) {
+  var slides = Array.prototype.slice.call(track.children);
+  var dots = track.parentElement.querySelector(".dots");
+  if (!dots) return;
+  var btns = Array.prototype.slice.call(dots.children);
+  btns.forEach(function (b, i) {
+    b.addEventListener("click", function () { slides[i].scrollIntoView({ inline: "center", block: "nearest", behavior: "smooth" }); });
+  });
+  if (!("IntersectionObserver" in window)) return;
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (!e.isIntersecting) return;
+      var i = slides.indexOf(e.target);
+      btns.forEach(function (b, j) { b.setAttribute("aria-current", j === i ? "true" : "false"); });
+    });
+  }, { root: track, threshold: 0.6 });
+  slides.forEach(function (s) { io.observe(s); });
+});
+</script>"""
+
 
 def head(locale, page, body_attr, title_key, desc_key, ogdesc_key, extra=""):
     canonical = ORIGIN + page_url(locale, page)
@@ -166,17 +198,16 @@ def home_template(locale):
   </div>
 </header>
 
-<section class="container">
-  <div class="preview-card">
-    <div class="preview-head">
-      <div class="eyebrow">{{{{t:glance.eyebrow}}}}</div>
-      <h2>{{{{t:glance.h}}}}</h2>
-      <p>{{{{t:glance.p}}}}</p>
-    </div>
-    <div class="shots">
-      <img class="shot" src="/assets/shots/glance-coming.png" width="414" height="900" alt="{{{{t:glance.alt}}}}" loading="lazy">
-    </div>
+<section class="container section" aria-labelledby="screens-h">
+  <div class="section-head">
+    <div class="eyebrow">{{{{t:carousel.eyebrow}}}}</div>
+    <h2 id="screens-h">{{{{t:glance.h}}}}</h2>
+    <p>{{{{t:glance.p}}}}</p>
   </div>
+  <ul class="carousel" tabindex="0" aria-label="{{{{t:carousel.aria}}}}">
+    {CAROUSEL_SLIDES}
+  </ul>
+  <div class="dots" aria-hidden="true">{CAROUSEL_DOTS}</div>
 </section>
 
 <section id="private" class="container section">
@@ -213,6 +244,7 @@ def home_template(locale):
 
 {EMAIL_SCRIPT}
 {LANG_SAVE}
+{CAROUSEL_JS}
 </body>
 </html>
 """

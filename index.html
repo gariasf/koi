@@ -76,17 +76,16 @@
   </div>
 </header>
 
-<section class="container">
-  <div class="preview-card">
-    <div class="preview-head">
-      <div class="eyebrow">The Glance</div>
-      <h2>Three seconds of reassurance.</h2>
-      <p>No dashboards to read, no logs to keep up with. Koi tells you what&#x27;s fine and what&#x27;s coming, then gets out of the way.</p>
-    </div>
-    <div class="shots">
-      <img class="shot" src="/assets/shots/glance-coming.png" width="414" height="900" alt="Koi&#x27;s Glance showing a few things coming up, mostly one car" loading="lazy">
-    </div>
+<section class="container section" aria-labelledby="screens-h">
+  <div class="section-head">
+    <div class="eyebrow">A look inside</div>
+    <h2 id="screens-h">Three seconds of reassurance.</h2>
+    <p>No dashboards to read, no logs to keep up with. Koi tells you what&#x27;s fine and what&#x27;s coming, then gets out of the way.</p>
   </div>
+  <ul class="carousel" tabindex="0" aria-label="App screens">
+    <li class="slide"><figure><img class="shot" src="/assets/shots/glance.jpg" width="680" height="1478" alt="Open, breathe, close." loading="lazy"><figcaption>Open, breathe, close.</figcaption></figure></li><li class="slide"><figure><img class="shot" src="/assets/shots/mileage.jpg" width="680" height="1478" alt="Never blow your mileage cap." loading="lazy"><figcaption>Never blow your mileage cap.</figcaption></figure></li><li class="slide"><figure><img class="shot" src="/assets/shots/garage.jpg" width="680" height="1478" alt="Every car, one quiet home." loading="lazy"><figcaption>Every car, one quiet home.</figcaption></figure></li><li class="slide"><figure><img class="shot" src="/assets/shots/story.jpg" width="680" height="1478" alt="The whole story, by month." loading="lazy"><figcaption>The whole story, by month.</figcaption></figure></li>
+  </ul>
+  <div class="dots" aria-hidden="true"><button type="button" aria-label="1"></button><button type="button" aria-label="2"></button><button type="button" aria-label="3"></button><button type="button" aria-label="4"></button></div>
 </section>
 
 <section id="private" class="container section">
@@ -137,6 +136,28 @@
 /* Remember an explicit language choice so the autodetect redirect respects it next time. */
 document.querySelectorAll(".langbar a[data-lang]").forEach(function(a){
   a.addEventListener("click", function(){ try{ localStorage.setItem("koi_lang", a.dataset.lang); }catch(e){} });
+});
+</script>
+<script>
+/* Carousel: keep the dots in sync with the scroll position; click a dot to glide to that screen.
+   Pure progressive enhancement — without JS the strip still scroll-snaps and the captions read. */
+document.querySelectorAll(".carousel").forEach(function (track) {
+  var slides = Array.prototype.slice.call(track.children);
+  var dots = track.parentElement.querySelector(".dots");
+  if (!dots) return;
+  var btns = Array.prototype.slice.call(dots.children);
+  btns.forEach(function (b, i) {
+    b.addEventListener("click", function () { slides[i].scrollIntoView({ inline: "center", block: "nearest", behavior: "smooth" }); });
+  });
+  if (!("IntersectionObserver" in window)) return;
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (!e.isIntersecting) return;
+      var i = slides.indexOf(e.target);
+      btns.forEach(function (b, j) { b.setAttribute("aria-current", j === i ? "true" : "false"); });
+    });
+  }, { root: track, threshold: 0.6 });
+  slides.forEach(function (s) { io.observe(s); });
 });
 </script>
 </body>
