@@ -24,8 +24,10 @@ Hugo extended is not required. The version the site is built with is pinned in
   the `_default/baseof.html` shell, and the `partials/` (head, langbar, carousel, scripts).
 - `content/` are thin per-language stubs so each page exists in each locale; the
   copy comes from `i18n/`, not from these files.
-- `static/` is served as-is: `styles.css`, `assets/` (fonts, screenshots, icons),
-  `CNAME`, `favicon.svg`, `404.html`, `robots.txt`, `site.webmanifest`.
+- `assets/styles.css` is run through Hugo's pipeline (minified, fingerprinted), so
+  the served filename changes with its contents and never gets stuck behind a CDN cache.
+- `static/` is served as-is: `assets/` (fonts, screenshots, icons), `CNAME`,
+  `favicon.svg`, `404.html`, `robots.txt`, `site.webmanifest`.
 - `hugo.toml` is the config: languages, output formats, sitemap.
 
 Hugo handles the per-locale routing (`en` at the root, the rest under `/<lang>/`),

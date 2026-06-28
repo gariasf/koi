@@ -33,7 +33,7 @@
 <meta name="twitter:title" content="{{ i18n $titleK }}">
 <meta name="twitter:description" content="{{ i18n $ogdescK }}">
 <meta name="twitter:image" content="{{ site.Params.origin }}/assets/og.png">
-<link rel="stylesheet" href="/styles.css">
+{{ $css := resources.Get "styles.css" | minify | fingerprint "sha256" }}<link rel="stylesheet" href="{{ $css.RelPermalink }}">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Koi","applicationCategory":"LifestyleApplication","operatingSystem":"iOS","url":"https://koi.gariasf.com","installUrl":"{{ site.Params.appstoreURL }}","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"publisher":{"@type":"Organization","name":"gariasf","url":"https://koi.gariasf.com"}}</script>
 {{- if eq .Site.Language.Lang "en" }}{{ $rest := cond .IsHome "" "privacy-policy/" }}
 <script>
