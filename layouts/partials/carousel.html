@@ -1,0 +1,13 @@
+{{- /* Screens carousel: one phone per view, neighbours peeking. Captions localized via i18n. */ -}}
+{{- $shots := slice (dict "img" "glance" "cap" "slide.glance") (dict "img" "mileage" "cap" "slide.mileage") (dict "img" "garage" "cap" "slide.garage") (dict "img" "story" "cap" "slide.story") -}}
+<div class="carousel-wrap">
+  <button class="car-arrow prev" type="button" aria-label="{{ i18n "carousel.prev" }}"><svg width="20" height="20" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg></button>
+  <ul class="carousel" tabindex="0" aria-label="{{ i18n "carousel.aria" }}">
+    {{ range $shots }}<li class="slide"><figure><img class="shot" src="/assets/shots/{{ .img }}.jpg" width="680" height="1478" alt="{{ i18n .cap }}" loading="lazy"><figcaption>{{ i18n .cap }}</figcaption></figure></li>{{ end }}
+  </ul>
+  <button class="car-arrow next" type="button" aria-label="{{ i18n "carousel.next" }}"><svg width="20" height="20" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></button>
+</div>
+<div class="car-controls">
+  <div class="dots" role="group" aria-label="{{ i18n "carousel.aria" }}">{{ range $i, $s := $shots }}<button type="button" aria-label="{{ add $i 1 }}"></button>{{ end }}</div>
+  <button class="car-play" type="button" data-pause="{{ i18n "carousel.pause" }}" data-play="{{ i18n "carousel.play" }}" aria-label="{{ i18n "carousel.pause" }}"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg></button>
+</div>

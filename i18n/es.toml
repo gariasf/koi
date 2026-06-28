@@ -1,0 +1,202 @@
+# Generated from translations.json. Strings for the Koi site, locale: es.
+
+["meta.home.title"]
+other = "Koi. Tus coches, con calma."
+
+["meta.home.desc"]
+other = "Un hogar tranquilo para cada coche de tu vida: en propiedad, de renting, por suscripción o prestado. Lo abres, ves que todo está bien y sigues con tu día. Privado por defecto, en iPhone."
+
+["meta.home.ogdesc"]
+other = "Un hogar tranquilo para cada coche de tu vida. Privado por defecto, en iPhone."
+
+["skip"]
+other = "Ir al contenido"
+
+["nav.contact"]
+other = "Contacto"
+
+["nav.privacy"]
+other = "Privacidad"
+
+["hero.title"]
+other = "Tus coches, con calma."
+
+["hero.sub"]
+other = "Un hogar tranquilo para cada coche de tu vida: en propiedad, de renting, por suscripción o prestado. Lo abres, ves que todo está bien y sigues con tu día."
+
+["hero.soon"]
+other = "Muy pronto en la App Store"
+
+["glance.eyebrow"]
+other = "El Vistazo"
+
+["glance.h"]
+other = "Tres segundos de tranquilidad."
+
+["glance.p"]
+other = "Sin paneles que leer ni registros que llevar al día. Koi te dice qué está bien y qué viene, y luego se aparta."
+
+["glance.alt"]
+other = "El Vistazo de Koi mostrando algunas cosas próximas, casi todas de un mismo coche"
+
+["priv.badge"]
+other = "Privado por defecto"
+
+["priv.h"]
+other = "Tus coches son cosa tuya."
+
+["priv.p"]
+other = "Koi guarda todo en tu iPhone. Sin cuenta que crear, sin muro de registro, sin servidores que retengan tus datos. No te rastreamos y no hay nada que vender, porque nunca lo tenemos."
+
+["priv.readPolicy"]
+other = "Lee la política de privacidad"
+
+["checks.1"]
+other = "Sin cuenta y sin correo"
+
+["checks.2"]
+other = "Guardado en tu dispositivo, no en nuestros servidores"
+
+["checks.3"]
+other = "Sin rastreadores, sin anuncios, sin analíticas"
+
+["checks.4"]
+other = "La ubicación se queda en el dispositivo para los precios de carburante"
+
+["footer.tag"]
+other = "tus coches, con calma"
+
+["meta.priv.title"]
+other = "Política de privacidad de Koi"
+
+["meta.priv.desc"]
+other = "Koi guarda todo en tu dispositivo. Sin cuenta, sin servidores, nada que pudiéramos vender. En resumen: se queda en tu teléfono."
+
+["meta.priv.ogdesc"]
+other = "En resumen: se queda en tu teléfono."
+
+["pp.back"]
+other = "Volver al inicio"
+
+["pp.eyebrow"]
+other = "Política de privacidad"
+
+["pp.h1"]
+other = "En resumen: se queda en tu teléfono."
+
+["pp.intro"]
+other = "Koi está hecho para mantener tu información privada. Todo lo que añades vive en tu dispositivo. No hay cuenta, ni servidor que retenga tus datos, ni nada que pudiéramos vender aunque quisiéramos."
+
+["pp.updated"]
+other = "Última actualización · 12 June 2026"
+
+["pp.sum.1"]
+other = "Sin cuenta, sin correo, sin registro"
+
+["pp.sum.2"]
+other = "Tus datos se guardan solo en tu dispositivo"
+
+["pp.sum.3"]
+other = "Sin publicidad, sin rastreadores, sin analíticas de terceros"
+
+["pp.sum.4"]
+other = "La ubicación, si la permites, se usa en el dispositivo y nosotros nunca la guardamos"
+
+["pp.s1.h"]
+other = "Qué guarda Koi"
+
+["pp.s1.p"]
+other = "Los datos que añades sobre tus coches: marca y modelo, apodos, fotos, planes y proveedores, datos del seguro, registros de carburante y gastos, recordatorios y cualquier documento que adjuntes. Todo se escribe en el almacenamiento local de tu dispositivo y se queda ahí. Koi no tiene cuentas de usuario ni base de datos en la nube, así que esta información nunca se sube hasta nosotros."
+
+["pp.s2.h"]
+other = "Qué recogemos sobre ti"
+
+["pp.s2.p"]
+other = "Nada personal. No te pedimos tu nombre ni tu correo, no te asignamos un identificador y no creamos un perfil tuyo. No podemos ver tus coches, tus costes ni cómo usas la app."
+
+["pp.s3.h"]
+other = "Ubicación y precios de carburante"
+
+["pp.s3.p"]
+other = "Si decides ver los precios de carburante cercanos, Koi le pide a iOS tu ubicación aproximada y la usa para consultar los precios de un servicio público de precios de carburante. Tu ubicación se usa en tu dispositivo para esa consulta y nosotros no la guardamos ni la asociamos a tu identidad. Puedes desactivarlo cuando quieras en los Ajustes de iOS, y el resto de la app sigue funcionando sin ello."
+
+["pp.s4.h"]
+other = "Terceros"
+
+["pp.s4.p1"]
+other = "Koi no incluye SDK de publicidad, rastreadores de redes sociales ni herramientas de analítica. El único servicio externo con el que contacta es la consulta pública de precios de carburante descrita arriba, y solo cuando pides los precios. Si descargas la app desde la App Store, se aplican las "
+
+["pp.s4.appstore"]
+other = "prácticas de privacidad estándar de la App Store"
+
+["pp.s4.p2"]
+other = " de Apple a esa transacción. Esa parte es entre Apple y tú."
+
+["pp.s5.h"]
+other = "Copias de seguridad y cambio de dispositivo"
+
+["pp.s5.p"]
+other = "Como tus datos viven en tu dispositivo, se incluyen en la copia de seguridad cifrada habitual de tu iPhone (iCloud o local), bajo tu control y el cifrado de Apple, no el nuestro. Si cambias de teléfono, tus datos de Koi llegan con esa copia. Borra la app y los datos de ese dispositivo se van con ella."
+
+["pp.s6.h"]
+other = "Tú tienes el control"
+
+["pp.s6.p"]
+other = "Puedes editar o borrar cualquier coche, registro o documento dentro de la app, y puedes quitarlo todo borrando Koi de tu dispositivo. Como nunca guardamos una copia, no hay nada que pedirnos y nada que tengamos que olvidar."
+
+["pp.s7.h"]
+other = "Menores"
+
+["pp.s7.p"]
+other = "Koi no está dirigido a menores y no recoge nada de nadie a sabiendas. Para empezar, no hay recogida de datos."
+
+["pp.s8.h"]
+other = "Cambios en esta política"
+
+["pp.s8.p"]
+other = "Si Koi alguna vez añade una función que cambie cómo se tratan los datos, actualizaremos esta página y la fecha de \"última actualización\" de arriba antes de que esa función salga. Nuestra intención no cambiará: tus datos siguen siendo tuyos, en tu dispositivo."
+
+["pp.s9.h"]
+other = "Contacto"
+
+["pp.contact.p1"]
+other = "¿Dudas sobre privacidad? Escríbenos a "
+
+["pp.contact.p2"]
+other = ". Somos un equipo pequeño y lo leemos todo."
+
+["pp.backfoot"]
+other = "Volver a koi"
+
+["hero.cta"]
+other = "Descárgala en la App Store"
+
+["carousel.eyebrow"]
+other = "Un vistazo por dentro"
+
+["slide.glance"]
+other = "Abre, respira, cierra."
+
+["slide.mileage"]
+other = "Nunca pases tu límite de kilometraje."
+
+["slide.garage"]
+other = "Cada coche, un mismo hogar tranquilo."
+
+["slide.story"]
+other = "Toda la historia, mes a mes."
+
+["carousel.aria"]
+other = "Pantallas de la app"
+
+["carousel.prev"]
+other = "Pantalla anterior"
+
+["carousel.next"]
+other = "Pantalla siguiente"
+
+["carousel.pause"]
+other = "Pausar"
+
+["carousel.play"]
+other = "Reproducir"

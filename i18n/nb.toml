@@ -1,0 +1,202 @@
+# Generated from translations.json. Strings for the Koi site, locale: nb.
+
+["meta.home.title"]
+other = "Koi. Bilene dine, i ro."
+
+["meta.home.desc"]
+other = "Et rolig hjem for hver bil i livet ditt: eid, leaset, på abonnement eller lånt. Åpne den, se at alt er i orden, og gå videre med dagen. Privat som standard, på iPhone."
+
+["meta.home.ogdesc"]
+other = "Et rolig hjem for hver bil i livet ditt. Privat som standard, på iPhone."
+
+["skip"]
+other = "Hopp til innhold"
+
+["nav.contact"]
+other = "Kontakt"
+
+["nav.privacy"]
+other = "Personvern"
+
+["hero.title"]
+other = "Bilene dine, i ro."
+
+["hero.sub"]
+other = "Et rolig hjem for hver bil i livet ditt: eid, leaset, på abonnement eller lånt. Åpne den, se at alt er i orden, og gå videre med dagen."
+
+["hero.soon"]
+other = "Kommer snart til App Store"
+
+["glance.eyebrow"]
+other = "Glance"
+
+["glance.h"]
+other = "Tre sekunder med ro."
+
+["glance.p"]
+other = "Ingen instrumentpaneler å lese, ingen logger å holde tritt med. Koi forteller deg hva som er i orden og hva som kommer, og trekker seg så unna."
+
+["glance.alt"]
+other = "Kois Glance som viser noen ting som kommer, for det meste én bil"
+
+["priv.badge"]
+other = "Privat som standard"
+
+["priv.h"]
+other = "Bilene dine er din sak."
+
+["priv.p"]
+other = "Koi holder alt på iPhonen din. Ingen konto å opprette, ingen påloggingsmur, ingen servere som sitter på dataene dine. Vi sporer deg ikke, og det finnes ingenting å selge, fordi vi aldri har det."
+
+["priv.readPolicy"]
+other = "Les personvernerklæringen"
+
+["checks.1"]
+other = "Ingen konto, ingen e-post nødvendig"
+
+["checks.2"]
+other = "Lagret på enheten din, ikke på våre servere"
+
+["checks.3"]
+other = "Ingen sporere, ingen annonser, ingen analyse"
+
+["checks.4"]
+other = "Posisjonen blir på enheten for drivstoffpriser"
+
+["footer.tag"]
+other = "bilene dine, i ro"
+
+["meta.priv.title"]
+other = "Kois personvernerklæring"
+
+["meta.priv.desc"]
+other = "Koi holder alt på enheten din. Ingen konto, ingen servere, ingenting vi kunne selge. Kortversjonen: det blir på telefonen din."
+
+["meta.priv.ogdesc"]
+other = "Kortversjonen: det blir på telefonen din."
+
+["pp.back"]
+other = "Tilbake til forsiden"
+
+["pp.eyebrow"]
+other = "Personvernerklæring"
+
+["pp.h1"]
+other = "Kortversjonen: det blir på telefonen din."
+
+["pp.intro"]
+other = "Koi er bygget for å holde informasjonen din privat. Alt du legger inn bor på enheten din. Det finnes ingen konto, ingen server som sitter på dataene dine, og ingenting vi kunne selge selv om vi ville."
+
+["pp.updated"]
+other = "Sist oppdatert · 12 June 2026"
+
+["pp.sum.1"]
+other = "Ingen konto, ingen e-post, ingen pålogging"
+
+["pp.sum.2"]
+other = "Dataene dine lagres bare på enheten din"
+
+["pp.sum.3"]
+other = "Ingen annonsering, ingen sporere, ingen tredjepartsanalyse"
+
+["pp.sum.4"]
+other = "Posisjon, hvis du tillater det, brukes på enheten og lagres aldri av oss"
+
+["pp.s1.h"]
+other = "Hva Koi lagrer"
+
+["pp.s1.p"]
+other = "Detaljene du legger til om bilene dine: merke og modell, kallenavn, bilder, planer og leverandører, forsikringsdetaljer, drivstoff- og utgiftslogger, påminnelser, og alle dokumenter du legger ved. Alt skrives til enhetens lokale lagring og blir der. Koi har ingen brukerkontoer og ingen skydatabase, så denne informasjonen lastes aldri opp til oss."
+
+["pp.s2.h"]
+other = "Hva vi samler inn om deg"
+
+["pp.s2.p"]
+other = "Ingenting personlig. Vi spør ikke om navnet eller e-posten din, vi gir deg ingen ID, og vi bygger ingen profil av deg. Vi kan ikke se bilene dine, kostnadene dine eller hvordan du bruker appen."
+
+["pp.s3.h"]
+other = "Posisjon og drivstoffpriser"
+
+["pp.s3.p"]
+other = "Hvis du velger å se drivstoffpriser i nærheten, ber Koi iOS om den omtrentlige posisjonen din og bruker den til å slå opp priser fra en offentlig drivstoffpristjeneste. Posisjonen din brukes på enheten din til den forespørselen og lagres ikke av oss eller knyttes til identiteten din. Du kan skru dette av når som helst i iOS-innstillingene, og resten av appen fungerer videre uten det."
+
+["pp.s4.h"]
+other = "Tredjeparter"
+
+["pp.s4.p1"]
+other = "Koi inneholder ingen annonse-SDK-er, sosiale medier-sporere eller analyseverktøy. Den eneste eksterne tjenesten den kontakter er det offentlige drivstoffprisoppslaget beskrevet ovenfor, og bare når du ber om priser. Hvis du laster ned appen fra App Store, gjelder Apples standard "
+
+["pp.s4.appstore"]
+other = "personvernpraksis for App Store"
+
+["pp.s4.p2"]
+other = " for den transaksjonen. Den delen er mellom deg og Apple."
+
+["pp.s5.h"]
+other = "Sikkerhetskopier og overføring mellom enheter"
+
+["pp.s5.p"]
+other = "Fordi dataene dine bor på enheten din, blir de inkludert i den vanlige krypterte iPhone-sikkerhetskopien (iCloud eller lokal), under din kontroll og Apples kryptering, ikke vår. Hvis du får en ny telefon, følger Koi-dataene dine med den sikkerhetskopien. Slett appen, og dataene på den enheten følger med."
+
+["pp.s6.h"]
+other = "Du har kontrollen"
+
+["pp.s6.p"]
+other = "Du kan redigere eller slette hvilken som helst bil, logg eller dokument inne i appen, og du kan fjerne alt ved å slette Koi fra enheten din. Siden vi aldri sitter på en kopi, finnes det ingenting å be oss om og ingenting for oss å glemme."
+
+["pp.s7.h"]
+other = "Barn"
+
+["pp.s7.p"]
+other = "Koi er ikke rettet mot barn, og den samler ikke bevisst inn noe fra noen. Det finnes ingen datainnsamling i utgangspunktet."
+
+["pp.s8.h"]
+other = "Endringer i denne erklæringen"
+
+["pp.s8.p"]
+other = "Hvis Koi noen gang legger til en funksjon som endrer hvordan data håndteres, oppdaterer vi denne siden og «sist oppdatert»-datoen ovenfor før den funksjonen lanseres. Hensikten vår endrer seg ikke: dataene dine forblir dine, på enheten din."
+
+["pp.s9.h"]
+other = "Kontakt"
+
+["pp.contact.p1"]
+other = "Spørsmål om personvern? Nå oss på "
+
+["pp.contact.p2"]
+other = ". Vi er et lite team, og vi leser alt."
+
+["pp.backfoot"]
+other = "Tilbake til Koi"
+
+["hero.cta"]
+other = "Last ned i App Store"
+
+["carousel.eyebrow"]
+other = "Et blikk inni"
+
+["slide.glance"]
+other = "Åpne, pust, lukk."
+
+["slide.mileage"]
+other = "Spreng aldri kilometergrensen."
+
+["slide.garage"]
+other = "Hver bil, ett rolig hjem."
+
+["slide.story"]
+other = "Hele historien, måned for måned."
+
+["carousel.aria"]
+other = "App-skjermer"
+
+["carousel.prev"]
+other = "Forrige skjerm"
+
+["carousel.next"]
+other = "Neste skjerm"
+
+["carousel.pause"]
+other = "Pause"
+
+["carousel.play"]
+other = "Spill av"

@@ -1,0 +1,2 @@
+{{- /* Crawlable language switcher. Ordered by language weight (EN ES CA NB FR). */ -}}
+<nav class="langbar" aria-label="Language">{{ range .AllTranslations }}<a hreflang="{{ .Language.Lang }}" href="{{ .RelPermalink }}" data-lang="{{ .Language.Lang }}"{{ if eq .Language.Lang $.Site.Language.Lang }} aria-current="true"{{ end }}>{{ upper .Language.Lang }}</a>{{ end }}</nav>

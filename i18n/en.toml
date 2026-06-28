@@ -1,0 +1,202 @@
+# Generated from translations.json. Strings for the Koi site, locale: en.
+
+["meta.home.title"]
+other = "Koi. Your cars, calmly."
+
+["meta.home.desc"]
+other = "A quiet home for every car in your life: owned, leased, on a subscription, or borrowed. Open it, see that everything's fine, and get on with your day. Private by default, on iPhone."
+
+["meta.home.ogdesc"]
+other = "A quiet home for every car in your life. Private by default, on iPhone."
+
+["skip"]
+other = "Skip to content"
+
+["nav.contact"]
+other = "Contact"
+
+["nav.privacy"]
+other = "Privacy"
+
+["hero.title"]
+other = "Your cars, calmly."
+
+["hero.sub"]
+other = "A quiet home for every car in your life: owned, leased, on a subscription, or borrowed. Open it, see that everything's fine, and get on with your day."
+
+["hero.soon"]
+other = "Coming soon to the App Store"
+
+["glance.eyebrow"]
+other = "The Glance"
+
+["glance.h"]
+other = "Three seconds of reassurance."
+
+["glance.p"]
+other = "No dashboards to read, no logs to keep up with. Koi tells you what's fine and what's coming, then gets out of the way."
+
+["glance.alt"]
+other = "Koi's Glance showing a few things coming up, mostly one car"
+
+["priv.badge"]
+other = "Private by default"
+
+["priv.h"]
+other = "Your cars are your business."
+
+["priv.p"]
+other = "Koi keeps everything on your iPhone. No account to create, no sign-in wall, no servers holding your data. We don't track you, and there's nothing to sell, because we never have it."
+
+["priv.readPolicy"]
+other = "Read the privacy policy"
+
+["checks.1"]
+other = "No account, no email required"
+
+["checks.2"]
+other = "Stored on your device, not our servers"
+
+["checks.3"]
+other = "No trackers, no ads, no analytics"
+
+["checks.4"]
+other = "Location stays on-device for fuel prices"
+
+["footer.tag"]
+other = "your cars, calmly"
+
+["meta.priv.title"]
+other = "Koi privacy policy"
+
+["meta.priv.desc"]
+other = "Koi keeps everything on your device. No account, no servers, nothing we could sell. The short version: it stays on your phone."
+
+["meta.priv.ogdesc"]
+other = "The short version: it stays on your phone."
+
+["pp.back"]
+other = "Back to home"
+
+["pp.eyebrow"]
+other = "Privacy policy"
+
+["pp.h1"]
+other = "The short version: it stays on your phone."
+
+["pp.intro"]
+other = "Koi is built to keep your information private. Everything you put in lives on your device. There's no account, no server holding your data, and nothing we could sell even if we wanted to."
+
+["pp.updated"]
+other = "Last updated · 12 June 2026"
+
+["pp.sum.1"]
+other = "No account, no email, no sign-in"
+
+["pp.sum.2"]
+other = "Your data is stored only on your device"
+
+["pp.sum.3"]
+other = "No advertising, no trackers, no third-party analytics"
+
+["pp.sum.4"]
+other = "Location, if you allow it, is used on-device and never stored by us"
+
+["pp.s1.h"]
+other = "What Koi stores"
+
+["pp.s1.p"]
+other = "The details you add about your cars: make and model, nicknames, photos, plans and providers, insurance details, fuel and expense logs, reminders, and any documents you attach. All of it is written to your device's local storage and stays there. Koi has no user accounts and no cloud database, so this information is never uploaded to us."
+
+["pp.s2.h"]
+other = "What we collect about you"
+
+["pp.s2.p"]
+other = "Nothing personal. We don't ask for your name or email, we don't assign you an ID, and we don't build a profile of you. We can't see your cars, your costs, or how you use the app."
+
+["pp.s3.h"]
+other = "Location and fuel prices"
+
+["pp.s3.p"]
+other = "If you choose to see nearby fuel prices, Koi asks iOS for your approximate location and uses it to look up prices from a public fuel-price service. Your location is used on your device for that request and is not saved by us or attached to your identity. You can turn this off at any time in iOS Settings, and the rest of the app keeps working without it."
+
+["pp.s4.h"]
+other = "Third parties"
+
+["pp.s4.p1"]
+other = "Koi doesn't include advertising SDKs, social-media trackers, or analytics tools. The only outside service it contacts is the public fuel-price lookup described above, and only when you ask for prices. If you download the app from the App Store, Apple's standard "
+
+["pp.s4.appstore"]
+other = "App Store privacy practices"
+
+["pp.s4.p2"]
+other = " apply to that transaction. That part is between you and Apple."
+
+["pp.s5.h"]
+other = "Backups and device transfer"
+
+["pp.s5.p"]
+other = "Because your data lives on your device, it's included in your normal encrypted iPhone backup (iCloud or local), under your control and Apple's encryption, not ours. If you get a new phone, your Koi data comes across with that backup. Delete the app and the data on that device goes with it."
+
+["pp.s6.h"]
+other = "You're in control"
+
+["pp.s6.p"]
+other = "You can edit or delete any car, log, or document inside the app, and you can remove everything by deleting Koi from your device. Since we never hold a copy, there's nothing to request from us and nothing for us to forget."
+
+["pp.s7.h"]
+other = "Children"
+
+["pp.s7.p"]
+other = "Koi isn't directed at children, and it doesn't knowingly collect anything from anyone. There's no data collection to begin with."
+
+["pp.s8.h"]
+other = "Changes to this policy"
+
+["pp.s8.p"]
+other = "If Koi ever adds a feature that changes how data is handled, we'll update this page and the \"last updated\" date above before that feature ships. Our intent won't change: your data stays yours, on your device."
+
+["pp.s9.h"]
+other = "Contact"
+
+["pp.contact.p1"]
+other = "Questions about privacy? Reach us at "
+
+["pp.contact.p2"]
+other = ". We're a small team and we read everything."
+
+["pp.backfoot"]
+other = "Back to koi"
+
+["hero.cta"]
+other = "Download on the App Store"
+
+["carousel.eyebrow"]
+other = "A look inside"
+
+["slide.glance"]
+other = "Open, breathe, close."
+
+["slide.mileage"]
+other = "Never blow your mileage cap."
+
+["slide.garage"]
+other = "Every car, one quiet home."
+
+["slide.story"]
+other = "The whole story, by month."
+
+["carousel.aria"]
+other = "App screens"
+
+["carousel.prev"]
+other = "Previous screen"
+
+["carousel.next"]
+other = "Next screen"
+
+["carousel.pause"]
+other = "Pause"
+
+["carousel.play"]
+other = "Play"

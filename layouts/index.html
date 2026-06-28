@@ -1,0 +1,74 @@
+{{ define "body" }}
+{{- $priv := (.Site.GetPage "/privacy-policy").RelPermalink -}}
+{{- $appstore := site.Params.appstoreURL -}}
+{{- $eml := site.Params.emailB64 -}}
+<body data-page="home">
+<a class="skip" href="#main">{{ i18n "skip" }}</a>
+
+<nav class="nav">
+  <div class="container nav-inner">
+    <a class="wordmark" href="{{ .Site.Home.RelPermalink }}" aria-label="Koi home">{{ partial "icon.html" (dict "s" 26 "w" "1.6") }}<span>koi</span></a>
+    <div class="nav-links">
+      <a class="navlink eml" href="{{ $priv }}#contact" data-e="{{ $eml }}">{{ i18n "nav.contact" }}</a>
+      <a class="navlink" href="{{ $priv }}">{{ i18n "nav.privacy" }}</a>
+    </div>
+  </div>
+</nav>
+
+<main id="main" tabindex="-1">
+<header class="hero">
+  <div class="mark-wrap">
+    <div class="bloom" aria-hidden="true"></div>
+    <svg width="60" height="60" viewBox="0 0 24 24" fill="none" style="position:relative;" aria-hidden="true"><circle cx="12" cy="12" r="9.2" stroke="#7C8B6F" stroke-width="1.3"/><circle cx="12" cy="12" r="5.1" stroke="#7C8B6F" stroke-width="1.3" opacity=".65"/><circle cx="12" cy="12" r="1.9" fill="#7C8B6F"/></svg>
+  </div>
+  <h1>{{ i18n "hero.title" }}</h1>
+  <p>{{ i18n "hero.sub" }}</p>
+  <div id="get" class="cta-row">
+    <a class="appstore-btn" href="{{ $appstore }}"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.365 1.43c0 1.14-.493 2.27-1.177 3.08-.744.9-1.99 1.57-2.987 1.57-.12 0-.23-.02-.3-.03-.01-.06-.04-.22-.04-.39 0-1.15.572-2.27 1.206-2.98.804-.94 2.142-1.64 3.248-1.68.03.13.04.28.04.43zm4.565 15.71c-.03.07-.463 1.58-1.518 3.12-.945 1.34-1.94 2.71-3.43 2.71-1.517 0-1.9-.88-3.63-.88-1.698 0-2.302.91-3.67.91-1.377 0-2.332-1.26-3.428-2.8-1.287-1.82-2.323-4.63-2.323-7.28 0-4.28 2.797-6.55 5.552-6.55 1.448 0 2.675.95 3.6.95.865 0 2.222-1.01 3.902-1.01.613 0 2.886.06 4.374 2.19-.13.09-2.383 1.37-2.383 4.19 0 3.26 2.854 4.42 2.955 4.45z"/></svg>{{ i18n "hero.cta" }}</a>
+  </div>
+</header>
+
+<section class="container section" aria-labelledby="screens-h" aria-roledescription="carousel">
+  <div class="section-head">
+    <div class="eyebrow">{{ i18n "carousel.eyebrow" }}</div>
+    <h2 id="screens-h">{{ i18n "glance.h" }}</h2>
+    <p>{{ i18n "glance.p" }}</p>
+  </div>
+  {{ partial "carousel.html" . }}
+</section>
+
+<section id="private" class="container section">
+  <div class="dark-panel">
+    <div>
+      <div class="badge"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg><span>{{ i18n "priv.badge" }}</span></div>
+      <h2>{{ i18n "priv.h" }}</h2>
+      <p>{{ i18n "priv.p" }}</p>
+      <a class="panel-link" href="{{ $priv }}"><span>{{ i18n "priv.readPolicy" }}</span><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></a>
+    </div>
+    <div class="checks">
+      <div class="check-row"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9DB082" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>{{ i18n "checks.1" }}</span></div>
+      <div class="check-row"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9DB082" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>{{ i18n "checks.2" }}</span></div>
+      <div class="check-row"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9DB082" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>{{ i18n "checks.3" }}</span></div>
+      <div class="check-row"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9DB082" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>{{ i18n "checks.4" }}</span></div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="footer">
+  <div class="container footer-inner">
+    <div class="footer-brand">{{ partial "icon.html" (dict "s" 20 "w" "1.7") }}<span class="wm">koi</span><span class="tag">{{ i18n "footer.tag" }}</span></div>
+    {{ partial "langbar.html" . }}
+  </div>
+  <div class="container footer-legal">
+    <div class="footer-links">
+      <a class="navlink eml" href="{{ $priv }}#contact" data-e="{{ $eml }}">{{ i18n "nav.contact" }}</a>
+      <a class="navlink" href="{{ $priv }}">{{ i18n "nav.privacy" }}</a>
+    </div>
+    <span class="mono meta">© 2026 koi</span>
+  </div>
+</footer>
+
+{{ partial "scripts.html" . }}
+</body>
+{{ end }}

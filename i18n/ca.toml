@@ -1,0 +1,202 @@
+# Generated from translations.json. Strings for the Koi site, locale: ca.
+
+["meta.home.title"]
+other = "Koi. Els teus cotxes, en calma."
+
+["meta.home.desc"]
+other = "Una llar tranquil·la per a cada cotxe de la teva vida: en propietat, de rènting, amb subscripció o deixat. L'obres, veus que tot va bé i continues amb el teu dia. Privat per defecte, a l'iPhone."
+
+["meta.home.ogdesc"]
+other = "Una llar tranquil·la per a cada cotxe de la teva vida. Privat per defecte, a l'iPhone."
+
+["skip"]
+other = "Salta al contingut"
+
+["nav.contact"]
+other = "Contacte"
+
+["nav.privacy"]
+other = "Privadesa"
+
+["hero.title"]
+other = "Els teus cotxes, en calma."
+
+["hero.sub"]
+other = "Una llar tranquil·la per a cada cotxe de la teva vida: en propietat, de rènting, amb subscripció o deixat. L'obres, veus que tot va bé i continues amb el teu dia."
+
+["hero.soon"]
+other = "Aviat a l'App Store"
+
+["glance.eyebrow"]
+other = "El cop d'ull"
+
+["glance.h"]
+other = "Tres segons de tranquil·litat."
+
+["glance.p"]
+other = "Sense taulers per llegir ni registres per anar seguint. Koi et diu què va bé i què s'acosta, i després s'aparta."
+
+["glance.alt"]
+other = "El cop d'ull de Koi mostrant unes quantes coses que s'acosten, gairebé totes d'un cotxe"
+
+["priv.badge"]
+other = "Privat per defecte"
+
+["priv.h"]
+other = "Els teus cotxes són cosa teva."
+
+["priv.p"]
+other = "Koi ho guarda tot al teu iPhone. Sense cap compte per crear, sense barrera d'inici de sessió, sense servidors que tinguin les teves dades. No et seguim, i no hi ha res per vendre, perquè mai no ho tenim."
+
+["priv.readPolicy"]
+other = "Llegeix la política de privadesa"
+
+["checks.1"]
+other = "Sense compte ni correu electrònic"
+
+["checks.2"]
+other = "Desat al teu dispositiu, no als nostres servidors"
+
+["checks.3"]
+other = "Sense rastrejadors, sense anuncis, sense analítiques"
+
+["checks.4"]
+other = "La ubicació es queda al dispositiu per als preus de combustible"
+
+["footer.tag"]
+other = "els teus cotxes, en calma"
+
+["meta.priv.title"]
+other = "Política de privadesa de Koi"
+
+["meta.priv.desc"]
+other = "Koi ho guarda tot al teu dispositiu. Sense compte, sense servidors, res que poguéssim vendre. La versió curta: es queda al teu telèfon."
+
+["meta.priv.ogdesc"]
+other = "La versió curta: es queda al teu telèfon."
+
+["pp.back"]
+other = "Torna a l'inici"
+
+["pp.eyebrow"]
+other = "Política de privadesa"
+
+["pp.h1"]
+other = "La versió curta: es queda al teu telèfon."
+
+["pp.intro"]
+other = "Koi està fet per mantenir la teva informació privada. Tot el que hi poses viu al teu dispositiu. No hi ha cap compte, cap servidor amb les teves dades, ni res que poguéssim vendre encara que volguéssim."
+
+["pp.updated"]
+other = "Última actualització · 12 June 2026"
+
+["pp.sum.1"]
+other = "Sense compte, sense correu, sense inici de sessió"
+
+["pp.sum.2"]
+other = "Les teves dades es desen només al teu dispositiu"
+
+["pp.sum.3"]
+other = "Sense publicitat, sense rastrejadors, sense analítiques de tercers"
+
+["pp.sum.4"]
+other = "La ubicació, si la permets, s'usa al dispositiu i nosaltres mai la desem"
+
+["pp.s1.h"]
+other = "Què guarda Koi"
+
+["pp.s1.p"]
+other = "Els detalls que afegeixes sobre els teus cotxes: marca i model, sobrenoms, fotos, plans i proveïdors, dades de l'assegurança, registres de combustible i despeses, recordatoris i qualsevol document que hi adjuntis. Tot s'escriu a l'emmagatzematge local del teu dispositiu i s'hi queda. Koi no té comptes d'usuari ni base de dades al núvol, així que aquesta informació mai no es puja cap a nosaltres."
+
+["pp.s2.h"]
+other = "Què recollim sobre tu"
+
+["pp.s2.p"]
+other = "Res de personal. No et demanem el nom ni el correu, no t'assignem cap identificador i no construïm cap perfil teu. No podem veure els teus cotxes, els teus costos ni com fas servir l'app."
+
+["pp.s3.h"]
+other = "Ubicació i preus de combustible"
+
+["pp.s3.p"]
+other = "Si tries veure els preus de combustible propers, Koi demana a l'iOS la teva ubicació aproximada i la fa servir per consultar preus en un servei públic de preus de combustible. La teva ubicació s'usa al teu dispositiu per a aquesta consulta i nosaltres no la desem ni la lliguem a la teva identitat. Pots desactivar-ho quan vulguis a la Configuració de l'iOS, i la resta de l'app continua funcionant sense això."
+
+["pp.s4.h"]
+other = "Tercers"
+
+["pp.s4.p1"]
+other = "Koi no inclou SDK de publicitat, rastrejadors de xarxes socials ni eines d'analítica. L'únic servei extern amb què contacta és la consulta pública de preus de combustible descrita més amunt, i només quan demanes preus. Si descarregues l'app des de l'App Store, s'apliquen les "
+
+["pp.s4.appstore"]
+other = "pràctiques de privadesa estàndard de l'App Store"
+
+["pp.s4.p2"]
+other = " a aquesta operació. Aquesta part és entre tu i Apple."
+
+["pp.s5.h"]
+other = "Còpies de seguretat i traspàs de dispositiu"
+
+["pp.s5.p"]
+other = "Com que les teves dades viuen al teu dispositiu, s'inclouen a la teva còpia de seguretat xifrada habitual de l'iPhone (iCloud o local), sota el teu control i el xifratge d'Apple, no el nostre. Si canvies de telèfon, les teves dades de Koi vénen amb aquesta còpia. Esborra l'app i les dades d'aquell dispositiu se'n van amb ella."
+
+["pp.s6.h"]
+other = "Tu tens el control"
+
+["pp.s6.p"]
+other = "Pots editar o esborrar qualsevol cotxe, registre o document dins de l'app, i pots treure-ho tot esborrant Koi del teu dispositiu. Com que nosaltres mai en tenim cap còpia, no hi ha res per demanar-nos ni res que haguem d'oblidar."
+
+["pp.s7.h"]
+other = "Infants"
+
+["pp.s7.p"]
+other = "Koi no s'adreça als infants, i no recull res de ningú de manera conscient. No hi ha cap recollida de dades, d'entrada."
+
+["pp.s8.h"]
+other = "Canvis en aquesta política"
+
+["pp.s8.p"]
+other = "Si algun dia Koi afegeix una funció que canvia com es tracten les dades, actualitzarem aquesta pàgina i la data d'\"última actualització\" de més amunt abans que aquesta funció arribi. La nostra intenció no canviarà: les teves dades segueixen sent teves, al teu dispositiu."
+
+["pp.s9.h"]
+other = "Contacte"
+
+["pp.contact.p1"]
+other = "Tens preguntes sobre la privadesa? Escriu-nos a "
+
+["pp.contact.p2"]
+other = ". Som un equip petit i ho llegim tot."
+
+["pp.backfoot"]
+other = "Torna a koi"
+
+["hero.cta"]
+other = "Descarrega-la a l'App Store"
+
+["carousel.eyebrow"]
+other = "Una ullada a dins"
+
+["slide.glance"]
+other = "Obre, respira, tanca."
+
+["slide.mileage"]
+other = "No superis mai el límit de quilòmetres."
+
+["slide.garage"]
+other = "Cada cotxe, una sola llar tranquil·la."
+
+["slide.story"]
+other = "Tota la història, mes a mes."
+
+["carousel.aria"]
+other = "Pantalles de l'app"
+
+["carousel.prev"]
+other = "Pantalla anterior"
+
+["carousel.next"]
+other = "Pantalla següent"
+
+["carousel.pause"]
+other = "Pausa"
+
+["carousel.play"]
+other = "Reprodueix"

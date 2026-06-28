@@ -3,37 +3,40 @@
 The website for Koi, a calm iOS car companion. Live at
 [koi.gariasf.com](https://koi.gariasf.com).
 
-Plain HTML and one stylesheet, in English, Spanish, Catalan, Norwegian and
-French. No framework, no backend, no tracking.
+A small [Hugo](https://gohugo.io) site in English, Spanish, Catalan, Norwegian
+and French. No backend, no tracking; the only JavaScript is the language memory,
+the contact-address builder, and the screens carousel.
 
-## Build
-
-The served pages are generated, so edit `translations.json` or the templates in
-`tools/build.py`, not the HTML.
+## Run
 
 ```sh
-python3 tools/build.py        # regenerate every locale
-python3 -m http.server 8000   # preview at http://localhost:8000
+hugo server        # live preview at http://localhost:1313
+hugo --gc --minify # build into public/
 ```
 
-`build.py` writes one set of static pages per language, each with the right
-`lang`, reciprocal `hreflang`, localized title and metadata, a language
-switcher, and a first-visit redirect to the browser's language.
+Hugo extended is not required. The version the site is built with is pinned in
+`.github/workflows/deploy.yml`.
 
-## Layout
+## Where things live
 
-- `translations.json` holds every string, per locale (`en` is the source).
-- `tools/build.py` is the generator.
-- `styles.css` is the design system: tokens, the bundled Geist faces, the components.
-- `index.html` and `*/index.html` are generated; do not edit them by hand.
-- `404.html`, `robots.txt`, `sitemap.xml`, `site.webmanifest` are static.
-- `assets/` holds the fonts, app screenshots, and icons.
+- `i18n/<lang>.toml` holds every string, one file per locale (`en` is the source).
+- `layouts/` are the templates: `index.html` (home), `privacy-policy/list.html`,
+  the `_default/baseof.html` shell, and the `partials/` (head, langbar, carousel, scripts).
+- `content/` are thin per-language stubs so each page exists in each locale; the
+  copy comes from `i18n/`, not from these files.
+- `static/` is served as-is: `styles.css`, `assets/` (fonts, screenshots, icons),
+  `CNAME`, `favicon.svg`, `404.html`, `robots.txt`, `site.webmanifest`.
+- `hugo.toml` is the config: languages, output formats, sitemap.
+
+Hugo handles the per-locale routing (`en` at the root, the rest under `/<lang>/`),
+the reciprocal `hreflang` links, and the sitemap. The first-visit redirect to the
+browser's language lives in `partials/head.html` and runs only on the English page.
 
 ## Deploy
 
-GitHub Pages from `main`, custom domain via the `CNAME` file, HTTPS enforced.
-Commit the generated HTML; nothing builds on Pages, so the repo stays public to
-serve.
+Pushing to `main` triggers `.github/workflows/deploy.yml`, which builds with Hugo
+and publishes to GitHub Pages. The custom domain comes from `static/CNAME`; HTTPS
+is enforced. Nothing generated is committed (see `.gitignore`).
 
 ## Design
 

@@ -1,0 +1,56 @@
+baseURL = "https://koi.gariasf.com/"
+defaultContentLanguage = "en"
+defaultContentLanguageInSubdir = false
+enableRobotsTXT = false
+disableKinds = ["taxonomy", "term"]
+disablePathToLower = false
+summaryLength = 20
+
+[minify]
+  minifyOutput = true
+
+[outputs]
+  home = ["HTML"]
+  section = ["HTML"]
+  page = ["HTML"]
+
+[params]
+  appstoreURL = "https://apps.apple.com/app/id6782021898"
+  emailB64 = "aGVsbG9AZ2FyaWFzZi5jb20="
+  origin = "https://koi.gariasf.com"
+
+[languages]
+  [languages.en]
+    languageCode = "en"
+    languageName = "English"
+    weight = 1
+    [languages.en.params]
+      ogLocale = "en_US"
+  [languages.es]
+    languageCode = "es"
+    languageName = "Español"
+    weight = 2
+    [languages.es.params]
+      ogLocale = "es_ES"
+  [languages.ca]
+    languageCode = "ca"
+    languageName = "Català"
+    weight = 3
+    [languages.ca.params]
+      ogLocale = "ca_ES"
+  [languages.nb]
+    languageCode = "nb"
+    languageName = "Norsk bokmål"
+    weight = 4
+    [languages.nb.params]
+      ogLocale = "nb_NO"
+  [languages.fr]
+    languageCode = "fr"
+    languageName = "Français"
+    weight = 5
+    [languages.fr.params]
+      ogLocale = "fr_FR"
+
+[sitemap]
+  changefreq = "monthly"
+  priority = 0.5
