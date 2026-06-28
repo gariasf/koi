@@ -3,8 +3,6 @@ defaultContentLanguage = "en"
 defaultContentLanguageInSubdir = false
 enableRobotsTXT = false
 disableKinds = ["taxonomy", "term"]
-disablePathToLower = false
-summaryLength = 20
 
 [minify]
   minifyOutput = true

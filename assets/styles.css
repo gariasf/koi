@@ -143,15 +143,17 @@ img,svg{ display:block; }
   overflow-x:auto; overscroll-behavior-x:contain;
   scroll-snap-type:x mandatory;
   scrollbar-width:none;
+  cursor:grab;   /* mouse can drag the strip; touch pans it natively */
   /* the active phone stays crisp; the neighbours either side taper off softly */
   -webkit-mask-image:linear-gradient(90deg, transparent 0, #000 19%, #000 81%, transparent 100%);
           mask-image:linear-gradient(90deg, transparent 0, #000 19%, #000 81%, transparent 100%);
 }
 .carousel::-webkit-scrollbar{ display:none; }
+.carousel.dragging{ cursor:grabbing; user-select:none; }
 .carousel:focus-visible{ outline:2px solid var(--sage-deep); outline-offset:8px; border-radius:20px; }
 .slide{ scroll-snap-align:center; flex:0 0 auto; }
 .slide figure{ margin:0; width:var(--phone); display:flex; flex-direction:column; align-items:center; gap:20px; }
-.slide .shot{ width:var(--phone); border-radius:42px; box-shadow:0 0 0 7px #14130F, 0 30px 64px -34px rgba(20,18,14,.55); }
+.slide .shot{ width:var(--phone); border-radius:42px; box-shadow:0 0 0 7px #14130F, 0 30px 64px -34px rgba(20,18,14,.55); -webkit-user-drag:none; user-select:none; }
 .slide figcaption{ font-size:16px; line-height:1.45; color:var(--text-2); text-align:center; text-wrap:balance; }
 
 /* arrows — vertically centred on the phone (not the caption); hidden on touch where you swipe */

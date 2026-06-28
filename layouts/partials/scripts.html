@@ -52,6 +52,42 @@
       slides.forEach(function (s) { io.observe(s); });
     }
 
+    // drag-to-swipe with the mouse (touch already pans natively via scroll-snap)
+    var drag = null;
+    function restoreSnap() { track.style.scrollSnapType = ""; }
+    track.addEventListener("pointerdown", function (e) {
+      if (e.pointerType !== "mouse") return;
+      drag = { x: e.clientX, left: track.scrollLeft, moved: false };
+      track.setPointerCapture(e.pointerId);
+      track.classList.add("dragging");
+      track.style.scrollSnapType = "none";   // free pan; we re-snap ourselves on release
+    });
+    track.addEventListener("pointermove", function (e) {
+      if (!drag) return;
+      var dx = e.clientX - drag.x;
+      if (Math.abs(dx) > 3) drag.moved = true;
+      track.scrollLeft = drag.left - dx;
+    });
+    function endDrag() {
+      if (!drag) return;
+      var moved = drag.moved;
+      drag = null;
+      track.classList.remove("dragging");
+      if (!moved) { restoreSnap(); return; }   // a click, not a drag — leave it be
+      // glide to whichever slide sits nearest the centre, then re-arm snapping
+      var c = track.scrollLeft + track.clientWidth / 2, best = 0, bd = Infinity;
+      slides.forEach(function (s, j) {
+        var d = Math.abs(s.offsetLeft + s.offsetWidth / 2 - c);
+        if (d < bd) { bd = d; best = j; }
+      });
+      go(best);   // smooth, with snap still off so it animates once instead of jumping
+      if ("onscrollend" in window) track.addEventListener("scrollend", restoreSnap, { once: true });
+      else setTimeout(restoreSnap, 450);
+    }
+    track.addEventListener("pointerup", endDrag);
+    track.addEventListener("pointercancel", endDrag);
+    track.addEventListener("dragstart", function (e) { e.preventDefault(); }); // kill native image ghost
+
     function tick() { go(i + 1); }
     function render() {
       if (!playBtn) return;
