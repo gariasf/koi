@@ -62,7 +62,11 @@
     "slide.mileage": "Never blow your mileage cap.",
     "slide.garage": "Every car, one quiet home.",
     "slide.story": "The whole story, by month.",
-    "carousel.aria": "App screens"
+    "carousel.aria": "App screens",
+    "carousel.prev": "Previous screen",
+    "carousel.next": "Next screen",
+    "carousel.pause": "Pause",
+    "carousel.play": "Play"
   },
   "es": {
     "meta.home.title": "Koi. Tus coches, con calma.",
@@ -127,7 +131,11 @@
     "slide.mileage": "Nunca pases tu límite de kilometraje.",
     "slide.garage": "Cada coche, un mismo hogar tranquilo.",
     "slide.story": "Toda la historia, mes a mes.",
-    "carousel.aria": "Pantallas de la app"
+    "carousel.aria": "Pantallas de la app",
+    "carousel.prev": "Pantalla anterior",
+    "carousel.next": "Pantalla siguiente",
+    "carousel.pause": "Pausar",
+    "carousel.play": "Reproducir"
   },
   "ca": {
     "meta.home.title": "Koi. Els teus cotxes, en calma.",
@@ -192,7 +200,11 @@
     "slide.mileage": "No superis mai el límit de quilòmetres.",
     "slide.garage": "Cada cotxe, una sola llar tranquil·la.",
     "slide.story": "Tota la història, mes a mes.",
-    "carousel.aria": "Pantalles de l'app"
+    "carousel.aria": "Pantalles de l'app",
+    "carousel.prev": "Pantalla anterior",
+    "carousel.next": "Pantalla següent",
+    "carousel.pause": "Pausa",
+    "carousel.play": "Reprodueix"
   },
   "nb": {
     "meta.home.title": "Koi. Bilene dine, i ro.",
@@ -257,7 +269,11 @@
     "slide.mileage": "Spreng aldri kilometergrensen.",
     "slide.garage": "Hver bil, ett rolig hjem.",
     "slide.story": "Hele historien, måned for måned.",
-    "carousel.aria": "App-skjermer"
+    "carousel.aria": "App-skjermer",
+    "carousel.prev": "Forrige skjerm",
+    "carousel.next": "Neste skjerm",
+    "carousel.pause": "Pause",
+    "carousel.play": "Spill av"
   },
   "fr": {
     "meta.home.title": "Koi. Vos voitures, sereinement.",
@@ -322,6 +338,10 @@
     "slide.mileage": "Ne dépassez jamais votre plafond kilométrique.",
     "slide.garage": "Chaque voiture, un seul foyer paisible.",
     "slide.story": "Toute l'histoire, mois par mois.",
-    "carousel.aria": "Écrans de l'application"
+    "carousel.aria": "Écrans de l'application",
+    "carousel.prev": "Écran précédent",
+    "carousel.next": "Écran suivant",
+    "carousel.pause": "Pause",
+    "carousel.play": "Lecture"
   }
 }

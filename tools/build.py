@@ -103,28 +103,67 @@ CAROUSEL_SLIDES = "".join(
     for img, cap in SHOTS)
 CAROUSEL_DOTS = "".join('<button type="button" aria-label="' + str(i + 1) + '"></button>' for i in range(len(SHOTS)))
 
-CAROUSEL_JS = """<script>
-/* Carousel: keep the dots in sync with the scroll position; click a dot to glide to that screen.
-   Pure progressive enhancement — without JS the strip still scroll-snaps and the captions read. */
-document.querySelectorAll(".carousel").forEach(function (track) {
-  var slides = Array.prototype.slice.call(track.children);
-  var dots = track.parentElement.querySelector(".dots");
-  if (!dots) return;
-  var btns = Array.prototype.slice.call(dots.children);
-  btns.forEach(function (b, i) {
-    b.addEventListener("click", function () { slides[i].scrollIntoView({ inline: "center", block: "nearest", behavior: "smooth" }); });
+_SVG = 'width="20" height="20" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"'
+CHEVRON_L = '<svg ' + _SVG + ' fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>'
+CHEVRON_R = '<svg ' + _SVG + ' fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>'
+PAUSE_ICON = '<svg ' + _SVG + ' fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>'
+PLAY_ICON = '<svg ' + _SVG + ' fill="currentColor"><path d="M8 5v14l11-7z"/></svg>'
+
+CAROUSEL_JS = ("""<script>
+/* Carousel: native scroll-snap (swipe/keyboard), plus arrows, dot indicators, and an
+   auto-advance that you can pause (WCAG 2.2.2). Auto-advance is off when the OS asks to reduce
+   motion. Pure progressive enhancement: with JS off the strip still scroll-snaps. */
+(function () {
+  document.querySelectorAll(".carousel-wrap").forEach(function (wrap) {
+    var track = wrap.querySelector(".carousel");
+    var slides = Array.prototype.slice.call(track.children);
+    var section = wrap.closest("section");
+    var dots = Array.prototype.slice.call(section.querySelectorAll(".dots button"));
+    var playBtn = section.querySelector(".car-play");
+    var PAUSE = (playBtn && playBtn.getAttribute("data-pause")) || "Pause";
+    var PLAY = (playBtn && playBtn.getAttribute("data-play")) || "Play";
+    var reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var i = 0, timer = null, playing = false;
+
+    function go(n, smooth) {
+      i = (n + slides.length) % slides.length;
+      slides[i].scrollIntoView({ inline: "center", block: "nearest", behavior: smooth === false ? "auto" : "smooth" });
+    }
+    function sync() { dots.forEach(function (d, j) { d.setAttribute("aria-current", j === i ? "true" : "false"); }); }
+
+    dots.forEach(function (d, j) { d.addEventListener("click", function () { go(j); }); });
+    var prev = wrap.querySelector(".prev"), next = wrap.querySelector(".next");
+    if (prev) prev.addEventListener("click", function () { go(i - 1); });
+    if (next) next.addEventListener("click", function () { go(i + 1); });
+
+    if ("IntersectionObserver" in window) {
+      var io = new IntersectionObserver(function (es) {
+        es.forEach(function (e) { if (e.isIntersecting) { i = slides.indexOf(e.target); sync(); } });
+      }, { root: track, threshold: 0.6 });
+      slides.forEach(function (s) { io.observe(s); });
+    }
+
+    function tick() { go(i + 1); }
+    function render() {
+      if (!playBtn) return;
+      playBtn.setAttribute("aria-pressed", playing ? "true" : "false");
+      playBtn.setAttribute("aria-label", playing ? PAUSE : PLAY);
+      playBtn.innerHTML = playing ? '__PAUSE_ICON__' : '__PLAY_ICON__';
+    }
+    function start() { if (reduce || timer) return; timer = setInterval(tick, 5000); playing = true; render(); }
+    function stop() { if (timer) { clearInterval(timer); timer = null; } playing = false; render(); }
+    if (playBtn) playBtn.addEventListener("click", function () { playing ? stop() : start(); });
+
+    // don't auto-advance while the visitor is reading/interacting; resume after
+    wrap.addEventListener("pointerenter", function () { if (timer) { clearInterval(timer); timer = null; } });
+    wrap.addEventListener("pointerleave", function () { if (playing && !timer) timer = setInterval(tick, 5000); });
+    wrap.addEventListener("focusin", function () { if (timer) { clearInterval(timer); timer = null; } });
+
+    sync();
+    if (!reduce) start(); else render();
   });
-  if (!("IntersectionObserver" in window)) return;
-  var io = new IntersectionObserver(function (entries) {
-    entries.forEach(function (e) {
-      if (!e.isIntersecting) return;
-      var i = slides.indexOf(e.target);
-      btns.forEach(function (b, j) { b.setAttribute("aria-current", j === i ? "true" : "false"); });
-    });
-  }, { root: track, threshold: 0.6 });
-  slides.forEach(function (s) { io.observe(s); });
-});
-</script>"""
+})();
+</script>""".replace("__PAUSE_ICON__", PAUSE_ICON).replace("__PLAY_ICON__", PLAY_ICON))
 
 
 def head(locale, page, body_attr, title_key, desc_key, ogdesc_key, extra=""):
@@ -198,16 +237,23 @@ def home_template(locale):
   </div>
 </header>
 
-<section class="container section" aria-labelledby="screens-h">
+<section class="container section" aria-labelledby="screens-h" aria-roledescription="carousel">
   <div class="section-head">
     <div class="eyebrow">{{{{t:carousel.eyebrow}}}}</div>
     <h2 id="screens-h">{{{{t:glance.h}}}}</h2>
     <p>{{{{t:glance.p}}}}</p>
   </div>
-  <ul class="carousel" tabindex="0" aria-label="{{{{t:carousel.aria}}}}">
-    {CAROUSEL_SLIDES}
-  </ul>
-  <div class="dots" aria-hidden="true">{CAROUSEL_DOTS}</div>
+  <div class="carousel-wrap">
+    <button class="car-arrow prev" type="button" aria-label="{{{{t:carousel.prev}}}}">{CHEVRON_L}</button>
+    <ul class="carousel" tabindex="0" aria-label="{{{{t:carousel.aria}}}}">
+      {CAROUSEL_SLIDES}
+    </ul>
+    <button class="car-arrow next" type="button" aria-label="{{{{t:carousel.next}}}}">{CHEVRON_R}</button>
+  </div>
+  <div class="car-controls">
+    <div class="dots" role="group" aria-label="{{{{t:carousel.aria}}}}">{CAROUSEL_DOTS}</div>
+    <button class="car-play" type="button" data-pause="{{{{t:carousel.pause}}}}" data-play="{{{{t:carousel.play}}}}" aria-label="{{{{t:carousel.pause}}}}">{PAUSE_ICON}</button>
+  </div>
 </section>
 
 <section id="private" class="container section">
