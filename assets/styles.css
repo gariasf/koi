@@ -9,7 +9,7 @@
 @font-face { font-family:"Geist"; font-weight:500; font-style:normal; font-display:swap; src:url("assets/fonts/geist/Geist-Medium.woff2") format("woff2"); }
 @font-face { font-family:"Geist"; font-weight:600; font-style:normal; font-display:swap; src:url("assets/fonts/geist/Geist-SemiBold.woff2") format("woff2"); }
 @font-face { font-family:"Geist Mono"; font-weight:400; font-style:normal; font-display:swap; src:url("assets/fonts/geist_mono/GeistMono-Regular.woff2") format("woff2"); }
-@font-face { font-family:"Fraunces"; font-weight:500; font-style:normal; font-display:swap; src:url("assets/fonts/fraunces/Fraunces-Medium.woff2") format("woff2"); }
+@font-face { font-family:"Zen Maru Gothic"; font-weight:500; font-style:normal; font-display:swap; src:url("assets/fonts/zenmaru/ZenMaruGothic-Medium.woff2") format("woff2"); }
 
 /* ---------- Tokens (exact, from the handoff) ---------- */
 :root{
@@ -76,7 +76,7 @@ img,svg{ display:block; }
 }
 .nav-inner{ display:flex; align-items:center; justify-content:space-between; padding-top:16px; padding-bottom:16px; }
 .wordmark{ display:flex; align-items:center; gap:11px; }
-.wordmark span{ font-family:"Fraunces",Georgia,serif; font-size:24px; font-weight:500; letter-spacing:.005em; }
+.wordmark span{ font-family:"Zen Maru Gothic",system-ui,sans-serif; font-size:22px; font-weight:500; letter-spacing:.02em; }
 .nav-links{ display:flex; align-items:center; gap:30px; }
 .navlink{ font-size:14.5px; color:var(--text-2); transition:color .15s ease-out; padding:8px 4px; }
 .navlink:hover{ color:var(--ink); }
@@ -223,7 +223,7 @@ img,svg{ display:block; }
 .footer{ border-top:1px solid var(--hair-strong); margin-top:clamp(64px,9vw,104px); }
 .footer-inner{ display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:18px; padding-top:34px; padding-bottom:18px; }
 .footer-brand{ display:flex; align-items:center; gap:10px; }
-.footer-brand .wm{ font-family:"Fraunces",Georgia,serif; font-size:18px; font-weight:500; letter-spacing:.01em; }
+.footer-brand .wm{ font-family:"Zen Maru Gothic",system-ui,sans-serif; font-size:17px; font-weight:500; letter-spacing:.02em; }
 .footer-brand .tag{ font-size:13.5px; color:var(--text-3); margin-left:6px; }
 .footer-legal{ display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:14px; padding-top:16px; padding-bottom:34px; border-top:1px solid var(--hair); }
 .footer-links{ display:flex; align-items:center; gap:24px; }
