@@ -36,7 +36,9 @@
 
     function go(n, smooth) {
       i = (n + slides.length) % slides.length;
-      slides[i].scrollIntoView({ inline: "center", block: "nearest", behavior: smooth === false ? "auto" : "smooth" });
+      var s = slides[i];
+      // scroll the track itself, horizontally only — scrollIntoView would also yank the page vertically
+      track.scrollTo({ left: s.offsetLeft + s.offsetWidth / 2 - track.clientWidth / 2, behavior: smooth === false ? "auto" : "smooth" });
     }
     function sync() { dots.forEach(function (d, j) { d.setAttribute("aria-current", j === i ? "true" : "false"); }); }
 
@@ -105,6 +107,15 @@
     wrap.addEventListener("pointerenter", function () { if (timer) { clearInterval(timer); timer = null; } });
     wrap.addEventListener("pointerleave", function () { if (playing && !timer) timer = setInterval(tick, 5000); });
     wrap.addEventListener("focusin", function () { if (timer) { clearInterval(timer); timer = null; } });
+
+    // only auto-advance while the carousel is actually on screen
+    if ("IntersectionObserver" in window) {
+      new IntersectionObserver(function (es) {
+        var visible = es[0].isIntersecting;
+        if (visible) { if (playing && !timer && !reduce) timer = setInterval(tick, 5000); }
+        else if (timer) { clearInterval(timer); timer = null; }
+      }, { threshold: 0.35 }).observe(wrap);
+    }
 
     sync();
     if (!reduce) start(); else render();
