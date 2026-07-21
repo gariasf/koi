@@ -18,8 +18,10 @@ lives in §4 — this board tracks status, not prose.
   blocker (§4.A). Then the remaining sync-core blockers, roughly: exhaustive
   op-handling → S-14 schema non-preclusion (must hold from the FIRST migration) →
   S-6 deletes → S-4 review queue → ③ local→sync migration → passkey full round-trip.
-- **Owner review pending:** Session 1 output (repo reset, domain core, this board) —
-  owner actions listed in the session log.
+- **Owner gate passed (2026-07-21):** Session 1 approved. Repo moved to
+  `gariasf/koi` + private remote `github.com/gariasf/koi` created and pushed; legacy
+  dir renamed `koi-app`; capture-feel native builds purged; hardening calls delegated
+  and kept. Session 2 may open on ⑤.
 
 ## Backlog
 
@@ -52,7 +54,7 @@ lives in §4 — this board tracks status, not prose.
 | st | sev | item |
 |---|---|---|
 | todo | ▲ | on-device (RN-bundled) Hermes golden-vector CI step — needs @koi/mobile app; CI's standalone-Hermes (jsvu) job is the spike proxy, not the discharge |
-| done | ▽ | @koi/domain primitives build-out — Session 1: money/civil-date/ordering/ids/economy, ESLint bans, vectors byte-identical tri-engine (md5 f93b1d6b…). date-fns v4 stays the sanctioned calendar dep; primitives needed none of it (owner may veto) |
+| done | ▽ | @koi/domain primitives build-out — Session 1: money/civil-date/ordering/ids/economy, ESLint bans, vectors byte-identical tri-engine (md5 f93b1d6b…). date-fns v4 stays the sanctioned calendar dep; primitives needed none of it (hardening calls delegated to assistant at gate; kept) |
 | todo | ▽ | i18n setup: i18next + shared JSON catalogs (@koi/i18n); adopt the Selector API from the start — i18next v27 plans to drop type-level string keys (parking-lot promotion, D-035) |
 
 ### D · Clients (mobile + web)
@@ -126,3 +128,11 @@ lives in §4 — this board tracks status, not prose.
   added so `types: []` purity barrier + test/ actually typecheck in the pipeline;
   i18next v27 Selector-API watch restored to this board (was dropped between D-035
   and §4); CI env now truthfully includes `EXPO_NO_TELEMETRY=1`.
+- **2026-07-21 · Session 1 gate (owner).** Approved. Executed on owner instruction:
+  legacy iOS dir renamed `../koi` → `../koi-app` (matches GitHub `gariasf/koi-app`,
+  stays read-only); monorepo moved to `gariasf/koi`; **private remote
+  `github.com/gariasf/koi` created, main pushed, CI live** (note: the stale GitHub
+  redirect `gariasf/koi` → `koi-site` is now claimed by this repo). Capture-feel
+  android/ios build dirs purged — spikes/ now ~76 MB source seed only. Hardening
+  calls delegated: dependency-free primitives + economy litres≤0→null both kept.
+  On-device RN-bundled Hermes CI step (bucket C) remains owed with @koi/mobile.
