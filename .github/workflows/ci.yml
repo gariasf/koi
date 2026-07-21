@@ -1,0 +1,45 @@
+# CI: lint + build + test on every push/PR, plus golden-vector conformance on
+# V8 and standalone Hermes (Spike Ⓒ discipline, D-025/D-030).
+#
+# Still owed (BOARD bucket C): the ON-DEVICE, RN-BUNDLED Hermes golden-vector
+# run — it needs the @koi/mobile Expo app to exist. The standalone-Hermes job
+# below is the same proxy the spike used (jsvu build), not a substitute for it.
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+env:
+  TURBO_TELEMETRY_DISABLED: "1"
+  DO_NOT_TRACK: "1"
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm turbo run lint build test
+
+  conformance:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Install standalone Hermes (jsvu)
+        run: |
+          npx jsvu --os=linux64 --engines=hermes
+          echo "HERMES_BIN=$HOME/.jsvu/bin/hermes" >> "$GITHUB_ENV"
+      - run: pnpm --filter @koi/domain conformance:ci
