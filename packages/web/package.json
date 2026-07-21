@@ -1,0 +1,6 @@
+{
+  "name": "@koi/web",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Koi web companion - Vite + React SPA + TanStack Router, static behind Caddy (D-025). Read + edit, no capture (D-016). Skeleton."
+}

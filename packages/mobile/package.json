@@ -1,0 +1,6 @@
+{
+  "name": "@koi/mobile",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Koi mobile app - Expo/React Native, one codebase for iOS + Android (Bundle A, D-024/D-029). Skeleton: the app scaffold lands per BOARD bucket D/H (Expo SDK pin + Phase-4 re-confirmation first)."
+}

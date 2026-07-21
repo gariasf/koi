@@ -1,0 +1,6 @@
+{
+  "name": "@koi/server",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Koi sync server - Fastify 5 + zod + Drizzle bespoke write-path API with better-auth in-process (JWKS -> PowerSync), single-tenant self-hosted (D-022/D-025). Skeleton: lands with the sync-core sessions."
+}

@@ -1,0 +1,23 @@
+# pnpm workspaces + Turborepo (D-025). Catalogs enforce the single-version
+# rule for shared tooling; react/react-native join the catalog when
+# @koi/mobile and @koi/web get real dependencies.
+packages:
+  - packages/*
+
+# pnpm >=10 blocks dependency install scripts by default; esbuild needs its
+# postinstall to place the platform binary.
+allowBuilds:
+  esbuild: true
+
+catalog:
+  "@types/node": ^24.0.0
+  esbuild: ^0.28.0
+  eslint: ^9.20.0
+  typescript: ^5.6.0
+  typescript-eslint: ^8.20.0
+  vitest: ^4.0.0
+
+# pnpm >=10 blocks dependency install scripts by default; esbuild needs its
+# postinstall to place the platform binary.
+onlyBuiltDependencies:
+  - esbuild
