@@ -28,6 +28,6 @@ pnpm workspaces + Turborepo — local cache only, remote cache disabled, telemet
 
 ```sh
 pnpm install
-pnpm turbo run lint build test
+pnpm turbo run lint typecheck build test
 pnpm --filter @koi/domain conformance:all   # golden vectors on node + jsc + hermes (macOS)
 ```

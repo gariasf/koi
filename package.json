@@ -9,6 +9,7 @@
     "build": "turbo run build",
     "test": "turbo run test",
     "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
     "conformance": "turbo run conformance"
   },
   "devDependencies": {

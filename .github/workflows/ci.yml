@@ -13,6 +13,7 @@ on:
 
 env:
   TURBO_TELEMETRY_DISABLED: "1"
+  EXPO_NO_TELEMETRY: "1"
   DO_NOT_TRACK: "1"
 
 jobs:
@@ -26,7 +27,7 @@ jobs:
           node-version: 24
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - run: pnpm turbo run lint build test
+      - run: pnpm turbo run lint typecheck build test
 
   conformance:
     runs-on: ubuntu-latest

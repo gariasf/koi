@@ -53,6 +53,7 @@ lives in §4 — this board tracks status, not prose.
 |---|---|---|
 | todo | ▲ | on-device (RN-bundled) Hermes golden-vector CI step — needs @koi/mobile app; CI's standalone-Hermes (jsvu) job is the spike proxy, not the discharge |
 | done | ▽ | @koi/domain primitives build-out — Session 1: money/civil-date/ordering/ids/economy, ESLint bans, vectors byte-identical tri-engine (md5 f93b1d6b…). date-fns v4 stays the sanctioned calendar dep; primitives needed none of it (owner may veto) |
+| todo | ▽ | i18n setup: i18next + shared JSON catalogs (@koi/i18n); adopt the Selector API from the start — i18next v27 plans to drop type-level string keys (parking-lot promotion, D-035) |
 
 ### D · Clients (mobile + web)
 | st | sev | item |
@@ -116,3 +117,12 @@ lives in §4 — this board tracks status, not prose.
   push; (3) veto window: domain primitives shipped dependency-free (date-fns v4
   remains sanctioned, unused so far); economy/litres≤0 hardened to null beyond spike
   semantics (vector-compatible).
+  **Adversarial verification pass** (5 review dimensions, 2-skeptic verify per
+  finding): 14 raw → 10 confirmed → all fixed same session. Notables: ESLint bans
+  hardened against `globalThis.*` escapes, Date-typed parameters (local-tz getters),
+  unprefixed node builtins and dynamic import; `formatCivilDate` now validates at
+  construction (never mints an invalid CivilDate); turbo no longer caches the
+  conformance task (a cached PASS is a lie about engine behavior); typecheck task
+  added so `types: []` purity barrier + test/ actually typecheck in the pipeline;
+  i18next v27 Selector-API watch restored to this board (was dropped between D-035
+  and §4); CI env now truthfully includes `EXPO_NO_TELEMETRY=1`.

@@ -39,6 +39,20 @@ const purityBans = {
       ],
       patterns: [
         { group: ['node:*'], message: `${PURITY} the domain must run unchanged under V8, JSC and Hermes - no Node builtins.` },
+        {
+          // The unprefixed spellings of the same builtins (autocomplete's
+          // favourites). tsc also rejects these (types: []), but that error
+          // carries no purity message.
+          group: [
+            'assert', 'assert/*', 'buffer', 'child_process', 'cluster', 'console', 'constants',
+            'dgram', 'dns', 'domain', 'events', 'fs', 'fs/*', 'http', 'http2', 'https', 'inspector',
+            'module', 'net', 'os', 'path', 'path/*', 'perf_hooks', 'process', 'punycode',
+            'querystring', 'readline', 'repl', 'stream', 'stream/*', 'string_decoder', 'timers',
+            'timers/*', 'tls', 'trace_events', 'tty', 'url', 'util', 'util/*', 'v8', 'vm',
+            'worker_threads', 'zlib',
+          ],
+          message: `${PURITY} the domain must run unchanged under V8, JSC and Hermes - no Node builtins (unprefixed spelling).`,
+        },
       ],
     },
   ],
@@ -48,6 +62,30 @@ const purityBans = {
     { selector: "MemberExpression[object.name='Math'][property.name='random']", message: `${PURITY} no randomness - the domain is deterministic; ids are injected.` },
     { selector: "CallExpression[callee.property.name='localeCompare']", message: `${PURITY} collation is engine/OS-dependent - use compareCodePoints (src/ordering.ts).` },
     { selector: "CallExpression[callee.property.name=/^toLocale/]", message: `${PURITY} locale formatting lives at the app edge, never in the domain.` },
+    // globalThis escapes: no-restricted-globals only sees bare identifiers, so
+    // ban the member-access spellings too (incl. through a TS cast). `console`
+    // is deliberately absent — conformance/main.ts needs it.
+    {
+      selector:
+        "MemberExpression[object.name='globalThis'][property.name=/^(Date|Intl|crypto|performance|process|navigator|fetch|XMLHttpRequest|setTimeout|setInterval|queueMicrotask|localStorage|Math)$/]",
+      message: `${PURITY} globalThis member access does not escape the bans.`,
+    },
+    {
+      selector:
+        "MemberExpression[object.expression.name='globalThis'][property.name=/^(Date|Intl|crypto|performance|process|navigator|fetch|XMLHttpRequest|setTimeout|setInterval|queueMicrotask|localStorage|Math)$/]",
+      message: `${PURITY} globalThis member access does not escape the bans (even through a cast).`,
+    },
+    // Date values must not cross the domain boundary at all: a received Date
+    // read with local-time getters reintroduces device-timezone divergence.
+    { selector: "TSTypeReference[typeName.name='Date']", message: `${PURITY} Date never crosses the domain boundary - shells convert to CivilDate/epoch-ms at the edge.` },
+    {
+      selector:
+        "CallExpression[callee.property.name=/^get(FullYear|Month|Date|Day|Hours|Minutes|Seconds|Milliseconds|TimezoneOffset)$/]",
+      message: `${PURITY} local-time Date getters are device-timezone-dependent.`,
+    },
+    // The domain is synchronous and pure - no dynamic import (also closes the
+    // import('node:crypto') hole no-restricted-imports cannot see).
+    { selector: 'ImportExpression', message: `${PURITY} no dynamic import in the domain.` },
   ],
 };
 

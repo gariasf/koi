@@ -93,6 +93,15 @@ describe('compare / format', () => {
   it('formats with fixed-width zero padding', () => {
     expect(formatCivilDate({ year: 987, month: 3, day: 5 })).toBe('0987-03-05');
   });
+
+  it('refuses to mint invalid CivilDate strings (validate at construction)', () => {
+    expect(() => formatCivilDate({ year: 2026, month: 2, day: 31 })).toThrow(RangeError);
+    expect(() => formatCivilDate({ year: 2026, month: 13, day: 1 })).toThrow(RangeError);
+    expect(() => formatCivilDate({ year: 2026.5, month: 3, day: 1 })).toThrow(RangeError);
+    expect(() => formatCivilDate({ year: 2026, month: 3, day: 1.5 })).toThrow(RangeError);
+    expect(() => formatCivilDate({ year: 10000, month: 1, day: 1 })).toThrow(RangeError);
+    expect(() => formatCivilDate({ year: -1, month: 1, day: 1 })).toThrow(RangeError);
+  });
 });
 
 describe('cycleAnchor (inv.13 / inv.24: clamp on short months, never decay)', () => {
@@ -107,5 +116,10 @@ describe('cycleAnchor (inv.13 / inv.24: clamp on short months, never decay)', ()
     expect(() => cycleAnchor(2026, 1, 0)).toThrow(RangeError);
     expect(() => cycleAnchor(2026, 1, 32)).toThrow(RangeError);
     expect(() => cycleAnchor(2026, 1, 15.5)).toThrow(RangeError);
+  });
+
+  it('rejects non-integer year/month (inherits formatCivilDate validation)', () => {
+    expect(() => cycleAnchor(2026.5, 3, 31)).toThrow(RangeError);
+    expect(() => cycleAnchor(2026, 2.5, 31)).toThrow(RangeError);
   });
 });

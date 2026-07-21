@@ -45,7 +45,7 @@ except `decisions.md`, which stays the live decision ledger.
 
 ```sh
 pnpm install
-pnpm turbo run lint build test          # all packages
-pnpm --filter @koi/domain test          # one package
+pnpm turbo run lint typecheck build test    # all packages
+pnpm --filter @koi/domain test              # one package
 pnpm --filter @koi/domain conformance:all   # golden vectors: node + jsc + hermes
 ```

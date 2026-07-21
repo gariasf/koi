@@ -12,9 +12,10 @@
       "dependsOn": ["^build"]
     },
     "lint": {},
+    "typecheck": {},
     "conformance": {
       "dependsOn": ["^build"],
-      "outputs": ["dist-conformance/**"]
+      "cache": false
     }
   }
 }

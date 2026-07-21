@@ -16,8 +16,3 @@ catalog:
   typescript: ^5.6.0
   typescript-eslint: ^8.20.0
   vitest: ^4.0.0
-
-# pnpm >=10 blocks dependency install scripts by default; esbuild needs its
-# postinstall to place the platform binary.
-onlyBuiltDependencies:
-  - esbuild

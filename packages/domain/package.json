@@ -17,6 +17,7 @@
     "build": "tsc -p tsconfig.build.json",
     "test": "vitest run",
     "lint": "eslint .",
+    "typecheck": "tsc -p tsconfig.json && tsc -p tsconfig.test.json",
     "conformance": "node scripts/run-conformance.mjs node",
     "conformance:ci": "node scripts/run-conformance.mjs node hermes",
     "conformance:all": "node scripts/run-conformance.mjs node jsc hermes"

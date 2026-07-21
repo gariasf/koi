@@ -67,8 +67,21 @@ function pad(value: number, width: number): string {
   return s;
 }
 
+/**
+ * Format parts to "YYYY-MM-DD", validating at the point of construction —
+ * an invalid CivilDate string must never be minted (it would only explode
+ * later, far from its source). Years are bounded to the 4-digit range the
+ * parser accepts, so format/parse always round-trip.
+ */
 export function formatCivilDate(parts: CivilDateParts): CivilDate {
-  return pad(parts.year, 4) + '-' + pad(parts.month, 2) + '-' + pad(parts.day, 2);
+  const { year, month, day } = parts;
+  if (!Number.isInteger(year) || year < 0 || year > 9999) {
+    throw new RangeError('year out of range 0-9999: ' + String(year));
+  }
+  if (!Number.isInteger(day) || day < 1 || day > daysInMonth(year, month)) {
+    throw new RangeError('day out of range for month: ' + String(day));
+  }
+  return pad(year, 4) + '-' + pad(month, 2) + '-' + pad(day, 2);
 }
 
 /**
