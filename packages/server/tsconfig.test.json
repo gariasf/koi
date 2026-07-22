@@ -1,0 +1,12 @@
+{
+  "extends": "./tsconfig.json",
+  "include": [
+    "src",
+    "test",
+    "sync-tests",
+    "drizzle.config.ts",
+    "scripts",
+    "vitest.config.ts",
+    "vitest.sync.config.ts"
+  ]
+}

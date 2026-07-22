@@ -1,0 +1,57 @@
+# Koi self-hosted sync stack (D-022/D-025): Postgres 16 with logical
+# replication + PowerSync Open Edition on Postgres bucket storage (no MongoDB).
+# Spike ② footprint on this exact pairing: idle RSS ~432 MiB, ~470 MiB at 5k
+# rows — well inside the CX23 4 GB ceiling. Caddy joins when @koi/web exists.
+#
+# Bring-up order matters on a fresh volume: Postgres first, then @koi/server's
+# migrations (creating the tables), then PowerSync — see README.md.
+services:
+  postgres:
+    image: postgres:16
+    command:
+      - postgres
+      - -c
+      - wal_level=logical
+      - -c
+      - max_replication_slots=10
+      - -c
+      - max_wal_senders=10
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: koi
+    ports:
+      # Loopback only: this stack ships a superuser with dev credentials —
+      # it must never listen on a shared network.
+      - "127.0.0.1:5433:5432"
+    volumes:
+      - ./postgres/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+      - koi-pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d koi"]
+      interval: 3s
+      timeout: 3s
+      retries: 30
+
+  powersync:
+    # Pinned (popular-tools rule + reproducible CI): bump deliberately.
+    image: journeyapps/powersync-service:1.23.3
+    depends_on:
+      postgres:
+        condition: service_healthy
+    command: ["start", "-r", "unified"]
+    environment:
+      POWERSYNC_CONFIG_PATH: /config/config.yaml
+      PS_SOURCE_URI: postgresql://postgres:postgres@postgres:5432/koi
+      PS_STORAGE_URI: postgresql://postgres:postgres@postgres:5432/powersync_storage
+      # @koi/server publishes the JWKS; in dev it runs on the host.
+      PS_JWKS_URI: http://host.docker.internal:4000/api/auth/jwks
+    volumes:
+      - ./powersync:/config:ro
+    ports:
+      - "127.0.0.1:8080:8080"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+volumes:
+  koi-pgdata:

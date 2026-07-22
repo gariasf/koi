@@ -29,6 +29,20 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm turbo run lint typecheck build test
 
+  # The sync torture tier (D-013/H5): real Postgres + PowerSync + the
+  # write-path server + @powersync/node clients, against infra/docker-compose.
+  sync-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm turbo run test:sync --filter=@koi/server
+
   conformance:
     runs-on: ubuntu-latest
     steps:

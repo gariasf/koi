@@ -1,6 +1,49 @@
 {
   "name": "@koi/server",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "private": true,
-  "description": "Koi sync server - Fastify 5 + zod + Drizzle bespoke write-path API with better-auth in-process (JWKS -> PowerSync), single-tenant self-hosted (D-022/D-025). Skeleton: lands with the sync-core sessions."
+  "description": "Koi sync server: Fastify 5 + zod + Drizzle bespoke write-path API (D-022/D-025). Accept-with-2xx, per-column base_version protocol (S-5/D-023), exhaustive op-handling with dead-lettering. better-auth deferred; jose/JWKS shim mints dev tokens for PowerSync.",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "drizzle"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "dev": "tsx src/main.ts",
+    "start": "node dist/main.js",
+    "lint": "eslint .",
+    "test": "vitest run",
+    "test:sync": "vitest run --config vitest.sync.config.ts",
+    "typecheck": "tsc -p tsconfig.json && tsc -p tsconfig.test.json",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "tsx scripts/migrate.ts"
+  },
+  "dependencies": {
+    "@koi/domain": "workspace:*",
+    "drizzle-orm": "^0.44.2",
+    "fastify": "^5.4.0",
+    "jose": "^6.0.11",
+    "pg": "^8.16.0",
+    "zod": "^4.0.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.20.0",
+    "@powersync/node": "^0.19.4",
+    "@types/node": "catalog:",
+    "@types/pg": "^8.15.0",
+    "better-sqlite3": "^12.11.0",
+    "drizzle-kit": "^0.31.0",
+    "eslint": "catalog:",
+    "tsx": "^4.20.0",
+    "typescript": "catalog:",
+    "typescript-eslint": "catalog:",
+    "vitest": "catalog:"
+  }
 }

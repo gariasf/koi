@@ -16,6 +16,10 @@
     "conformance": {
       "dependsOn": ["^build"],
       "cache": false
+    },
+    "test:sync": {
+      "dependsOn": ["^build"],
+      "cache": false
     }
   }
 }

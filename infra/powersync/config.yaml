@@ -1,0 +1,30 @@
+# PowerSync Open Edition, self-hosted (D-022).
+replication:
+  connections:
+    - type: postgresql
+      uri: !env PS_SOURCE_URI
+      sslmode: disable
+
+# Postgres bucket storage (GA — no MongoDB).
+storage:
+  type: postgresql
+  uri: !env PS_STORAGE_URI
+  sslmode: disable
+
+# Client-facing sync API port.
+port: 8080
+
+sync_rules:
+  path: /config/sync_rules.yaml
+
+# JWTs are minted by @koi/server (jose EdDSA shim until better-auth lands)
+# and validated against its JWKS.
+client_auth:
+  jwks_uri: !env PS_JWKS_URI
+  audience:
+    - koi-powersync-dev
+  # dev: the JWKS is served over http on host.docker.internal (a private IP).
+  jwks_reject_ip_ranges: []
+
+telemetry:
+  disable_telemetry_sharing: true
