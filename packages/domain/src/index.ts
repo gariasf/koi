@@ -42,3 +42,23 @@ export {
 
 export { isUuidV7, compareIds, sortIds } from './ids.js';
 export type { Uuid, IdSource } from './ids.js';
+
+export {
+  ODOMETER_KM_MAX,
+  isValidOdometerKm,
+  checkOdometerReading,
+  deriveCurrentOdometerKm,
+} from './odometer.js';
+export type {
+  OdometerObservation,
+  OdometerViolation,
+  OdometerViolationKind,
+} from './odometer.js';
+
+export {
+  CAR_YEAR_MIN,
+  TANK_CAPACITY_L_MIN,
+  TANK_CAPACITY_L_MAX,
+  checkCarFields,
+} from './car.js';
+export type { CarFieldValues, CarViolation, CarViolationKind } from './car.js';
