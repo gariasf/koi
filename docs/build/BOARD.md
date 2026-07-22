@@ -14,12 +14,13 @@ lives in §4 — this board tracks status, not prose.
 
 ## Now / Next
 
-- **NEXT (Session 3, owner gate first): S-6 delete model** — then S-4 review queue →
-  ③ local→sync migration → passkey full round-trip (order per §4.A). Session 2
-  stopped exactly at the S-6/S-4/③ line per the brief; owner review owed on:
-  D-037 conflict semantics (later-arrival wins + displaced-value flag), D-038
-  interim stances (DELETEs dead-letter until S-6; archived_at/resolved_at unsynced;
-  household_id/car_id not patchable), and the `KOI_DEV_AUTH` gate default-off.
+- **NEXT (Session 3): S-6 delete model** — then S-4 review queue → ③ local→sync
+  migration → passkey full round-trip (order per §4.A).
+- **Owner gate passed (2026-07-22):** Session 2 approved — D-037 conflict semantics
+  (later-arrival wins + displaced-value flag), D-038 interim stances (DELETEs
+  dead-letter until S-6; archived_at/resolved_at unsynced until their write flows;
+  household_id/car_id not patchable), and the `KOI_DEV_AUTH` default-off gate all
+  signed. Session 3 may open on S-6.
 - **Owner gate passed (2026-07-21):** Session 1 approved. Repo moved to
   `gariasf/koi` + private remote `github.com/gariasf/koi` created and pushed; legacy
   dir renamed `koi-app`; capture-feel native builds purged; hardening calls delegated
