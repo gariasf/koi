@@ -14,10 +14,12 @@ lives in §4 — this board tracks status, not prose.
 
 ## Now / Next
 
-- **NEXT (Session 2): ⑤ base_version per-column protocol** — the run-first sync
-  blocker (§4.A). Then the remaining sync-core blockers, roughly: exhaustive
-  op-handling → S-14 schema non-preclusion (must hold from the FIRST migration) →
-  S-6 deletes → S-4 review queue → ③ local→sync migration → passkey full round-trip.
+- **NEXT (Session 3, owner gate first): S-6 delete model** — then S-4 review queue →
+  ③ local→sync migration → passkey full round-trip (order per §4.A). Session 2
+  stopped exactly at the S-6/S-4/③ line per the brief; owner review owed on:
+  D-037 conflict semantics (later-arrival wins + displaced-value flag), D-038
+  interim stances (DELETEs dead-letter until S-6; archived_at/resolved_at unsynced;
+  household_id/car_id not patchable), and the `KOI_DEV_AUTH` gate default-off.
 - **Owner gate passed (2026-07-21):** Session 1 approved. Repo moved to
   `gariasf/koi` + private remote `github.com/gariasf/koi` created and pushed; legacy
   dir renamed `koi-app`; capture-feel native builds purged; hardening calls delegated
@@ -28,19 +30,19 @@ lives in §4 — this board tracks status, not prose.
 ### A · Sync protocol & data model
 | st | sev | item |
 |---|---|---|
-| todo | ⛔ | ⑤ base_version per-column protocol (S-5) — run first |
-| todo | ⛔ | accept-with-2xx exhaustive op-handling (dead-letter/flag unknown ops, never skip) |
-| todo | ⛔ | S-14 household non-preclusion — schema stance from the first migration |
+| done | ⛔ | ⑤ base_version per-column protocol (S-5) — Session 2, D-037: proven on real stack, torture-tier covered |
+| done | ⛔ | accept-with-2xx exhaustive op-handling (dead-letter/flag unknown ops, never skip) — Session 2, D-038: registry + content-hash dead letters + synced flags |
+| done | ⛔ | S-14 household non-preclusion — schema stance from the first migration — Session 2: households table + household_id + updated_by on every record from migration 0000 |
 | todo | ⛔ | S-6 delete model (tombstones, undo-survives-sync, cascade, late-child flag) |
 | todo | ⛔ | S-4 client post-merge review queue ("Review now" pattern; where flags land) |
 | todo | ⛔ | ③ local-only → sync-on first-enable migration, lossless |
 | todo | ▲ | S-7 erase-everywhere (truncate + purge ledger + compaction + ≤24 h revocation) |
 | todo | ▲ | S-9 import remap + dedup ordinal |
-| todo | ▲ | S-1/S-2/S-3/S-8/S-10/S-11 (ids · versioning · derived-never-sync · recurrence idempotency · unknown-field round-trip · offline-first capture) |
+| todo | ▲ | S-1/S-2/S-3/S-8/S-10/S-11 (ids · versioning · derived-never-sync · recurrence idempotency · unknown-field round-trip · offline-first capture) — S-2/S-3 schema stances landed in Session 2 (record_version everywhere; no current_odo column, derived via domain); server-side S-10 stance = strict-reject→dead-letter, client half still owed |
 | todo | ▲ | S-12 preference split (synced vs device-local) |
 | todo | ▲ | S-13 per-device notification scheduling (no push infra) |
 | todo | ▲ | engine-agnostic domain set: lineage swap, occurrence identity, dedup ordinal, settings singleton, "keep both", post-flag validation |
-| todo | ▲ | sync torture-test suite (Spike ② scenarios graduate into it) |
+| doing | ▲ | sync torture-test suite (Spike ② scenarios graduate into it) — Session 2 seeded 5 scenarios (② same-date graduate · ⑤ same-column · disjoint merge · unknown-op + DELETE dead-letter, same-batch savepoint case) + CI job; grows with S-6/S-4/③ |
 
 ### B · Backend / infra / auth
 | st | sev | item |
@@ -95,7 +97,7 @@ lives in §4 — this board tracks status, not prose.
 | todo | ▽ | niche-tool exit-plan register upkeep (04-stack §5) |
 | todo | ▽ | dev tooling: `idb` + macOS Accessibility grant for scripted iOS UI |
 | todo | ▽ | deletion grace-window undo semantics (refines S-6/S-7) |
-| doing | ▽ | spike teardown: services stopped + capture-feel/node_modules purged (Session 1); delete spikes/ entirely once write-path + capture-feel seeds are mined |
+| doing | ▽ | spike teardown: services stopped + capture-feel/node_modules purged (Session 1); write-path seed mined + deleted (Session 2); delete spikes/ entirely once the capture-feel seed is mined |
 
 ## Open decisions carried into build
 - **D-009 pricing model — OPEN.** Does not block build; no nag walls, no feature
@@ -128,6 +130,34 @@ lives in §4 — this board tracks status, not prose.
   added so `types: []` purity barrier + test/ actually typecheck in the pipeline;
   i18next v27 Selector-API watch restored to this board (was dropped between D-035
   and §4); CI env now truthfully includes `EXPO_NO_TELEMETRY=1`.
+- **2026-07-21/22 · Session 2 — sync core opened: ⑤ + exhaustive op-handling + S-14/S-2/S-3
+  schema + torture tier.** Mined the write-path seed into real packages: `infra/`
+  (compose: Postgres 16 logical replication + PowerSync OE 1.23.3 pinned, Postgres bucket
+  storage, loopback-bound ports) and `@koi/server` (Fastify 5 + zod + Drizzle; jose/JWKS
+  shim, better-auth deferred, mint gated behind `KOI_DEV_AUTH=1`). First migration carries
+  the three non-retrofittable stances: S-14 (households + household_id + updated_by on every
+  record), S-2 (`record_version` replaces `revision`, synced down), S-3 (NO current_odo
+  column anywhere — derived via `@koi/domain deriveCurrentOdometerKm`). **⑤ base_version
+  per-column protocol built and PROVEN on the real stack (D-037):** trackPrevious echo →
+  per-column `column_versions {v,by}` attribution → same-column conflict = apply later
+  arrival + displaced value in an atomically-committed flag (never silent LWW); disjoint
+  columns merge flag-free; same-device edits never self-conflict. **Exhaustive op-handling
+  (D-038):** handler registry; anything unregistered (incl. all DELETEs until S-6)
+  dead-letters with full payload + synced flag, content-hash idempotent, per-op SAVEPOINTs,
+  always 2xx. `@koi/domain` grew pure odometer (inv.6–12, inv.8 zero-exclusion) + car-bounds
+  (§B2 table) checks — vectors untouched, tri-engine md5 `f93b1d6b…` intact. Torture tier
+  seeded (D-013/H5): 5 scenarios on two real `@powersync/node` clients + CI job — all pass.
+  **Adversarial verification (2 workflow runs, 5 dimensions, 2-skeptic verify; first run
+  half-killed by session limit, resumed from cache):** ~29 raw findings → 21 distinct
+  confirmed (incl. 3 self-verified after verifier limit deaths) → all fixed same session.
+  Notables: readings PUT/PATCH lock-order inversion (deadlock → valid edit dead-lettered);
+  dead-letter ids now content-hashed (retry-idempotent); NUL sanitization (a U+0000 payload
+  could 500-wedge the queue via the dead-letter path itself); future-base clamp (backup
+  restore would silently disarm conflict detection); spurious missing-base flag killed on
+  offline create-then-edit; `source` nullable per spec; 20 MiB bodyLimit (1 MiB default =
+  import-wedge); token mint gated; sync_rules drops archived_at/resolved_at until their
+  write flows land; test:sync isolated to its own compose project. Stopped at the
+  S-6/S-4/③ line per brief — owner review owed (see Now/Next).
 - **2026-07-21 · Session 1 gate (owner).** Approved. Executed on owner instruction:
   legacy iOS dir renamed `../koi` → `../koi-app` (matches GitHub `gariasf/koi-app`,
   stays read-only); monorepo moved to `gariasf/koi`; **private remote
