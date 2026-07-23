@@ -9,9 +9,24 @@
 # archived_at (archive flow) and resolved_at (S-4 review queue) are NOT
 # synced yet: a column clients can see locally but the server strict-rejects
 # on upload is a dead-letter trap — each joins the rules WITH its write flow.
+#
+# S-6: deleted_at syncs down (tombstones propagate — D-039). Clients keep
+# tombstoned rows and filter `deleted_at IS NULL` in queries; a delete on one
+# device thereby hides the row on every device, and undo (re-INSERT → PUT →
+# server clears deleted_at) brings it back. Its dead-letter trap is closed the
+# same way archived_at's will be — deleted_at has its write flow (the DELETE
+# handler) in this same session, and the PUT/PATCH schemas accept-and-ignore it
+# (server-managed, never client-writable via op data). The deletion-attribution
+# columns (deleted_by/_device/_via) stay server-side: surfaced through flags,
+# they join the rules when S-4/S-14 need on-device attribution.
+# NOTE (owner gate): an alternative here is to filter the buckets themselves
+# (`WHERE deleted_at IS NULL`) so a delete propagates as checkpoint row-removal
+# — no filter-everywhere burden on clients, and deleted content never ships to
+# a device enrolled after the delete (H1). Kept as sync-down-and-filter per the
+# session brief; see spec-delta.md + the S-7 purge obligation.
 bucket_definitions:
   household:
     data:
-      - SELECT id, household_id, make, model, nickname, plate, fuel_type, year, tank_capacity_l, initial_odometer_km, record_version FROM cars
-      - SELECT id, household_id, car_id, reading_km, recorded_date, source, device_id, record_version FROM odometer_readings
+      - SELECT id, household_id, make, model, nickname, plate, fuel_type, year, tank_capacity_l, initial_odometer_km, deleted_at, record_version FROM cars
+      - SELECT id, household_id, car_id, reading_km, recorded_date, source, device_id, deleted_at, record_version FROM odometer_readings
       - SELECT id, household_id, record_table, record_id, car_id, column_name, kind, message, displaced_value, incoming_value, actor, device_id, record_version, created_at FROM flags

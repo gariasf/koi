@@ -180,3 +180,101 @@ export function planPutOnExisting(input: {
 
   return { noop: false, newVersion, changedColumns, displacedSnapshot, columnVersions: merged };
 }
+
+/**
+ * The tombstone column — a first-class attributed column in the ledger (S-6,
+ * D-039). Its `column_versions` entry is bumped by every DELETE (LIVE→tombstone)
+ * and every resurrection (tombstone→LIVE), so a delete-vs-edit race and a
+ * delete-vs-undo race are both just base_version conflicts over this column.
+ */
+export const DELETED_AT = 'deleted_at';
+
+/**
+ * A DELETE conflict: a column another device changed after the deleter's base.
+ * The deleter acted on stale data — the delete still applies (delete wins
+ * visibility, D-043) but the concurrent change is surfaced for review, never
+ * silently buried in the tombstone. `deleted_at` itself is scanned, so a stale
+ * delete that would reverse a concurrent undo is caught too (F13).
+ */
+export interface DeleteConflict {
+  readonly column: string;
+  readonly writerDevice: string | null;
+  readonly atVersion: number;
+}
+
+export interface DeletePlan {
+  /** Row already tombstoned → idempotent replay / agreement. */
+  readonly noop: boolean;
+  readonly newVersion: number;
+  readonly conflicts: readonly DeleteConflict[];
+  /**
+   * True when the DELETE arrived without a usable base AND some column was last
+   * written by a different device — an unattributable concurrent change, the
+   * DELETE analogue of planPatch.missingBase. The tombstone still applies.
+   */
+  readonly missingBase: boolean;
+  /** Post-apply column_versions, with deleted_at bumped to newVersion. */
+  readonly columnVersions: ColumnVersions;
+}
+
+/**
+ * Plan a DELETE (S-6): tombstone the row, detecting concurrent foreign changes
+ * the deleter did not observe. Mirrors planPatch's base/same-device/future-base
+ * discipline. `current`/`incoming` value comparison is NOT needed — a delete
+ * displaces nothing value-wise (values stay in the tombstoned row); the scan is
+ * purely over the attribution ledger.
+ */
+export function planDelete(input: {
+  readonly alreadyDeleted: boolean;
+  readonly columnVersions: ColumnVersions;
+  readonly recordVersion: number;
+  readonly baseVersion: number | null;
+  readonly deviceId: string | null;
+  /** Columns to scan for concurrent edits (writable columns; deleted_at is added). */
+  readonly scanColumns: readonly string[];
+}): DeletePlan {
+  if (input.alreadyDeleted) {
+    return {
+      noop: true,
+      newVersion: input.recordVersion,
+      conflicts: [],
+      missingBase: false,
+      columnVersions: input.columnVersions,
+    };
+  }
+
+  const newVersion = input.recordVersion + 1;
+  // Future base (backup restore, garbled echo) is as uninterpretable on a
+  // DELETE as on a PATCH — degrade to the missing-base path (planPatch parity).
+  const base =
+    input.baseVersion !== null && input.baseVersion <= input.recordVersion
+      ? input.baseVersion
+      : null;
+
+  const conflicts: DeleteConflict[] = [];
+  let unattributable = false;
+  // deleted_at is scanned so a stale delete that would silently reverse a
+  // concurrent resurrection (undo) is caught (F13); the row's live columns are
+  // scanned so a car-delete cascade / individual delete over an edit another
+  // device made after the deleter's base is surfaced (F02/F06).
+  const columns = [...input.scanColumns, DELETED_AT];
+  for (const column of columns) {
+    const last = input.columnVersions[column];
+    if (last === undefined) continue;
+    const sameDevice = last.by !== null && last.by === input.deviceId;
+    if (sameDevice) continue;
+    if (base !== null && last.v > base) {
+      conflicts.push({ column, writerDevice: last.by, atVersion: last.v });
+    } else if (base === null) {
+      unattributable = true;
+    }
+  }
+
+  return {
+    noop: false,
+    newVersion,
+    conflicts,
+    missingBase: base === null && unattributable,
+    columnVersions: { ...input.columnVersions, [DELETED_AT]: { v: newVersion, by: input.deviceId } },
+  };
+}

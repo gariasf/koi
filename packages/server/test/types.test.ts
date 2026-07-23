@@ -28,9 +28,27 @@ describe('wire schemas', () => {
     );
   });
 
-  it('car PATCH allows any writable subset, still strict', () => {
+  it('car PATCH allows any writable subset, still strict on genuinely unknown columns', () => {
     expect(carPatchSchema.safeParse({ nickname: 'Red' }).success).toBe(true);
-    expect(carPatchSchema.safeParse({ record_version: 9 }).success).toBe(false);
+    // A genuinely unknown column still dead-letters (S-10 stance holds).
+    expect(carPatchSchema.safeParse({ color: 'red' }).success).toBe(false);
+  });
+
+  it('accepts server-managed columns clients mirror, so the undo re-INSERT never dead-letters (S-6)', () => {
+    // record_version and deleted_at sync DOWN, so a full-row re-INSERT PUT
+    // (undo/restore) carries them in opData; they are known server columns,
+    // accepted here and ignored by the handlers (never in writableColumns).
+    expect(
+      carPutSchema.safeParse({
+        make: 'VW',
+        model: 'Golf',
+        fuel_type: 'petrol',
+        record_version: 4,
+        deleted_at: null,
+      }).success,
+    ).toBe(true);
+    expect(carPatchSchema.safeParse({ nickname: 'Red', record_version: 4 }).success).toBe(true);
+    expect(readingPatchSchema.safeParse({ reading_km: 42100, deleted_at: null }).success).toBe(true);
   });
 
   it('re-homing fields are not patchable: household_id and car_id dead-letter loudly', () => {

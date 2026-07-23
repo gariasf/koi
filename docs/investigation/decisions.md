@@ -58,3 +58,102 @@ Format: `D-NNN · <date> · <status> — <one-line decision>. <why, one or two s
 <!-- Build phase — appended per the build ritual (koi/CLAUDE.md). -->
 - D-037 · 2026-07-22 · LOCKED — **⑤ base_version per-column protocol semantics fixed and proven** (S-5/D-023, Build Session 2). Every synced row carries server-bumped `record_version` (S-2, synced down); the server keeps a per-column attribution ledger `column_versions {column:{v,by}}`. Clients echo their base via PowerSync `trackPrevious` (`CrudEntry.previousValues.record_version`). Conflict per changed column iff: base present AND column changed after base AND last writer is a different device AND values differ → apply the later arrival (deterministic convergence) + preserve the displaced value in a `flags` row committed in the same transaction — never silent LWW. Disjoint columns merge flag-free; same-device sequential edits (incl. baseless offline create-then-edit) never self-conflict; a base from the future (backup restore) degrades to a missing-base flag. Proven on the real stack by the torture tier (two `@powersync/node` clients): same-column conflict attributed, disjoint merge silent, ② same-date case graduated. Adversarially reviewed (2 runs, ~29 raw findings, 2-skeptic verify) — all confirmed findings fixed same session (lock-order deadlock, dead-letter idempotency, NUL sanitization, future-base clamp, spurious missing-base, source nullability, token-mint gate, bodyLimit, loopback binds, image pin, test isolation).
 - D-038 · 2026-07-22 · LOCKED — **Exhaustive op-handling policy** (Spike ② rule → mechanism, Build Session 2). The write-path consults an explicit `(table, op)` handler registry; anything absent — unknown tables/ops, zod-strict schema failures (S-10 stance: unknown columns are never silently stripped), unknown parents, handler exceptions, and ALL DELETEs until S-6 — is dead-lettered with its full payload (server-only `dead_letters`) plus a synced fixed-copy flag, committed atomically in the same batch transaction (per-op SAVEPOINTs), always under 2xx. Dead-letter ids are content hashes → idempotent under retry. Malformed protocol bodies (not content) get 400 = client-build bug, visible retry. Interim scope stances recorded: `archived_at`/`resolved_at` exist in schema but stay out of sync rules until their write flows land (archive flow / S-4); `household_id`/`car_id` are not PATCHable (re-homing dead-letters loudly until a sharing/S-14 flow defines it); the dev token mint requires `KOI_DEV_AUTH=1` and dies with better-auth.
+- D-039 · 2026-07-23 · LOCKED — **S-6 tombstone delete model** (D-013/§4.A, Build Session 3). A
+  delete never removes a row — the DELETE handler writes a tombstone: `deleted_at` set +
+  server-side attribution (`deleted_by`/`deleted_by_device`) + `deleted_via` ('direct' | 'cascade').
+  Migration 0001 adds these four columns to `cars` + `odometer_readings` (+ a partial index on
+  `deleted_at IS NOT NULL` for the future S-7 purge scan). `deleted_at` syncs down (sync_rules);
+  clients keep tombstoned rows and filter `deleted_at IS NULL`, so a delete hides the row on every
+  device. `deleted_at` is a first-class attributed column in the `column_versions` ledger, so
+  delete-vs-edit and delete-vs-undo races reuse the D-037 base_version machinery (`planDelete`
+  mirrors `planPatch`). DELETE on an already-tombstoned row = noop (idempotent replay / agreement);
+  DELETE for an unknown row dead-letters; unknown tables/ops still dead-letter (DELETE is not
+  blanket-handled — registry gained only `cars:DELETE` + `odometer_readings:DELETE`). Delete stays
+  distinct from archive (inv.30) — `archived_at` untouched, archive write flow out of scope.
+  Physical purge is S-7 (grace-window/purge-ledger), a distinct mechanism; spec inv.30 "purges" is
+  discharged in two stages (tombstone now, purge at S-7). Server-managed columns clients mirror
+  (`record_version`, `deleted_at`) are accepted-and-ignored by the PUT/PATCH zod schemas (known
+  server columns, never client-writable via op data) — this closes the undo re-INSERT dead-letter
+  trap without weakening the S-10 strict stance for genuinely unknown fields.
+- D-040 · 2026-07-23 · LOCKED — **Undo-survives-sync (resurrection)** (inv.31, Build Session 3). The
+  undo toast's sync-safe path: the deleting device re-INSERTs the row (INSERT OR REPLACE → a single
+  PUT, upsert). The server resurrects ONLY when the PUT is a reading, the tombstone was written by
+  the SAME device (`column_versions['deleted_at'].by === deviceId` — the toast lives only on the
+  deleting device, mirroring D-037 law 3), and the parent car is live: it clears the tombstone,
+  bumps `record_version` (clearing a tombstone is always a change), and resurrection propagates as
+  ordinary row state so the row reappears on every device. A clean undo (no value change) is
+  flag-free; a value-changing resurrection preserves the displaced snapshot (`resurrected` flag).
+  Every OTHER PUT on a tombstoned row does NOT resurrect: cars never (inv.30 has no car undo — car
+  restore is a future S-4 signal), and a foreign-device reading (stale replay/import) keeps the
+  tombstone, applies-and-preserves the displaced values in a versioned `write-on-tombstone` flag,
+  and never silently reverses a delete. Domain checks run only on rows left live. Adversarial code
+  review (5 dimensions, 2-skeptic verify, Opus) found ONE blocker rooted here and in D-038's
+  dead-letter path: the blanket handler-error catch dead-lettered TRANSIENT Postgres errors
+  (deadlock 40P01, serialization, lock-not-available, connection-class) — for a DELETE that
+  dead-letter is terminal (D-044), so a retryable contention failure became permanent data loss +
+  divergence. Fixed: `upload.ts` classifies retryable SQLSTATEs and rethrows them so the batch
+  aborts non-2xx and PowerSync retries idempotently; only deterministic-content errors dead-letter.
+- D-041 · 2026-07-23 · LOCKED — **Atomic cascade** (inv.30, Build Session 3). `cars:DELETE`
+  tombstones the car AND every live child reading in the SAME transaction (one `UPDATE … WHERE
+  car_id=? AND deleted_at IS NULL`, `deleted_via='cascade'`, per-child `record_version` bump +
+  `deleted_at` ledger entry attributed to the deleter) → one replication transaction → one
+  checkpoint → peers observe car+children tombstoned together, never a deleted car with live
+  children. This server cascade is the BACKSTOP; the pinned client contract is per-child DELETE ops
+  (children first) then the car DELETE, so each known child's own base echo runs `planDelete`
+  conflict analysis (a concurrent foreign edit the deleter didn't sync → `delete-conflict`) —
+  order-independent for known children. Children the client never synced are cascade-tombstoned
+  without per-child analysis; a genuine concurrent edit to them arrives as its own op →
+  edit-after-delete (Order A). Cascade provenance is captured at write time (`deleted_via`) so S-4
+  can scope the cohort without timestamp forensics — a non-retrofittable stance landed now like S-14
+  in 0000. Lock discipline: the car is the per-car lock (taken first), so no op deadlocks against
+  another op on the SAME car; two DIFFERENT cars are NOT globally ordered, so a multi-car batch can
+  deadlock a concurrent opposite-order batch — a transient 40P01 handled by the retryable-SQLSTATE
+  path (D-039/D-040), not a data problem. The module's earlier blanket "deadlock-free" claim was
+  corrected.
+- D-042 · 2026-07-23 · LOCKED — **Late child of a tombstoned parent** (Build Session 3). A reading
+  PUT for a car that is tombstoned is inserted PRESERVED but already-tombstoned (`deleted_at=now()`,
+  attribution INHERITED from the car's tombstone, `deleted_via='cascade'`) + a synced `late-child`
+  flag. Never dropped (full data in the row), never resurrecting the parent, and the
+  tombstoned-car ⇒ no-live-children invariant holds. A value-changing PUT onto an ALREADY-existing
+  tombstoned reading takes the write-on-tombstone path instead (versioned flag carrying the
+  displaced snapshot) — the un-versioned `late-child` id is reserved for the fresh-insert case where
+  nothing is displaced, so no distinct event coalesces onto another via `onConflictDoNothing`. No
+  domain checks on tombstone-born rows (out of the live trail, inv.11). S-4 is where the user decides
+  (restore the car? keep the orphan?); this session guarantees preservation + flagging only.
+- D-043 · 2026-07-23 · LOCKED — **Edit-vs-delete concurrency** (the silent-absorb hole, Build
+  Session 3). The delete WINS VISIBILITY in both arrival orders; the edit is never silently absorbed
+  — its value is preserved in the tombstoned row and surfaced by a flag; resurrection happens only
+  via the explicit D-040 undo, never as a side effect of an edit. Order A (delete first, edit
+  second): PATCH on a tombstoned row applies into the tombstoned data, stays tombstoned, one
+  `edit-after-delete` flag (no column-conflict analysis — the deletion supersedes it; no domain
+  checks). Order B (edit first, delete second): the DELETE's base echo is scanned per column
+  (`planDelete`), any column changed after base by a different device → tombstone still applies + one
+  `delete-conflict` flag preserving the concurrent value; `deleted_at` itself is scanned, so a stale
+  delete that would reverse a concurrent undo is caught too. Missing/future base with an
+  unattributable foreign change → `delete-conflict` with a missing-base message; a row only ever
+  touched by the deleting device tombstones silently (offline create-then-delete never spams flags).
+  New flag kinds S-4 must render: `delete-conflict` · `resurrected` · `write-on-tombstone` ·
+  `late-child` · `edit-after-delete`.
+- D-044 · 2026-07-23 · LOCKED — **Disposition of the D-038 DELETE dead letters** (Build Session 3).
+  They are TERMINAL: no auto-replay, ever — mechanically replaying stale delete intents against the
+  now-real DELETE handlers would execute data the user has since watched survive (surprise data
+  loss, the exact class this architecture exists to prevent). Disposition = manual review via the
+  existing `dead-lettered-op` flags + the S-4 queue; the operator may inspect server-only
+  `dead_letters`; a re-issued op that dead-letters again coalesces on its content-hash id. No
+  production users → accumulated DELETE dead letters exist only in dev/test databases (the torture
+  teardown wipes its own). Retention until S-7 defines purge — S-7 MUST sweep `dead_letters` (they
+  may hold erase-me content); recorded as an S-7 obligation.
+- D-045 · 2026-07-23 · NOTE (owner gate) — **Tombstone sync stance carries an alternative worth a
+  look.** S-6 ships sync-down-and-filter per the Session 3 brief (`deleted_at` in sync_rules;
+  clients filter `deleted_at IS NULL`). The adversarial design review surfaced a cleaner alternative
+  — filter the buckets themselves (`WHERE deleted_at IS NULL`) so a delete propagates as checkpoint
+  ROW-REMOVAL: no filter-everywhere burden on clients, cascade atomicity preserved (one checkpoint
+  removes car+children), undo still works (the toast closure re-INSERTs → the row re-enters the
+  bucket), and — the load-bearing point — deleted content never ships to a device enrolled AFTER the
+  delete (H1: "delete everything… no undo"). Kept as-is per the brief; recorded in
+  `docs/build/spec-delta.md` for the owner to decide. Either way, S-7 acquires an obligation the
+  current stance makes explicit: purge must stop shipping tombstone content to new devices (bucket
+  filter or claw-back), plus sweep `dead_letters` (D-044). The flag payload does not yet carry the
+  counterparty's identity (deleter on edit-after-delete, displaced writer on delete-conflict/
+  column-conflict) — fine for single-user-multi-device, owed for the S-14 household review UI; the
+  data is captured server-side and retrofittable, deferred to S-4/S-14.

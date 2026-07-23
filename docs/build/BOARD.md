@@ -14,8 +14,13 @@ lives in §4 — this board tracks status, not prose.
 
 ## Now / Next
 
-- **NEXT (Session 3): S-6 delete model** — then S-4 review queue → ③ local→sync
-  migration → passkey full round-trip (order per §4.A).
+- **NEXT (Session 4, after owner gate): S-4 client review queue** — then ③ local→sync
+  migration → passkey full round-trip (order per §4.A). S-6 shipped (Session 3).
+- **Owner gate owed (2026-07-23):** Session 3 (S-6) done — see the session log + D-039..D-045.
+  One decision wants owner sign-off: the tombstone sync stance (D-045 / `docs/build/spec-delta.md`)
+  ships sync-down-and-filter per brief; bucket-filter is the cleaner alternative (H1: no deleted
+  content to new devices). S-7 inherits two obligations (stop shipping tombstone content to new
+  devices; sweep `dead_letters`). Do NOT open S-4/③ until this gate passes.
 - **Owner gate passed (2026-07-22):** Session 2 approved — D-037 conflict semantics
   (later-arrival wins + displaced-value flag), D-038 interim stances (DELETEs
   dead-letter until S-6; archived_at/resolved_at unsynced until their write flows;
@@ -34,7 +39,7 @@ lives in §4 — this board tracks status, not prose.
 | done | ⛔ | ⑤ base_version per-column protocol (S-5) — Session 2, D-037: proven on real stack, torture-tier covered |
 | done | ⛔ | accept-with-2xx exhaustive op-handling (dead-letter/flag unknown ops, never skip) — Session 2, D-038: registry + content-hash dead letters + synced flags |
 | done | ⛔ | S-14 household non-preclusion — schema stance from the first migration — Session 2: households table + household_id + updated_by on every record from migration 0000 |
-| todo | ⛔ | S-6 delete model (tombstones, undo-survives-sync, cascade, late-child flag) |
+| done | ⛔ | S-6 delete model (tombstones, undo-survives-sync, cascade, late-child flag) — Session 3, D-039..D-045: migration 0001 tombstone cols + `deleted_via` provenance; DELETE→tombstone; same-device resurrection; atomic cascade + per-child conflict; late-child; edit-vs-delete both orders; DELETE dead letters terminal (D-044); proven on two @powersync/node clients |
 | todo | ⛔ | S-4 client post-merge review queue ("Review now" pattern; where flags land) |
 | todo | ⛔ | ③ local-only → sync-on first-enable migration, lossless |
 | todo | ▲ | S-7 erase-everywhere (truncate + purge ledger + compaction + ≤24 h revocation) |
@@ -43,7 +48,7 @@ lives in §4 — this board tracks status, not prose.
 | todo | ▲ | S-12 preference split (synced vs device-local) |
 | todo | ▲ | S-13 per-device notification scheduling (no push infra) |
 | todo | ▲ | engine-agnostic domain set: lineage swap, occurrence identity, dedup ordinal, settings singleton, "keep both", post-flag validation |
-| doing | ▲ | sync torture-test suite (Spike ② scenarios graduate into it) — Session 2 seeded 5 scenarios (② same-date graduate · ⑤ same-column · disjoint merge · unknown-op + DELETE dead-letter, same-batch savepoint case) + CI job; grows with S-6/S-4/③ |
+| doing | ▲ | sync torture-test suite (Spike ② scenarios graduate into it) — Session 2 seeded 5; Session 3 grew it to 13 (S-6 tier: tombstone propagation · edit-vs-delete both orders · atomic cascade · late child · undo round-trip + foreign-reject · DELETE replay idempotency) on two @powersync/node clients + CI job; grows with S-4/③ |
 
 ### B · Backend / infra / auth
 | st | sev | item |
@@ -167,3 +172,28 @@ lives in §4 — this board tracks status, not prose.
   android/ios build dirs purged — spikes/ now ~76 MB source seed only. Hardening
   calls delegated: dependency-free primitives + economy litres≤0→null both kept.
   On-device RN-bundled Hermes CI step (bucket C) remains owed with @koi/mobile.
+- **2026-07-23 · Session 3 — S-6 delete model (D-039..D-045).** The next ⛔ blocker built and
+  proven. Migration 0001 adds tombstone columns (`deleted_at` synced down; `deleted_by`/
+  `_device`/`_via` server-side) to cars + readings + a partial purge-scan index. DELETE → tombstone
+  (never physical removal); `deleted_at` is a first-class `column_versions` column so delete-vs-edit
+  and delete-vs-undo races reuse the base_version machinery (`planDelete`). Same-device reading undo
+  resurrects flag-free; cars never resurrect via PUT (inv.30); foreign replays/imports are
+  preserved-and-flagged `write-on-tombstone`, never a silent resurrection. Car delete cascade-
+  tombstones its readings in one transaction (atomic per checkpoint) with `deleted_via` provenance;
+  per-child conflict via the pinned children-first client contract, server cascade as backstop.
+  Late child of a deleted car is kept tombstone-born + flagged. Edit-vs-delete: delete wins
+  visibility both orders, edit preserved + flagged (`edit-after-delete` / `delete-conflict`), never
+  silently absorbed. D-044: the D-038 DELETE dead letters are terminal (no auto-replay). Undo
+  re-INSERT dead-letter trap closed (schemas accept-and-ignore server-managed columns). Torture tier
+  5 → 13 scenarios (all on two real @powersync/node clients); unit tier +`planDelete` +`isRetryable`
+  (35 → 39). @koi/domain untouched — golden vectors byte-identical (md5 `f93b1d6b…`).
+  **Two adversarial workflows (5 lenses each, 2-skeptic verify):** the design run (23 findings; both
+  verify phases died on the Fable session limit, so I adjudicated all 23 as reviewer — 19 accepted
+  and built in, incl. same-device-gated resurrection, versioned displaced-snapshot flags, per-child
+  cascade conflict, `deleted_via` provenance, domain-skip-on-tombstone); the code run (Opus, ran
+  fully) → 1 blocker CONFIRMED (2-skeptic): the blanket handler-error catch dead-lettered TRANSIENT
+  Postgres errors (deadlock 40P01 etc.) → for a terminal DELETE that was permanent loss + divergence
+  — fixed by classifying retryable SQLSTATEs and rethrowing for an idempotent batch retry; 5 other
+  findings refuted. **Owner gate owed before S-4/③** — D-045 tombstone-sync stance choice
+  (`spec-delta.md`), and S-7 inherits: stop shipping tombstone content to new devices + sweep
+  `dead_letters`.

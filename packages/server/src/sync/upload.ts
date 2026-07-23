@@ -98,6 +98,33 @@ async function recordDeadLetter(
 const errorMessage = (e: unknown): string =>
   e instanceof Error ? `${e.name}: ${e.message}` : String(e);
 
+/**
+ * Postgres SQLSTATEs that mean "transient contention / infra", NOT "this content
+ * cannot be applied": deadlock, serialization failure, lock-not-available. A
+ * batch that touches multiple cars can deadlock against a concurrent batch that
+ * touches the same cars in the opposite order — the per-car lock discipline
+ * orders a car before its own children, but imposes no order ACROSS cars. Such
+ * an error must abort the whole batch (non-2xx) so PowerSync retries it
+ * idempotently — dead-lettering it would convert a retryable failure into
+ * permanent loss (a DELETE dead letter is terminal, D-044). Connection-class
+ * (08*) errors are transient too. Everything else is deterministic for the
+ * given content and dead-letters as before.
+ */
+const RETRYABLE_SQLSTATES = new Set(['40001', '40P01', '55P03']);
+
+function sqlState(e: unknown): string | undefined {
+  const direct = (e as { code?: unknown } | null)?.code;
+  if (typeof direct === 'string') return direct;
+  const nested = ((e as { cause?: unknown } | null)?.cause as { code?: unknown } | null)?.code;
+  return typeof nested === 'string' ? nested : undefined;
+}
+
+export function isRetryable(e: unknown): boolean {
+  const code = sqlState(e);
+  if (code === undefined) return false;
+  return RETRYABLE_SQLSTATES.has(code) || code.startsWith('08');
+}
+
 export async function applyUploadBatch(
   db: { transaction: <T>(fn: (tx: Tx) => Promise<T>) => Promise<T> },
   batch: readonly UploadEntry[],
@@ -119,6 +146,11 @@ export async function applyUploadBatch(
         // own writes only; the batch transaction stays usable.
         outcome = await tx.transaction((sp: Tx) => handler(sp, entry, ctx));
       } catch (e) {
+        // A transient contention/infra failure is not unapplyable content:
+        // rethrow so the whole batch aborts (non-2xx) and PowerSync retries it
+        // idempotently, instead of dead-lettering a valid op into permanent
+        // loss (D-044 makes a DELETE dead letter terminal).
+        if (isRetryable(e)) throw e;
         results.push(await recordDeadLetter(tx, entry, `handler error: ${errorMessage(e)}`, ctx));
         continue;
       }

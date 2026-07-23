@@ -16,11 +16,23 @@
  * protocol (S-5/D-023): { column: { v: record_version of last change, by:
  * writing device } }. Server bookkeeping — never synced to clients.
  *
+ * S-6 tombstones (D-039..D-043): a delete never removes a row — it sets
+ * `deleted_at` (synced down; clients filter `deleted_at IS NULL`). Deletion
+ * attribution stays server-side: `deleted_by`/`deleted_by_device` (who) and
+ * `deleted_via` ('direct' | 'cascade' — cascade provenance so S-4 can scope a
+ * car-delete's child cohort without timestamp forensics; non-retrofittable, so
+ * it lands in this migration like S-14 landed in 0000). `deleted_at` is a
+ * first-class attributed column in `column_versions`, so delete-vs-edit and
+ * delete-vs-undo races fall out of the existing base_version machinery. Undo
+ * clears `deleted_at` (resurrection); physical purge is S-7, a distinct
+ * mechanism. Archive (`archived_at`) stays separate — never conflated (inv.30).
+ *
  * Property keys are deliberately snake_case, identical to the SQL column and
  * wire names, so upload handlers need no mapping layer between PowerSync
  * CrudEntry data and rows.
  */
 
+import { sql } from 'drizzle-orm';
 import { bigint, index, integer, jsonb, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
 
 /** { column: { v, by } } — see module doc. */
@@ -47,13 +59,23 @@ export const cars = pgTable(
     tank_capacity_l: integer('tank_capacity_l'),
     initial_odometer_km: integer('initial_odometer_km'),
     archived_at: timestamp('archived_at', { withTimezone: true }),
+    deleted_at: timestamp('deleted_at', { withTimezone: true }),
+    deleted_by: text('deleted_by'),
+    deleted_by_device: text('deleted_by_device'),
+    deleted_via: text('deleted_via'),
     record_version: bigint('record_version', { mode: 'number' }).notNull().default(1),
     column_versions: jsonb('column_versions').$type<ColumnVersions>().notNull().default({}),
     updated_by: text('updated_by'),
     created_at: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
     updated_at: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
   },
-  (t) => [index('cars_household_idx').on(t.household_id)],
+  (t) => [
+    index('cars_household_idx').on(t.household_id),
+    // Forward-looking S-7 purge scan: find tombstones without a full-table sweep.
+    index('cars_deleted_idx')
+      .on(t.deleted_at)
+      .where(sql`${t.deleted_at} IS NOT NULL`),
+  ],
 );
 
 export const odometer_readings = pgTable(
@@ -72,6 +94,10 @@ export const odometer_readings = pgTable(
     /** Nullable: §B1 `source?` (manual / fuel / imported; nil = legacy). */
     source: text('source'),
     device_id: text('device_id'),
+    deleted_at: timestamp('deleted_at', { withTimezone: true }),
+    deleted_by: text('deleted_by'),
+    deleted_by_device: text('deleted_by_device'),
+    deleted_via: text('deleted_via'),
     record_version: bigint('record_version', { mode: 'number' }).notNull().default(1),
     column_versions: jsonb('column_versions').$type<ColumnVersions>().notNull().default({}),
     updated_by: text('updated_by'),
@@ -81,6 +107,10 @@ export const odometer_readings = pgTable(
   (t) => [
     index('odometer_readings_car_idx').on(t.car_id),
     index('odometer_readings_household_idx').on(t.household_id),
+    // Forward-looking S-7 purge scan (see cars_deleted_idx).
+    index('odometer_readings_deleted_idx')
+      .on(t.deleted_at)
+      .where(sql`${t.deleted_at} IS NOT NULL`),
   ],
 );
 

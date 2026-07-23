@@ -34,6 +34,33 @@ S-3: there is no `current_odo` column anywhere; derive it with
 `deriveCurrentOdometerKm` from `@koi/domain`. S-14: every record carries
 `household_id` + actor attribution from the first migration.
 
+## The delete model in one paragraph (S-6)
+
+A delete never removes a row — the DELETE handler writes a tombstone (`deleted_at`
++ `deleted_by`/`deleted_by_device`/`deleted_via`), synced down so every device
+hides the row (`deleted_at IS NULL` filter). `deleted_at` is a first-class column
+in the `column_versions` ledger, so delete-vs-edit and delete-vs-undo races reuse
+the base_version machinery (`planDelete` mirrors `planPatch`). The delete wins
+visibility in both arrival orders and the losing edit is never silently absorbed:
+an edit landing on a tombstone is kept and flagged `edit-after-delete`; a delete
+over a concurrent foreign edit tombstones and flags `delete-conflict` (its base
+echo is scanned per column, `deleted_at` included). Undo (inv.31) is the deleting
+device re-INSERTing the row — a same-device, parent-live reading resurrects
+flag-free; every other PUT on a tombstone keeps it (a car never undoes via PUT —
+inv.30; a foreign replay/import is preserved-and-flagged `write-on-tombstone`,
+never a silent resurrection). Deleting a car cascade-tombstones its readings in
+one transaction (peers see car + children gone in one checkpoint); a reading
+arriving for a deleted car is kept tombstone-born and flagged `late-child`, never
+dropped, never resurrecting the parent. DELETE replay on a tombstone is a noop;
+the D-038 DELETE dead letters are terminal (no auto-replay, D-044). Physical purge
+is S-7, a distinct mechanism. Server-managed columns clients mirror
+(`record_version`, `deleted_at`) are accepted-and-ignored by the strict PUT/PATCH
+schemas, so the undo re-INSERT never dead-letters. A multi-car batch can deadlock
+a concurrent opposite-order batch (the car lock orders a car before its own
+children, not two cars); such a transient error is retried, never dead-lettered —
+`upload.ts` classifies retryable SQLSTATEs so a valid op is never lost to
+contention.
+
 ## Commands
 
 The credential-less dev token mint (`POST /api/auth/token`) only exists when
@@ -49,6 +76,9 @@ pnpm --filter @koi/server test:sync   # torture tier — orchestrates docker com
 ```
 
 `test:sync` brings the infra stack up (and DOWN, volumes included, when done —
-set `KOI_SYNC_KEEP_STACK=1` to keep it) and runs real two-client conflict
-scenarios: same-date append conflict (Spike ② graduate), ⑤ same-column PATCH
-conflict, disjoint-column merge (no flag), unknown-op + DELETE dead-letters.
+set `KOI_SYNC_KEEP_STACK=1` to keep it) and runs real two-client scenarios:
+same-date append conflict (Spike ② graduate), ⑤ same-column PATCH conflict,
+disjoint-column merge (no flag), unknown-table dead-letters (DELETE is not
+blanket-handled), and the S-6 delete tier — tombstone propagation, edit-vs-delete
+(both arrival orders), atomic cascade, late child, undo round-trip (same-device
+resurrection + foreign-device rejection), and DELETE replay idempotency.

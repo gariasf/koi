@@ -12,9 +12,25 @@
  * Table data schemas are STRICT: an unknown column (e.g. a newer client
  * against an older server) dead-letters the whole op instead of silently
  * stripping fields — the S-10 stance on the server side.
+ *
+ * EXCEPT server-managed columns that sync DOWN: `record_version` (S-2) and
+ * `deleted_at` (S-6) legitimately appear in a client's local row, so a
+ * re-INSERT (the undo/restore PUT) or a full-row PUT carries them in opData.
+ * They are KNOWN server columns, not unknown-newer-client columns — the schemas
+ * accept them and the handlers ignore them (never in `writableColumns`), so the
+ * undo path is not a dead-letter trap while the S-10 strictness stands for
+ * genuinely unknown fields. The server owns the tombstone lifecycle through the
+ * DELETE (tombstone) and PUT (resurrect) ops, never through client-sent
+ * `deleted_at` data.
  */
 
 import { z } from 'zod';
+
+/** Accepted-and-ignored on every table op: server-managed columns clients mirror. */
+const serverManaged = {
+  record_version: z.unknown().optional(),
+  deleted_at: z.unknown().optional(),
+};
 
 export const crudEntrySchema = z.object({
   op: z.enum(['PUT', 'PATCH', 'DELETE']),
@@ -58,7 +74,7 @@ const carFields = {
   initial_odometer_km: z.number().int().nullish(),
 };
 
-export const carPutSchema = z.strictObject(carFields);
+export const carPutSchema = z.strictObject({ ...carFields, ...serverManaged });
 // household moves are not a supported edit — a PATCH carrying household_id
 // dead-letters loudly instead of silently re-homing a record (S-14 keeps the
 // column; a future sharing flow adds the handler).
@@ -74,7 +90,7 @@ const readingFields = {
   device_id: z.string().nullish(),
 };
 
-export const readingPutSchema = z.strictObject(readingFields);
+export const readingPutSchema = z.strictObject({ ...readingFields, ...serverManaged });
 // A reading never changes car or household — re-parenting is not a product
 // flow (edits touch km/date/source only), and excluding car_id keeps the
 // lock discipline single-car.

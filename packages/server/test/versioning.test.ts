@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { planPatch, planPutOnExisting, valuesEqual } from '../src/sync/versioning.js';
+import { planDelete, planPatch, planPutOnExisting, valuesEqual } from '../src/sync/versioning.js';
 
 const base = {
   current: { nickname: 'Golf', plate: null, make: 'VW' },
@@ -197,5 +197,145 @@ describe('planPutOnExisting', () => {
       deviceId: 'device-A',
     });
     expect(plan.noop).toBe(true);
+  });
+});
+
+describe('planDelete — the S-6 tombstone protocol (D-039..D-043)', () => {
+  const scanColumns = ['nickname', 'plate', 'make'];
+  const ledger = {
+    nickname: { v: 1, by: 'device-0' },
+    plate: { v: 1, by: 'device-0' },
+    make: { v: 1, by: 'device-0' },
+  };
+
+  it('an already-tombstoned row is a noop (idempotent replay / agreement)', () => {
+    const plan = planDelete({
+      alreadyDeleted: true,
+      columnVersions: ledger,
+      recordVersion: 4,
+      baseVersion: 4,
+      deviceId: 'device-A',
+      scanColumns,
+    });
+    expect(plan.noop).toBe(true);
+    expect(plan.newVersion).toBe(4);
+  });
+
+  it('a clean delete over unchanged data raises no conflict', () => {
+    const plan = planDelete({
+      alreadyDeleted: false,
+      columnVersions: ledger,
+      recordVersion: 1,
+      baseVersion: 1,
+      deviceId: 'device-A',
+      scanColumns,
+    });
+    expect(plan.noop).toBe(false);
+    expect(plan.newVersion).toBe(2);
+    expect(plan.conflicts).toHaveLength(0);
+    expect(plan.missingBase).toBe(false);
+    // deleted_at becomes a first-class ledger entry attributed to the deleter.
+    expect(plan.columnVersions['deleted_at']).toEqual({ v: 2, by: 'device-A' });
+  });
+
+  it('flags a column another device changed after the deleter base (F02/F06)', () => {
+    // device-B edited plate to v2; device-A deletes from base 1.
+    const plan = planDelete({
+      alreadyDeleted: false,
+      columnVersions: { ...ledger, plate: { v: 2, by: 'device-B' } },
+      recordVersion: 2,
+      baseVersion: 1,
+      deviceId: 'device-A',
+      scanColumns,
+    });
+    expect(plan.conflicts).toHaveLength(1);
+    expect(plan.conflicts[0]).toMatchObject({ column: 'plate', writerDevice: 'device-B', atVersion: 2 });
+    expect(plan.newVersion).toBe(3);
+  });
+
+  it("a device's own post-base edit is not a delete-conflict", () => {
+    const plan = planDelete({
+      alreadyDeleted: false,
+      columnVersions: { ...ledger, plate: { v: 2, by: 'device-A' } },
+      recordVersion: 2,
+      baseVersion: 1,
+      deviceId: 'device-A',
+      scanColumns,
+    });
+    expect(plan.conflicts).toHaveLength(0);
+    expect(plan.missingBase).toBe(false);
+  });
+
+  it('a stale delete that would reverse a concurrent undo conflicts on deleted_at (F13)', () => {
+    // device-A deleted then undid r (deleted_at@v3 by A); device-B deletes from
+    // an old base 1 — value columns look unchanged, but deleted_at moved.
+    const plan = planDelete({
+      alreadyDeleted: false,
+      columnVersions: { ...ledger, deleted_at: { v: 3, by: 'device-A' } },
+      recordVersion: 3,
+      baseVersion: 1,
+      deviceId: 'device-B',
+      scanColumns,
+    });
+    expect(plan.conflicts).toHaveLength(1);
+    expect(plan.conflicts[0]?.column).toBe('deleted_at');
+    expect(plan.newVersion).toBe(4);
+  });
+
+  it('a device re-deleting its own undone row does not conflict on deleted_at', () => {
+    const plan = planDelete({
+      alreadyDeleted: false,
+      columnVersions: { ...ledger, deleted_at: { v: 3, by: 'device-A' } },
+      recordVersion: 3,
+      baseVersion: 1,
+      deviceId: 'device-A',
+      scanColumns,
+    });
+    expect(plan.conflicts).toHaveLength(0);
+  });
+
+  it('a baseless delete over another device data reports missingBase', () => {
+    const plan = planDelete({
+      alreadyDeleted: false,
+      columnVersions: { ...ledger, plate: { v: 2, by: 'device-B' } },
+      recordVersion: 2,
+      baseVersion: null,
+      deviceId: 'device-A',
+      scanColumns,
+    });
+    expect(plan.missingBase).toBe(true);
+    expect(plan.conflicts).toHaveLength(0);
+  });
+
+  it('the ordinary offline create-then-delete flow raises no missing-base flag', () => {
+    // Every column is the deleting device own writing; the local row has no
+    // record_version yet (echo null). No ambiguity, no flag.
+    const plan = planDelete({
+      alreadyDeleted: false,
+      columnVersions: {
+        nickname: { v: 1, by: 'device-A' },
+        plate: { v: 1, by: 'device-A' },
+        make: { v: 1, by: 'device-A' },
+      },
+      recordVersion: 1,
+      baseVersion: null,
+      deviceId: 'device-A',
+      scanColumns,
+    });
+    expect(plan.missingBase).toBe(false);
+    expect(plan.conflicts).toHaveLength(0);
+  });
+
+  it('a base from the future degrades to missing-base, never a silent clean delete', () => {
+    const plan = planDelete({
+      alreadyDeleted: false,
+      columnVersions: { ...ledger, plate: { v: 2, by: 'device-B' } },
+      recordVersion: 3,
+      baseVersion: 9,
+      deviceId: 'device-A',
+      scanColumns,
+    });
+    expect(plan.missingBase).toBe(true);
+    expect(plan.newVersion).toBe(4);
   });
 });

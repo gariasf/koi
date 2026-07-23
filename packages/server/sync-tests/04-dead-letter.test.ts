@@ -1,10 +1,11 @@
 /**
- * Exhaustive op-handling (⛔, Spike ② finding): any op the write-path does
- * not explicitly handle-and-persist must be dead-lettered + flagged, never
- * skipped — a silent skip is silent data loss once the client clears its
- * queue on 2xx. Covers: an unknown TABLE (a client schema the server has
- * no handler for) and a DELETE (S-6 not built yet — preserved, flagged,
- * not applied). Either way the queue must drain: nothing wedges.
+ * Exhaustive op-handling (⛔, Spike ② finding, D-038): any op the write-path
+ * does not explicitly handle-and-persist must be dead-lettered + flagged, never
+ * skipped — a silent skip is silent data loss once the client clears its queue
+ * on 2xx. S-6 added cars/readings DELETE handlers, but the registry is still
+ * (table, op)-specific: an unknown TABLE dead-letters for PUT *and* DELETE alike
+ * — DELETE is not blanket-handled. Either way the queue must drain: nothing
+ * wedges. (DELETEs on the known tables now APPLY — see the 05..10 scenarios.)
  */
 
 import { Table, column } from '@powersync/node';
@@ -88,42 +89,29 @@ it('unknown-table op dead-letters + flags, and the queue does not wedge', async 
   }
 });
 
-it('DELETE ops are preserved (S-6 not built): dead-letter + flag, row survives', async () => {
-  const A = makeClient('a5');
+it('a DELETE on an unknown table still dead-letters: DELETE is not blanket-handled (S-6)', async () => {
+  const schema = makeSchema({ gremlins: new Table({ mood: column.text }) });
+  const A = makeClient('a4b', schema);
   try {
     await A.init();
+    // Create then delete a gremlin: the create dead-letters (unknown table), and
+    // so must the delete — the registry only gained cars/readings DELETE, not a
+    // catch-all DELETE.
+    await A.execute(`INSERT INTO gremlins (id, mood) VALUES (?, ?)`, ['g-2', 'grumpy']);
     await A.connect(new TestConnector('device-A'));
-    await A.waitForFirstSync();
-
-    // The reading from the previous test is on the server; wait for it locally.
     await waitFor(async () => {
-      const rows = await A.getAll(`SELECT id FROM odometer_readings WHERE id = 'odo-ok'`);
-      return rows.length === 1 ? true : null;
-    }, 'odo-ok synced down');
-
-    await A.execute(`DELETE FROM odometer_readings WHERE id = 'odo-ok'`);
+      const r = await db.query(`SELECT 1 FROM dead_letters WHERE record_id = 'g-2' AND op = 'PUT'`);
+      return r.rowCount === 1;
+    }, 'gremlin create dead-lettered');
     await waitForQueueDrained(A, 'A');
 
-    // Not applied: the canonical row survives.
-    const server = await db.query(`SELECT 1 FROM odometer_readings WHERE id = 'odo-ok'`);
-    expect(server.rowCount).toBe(1);
+    await A.execute(`DELETE FROM gremlins WHERE id = 'g-2'`);
+    await waitForQueueDrained(A, 'A');
 
-    // Preserved + flagged.
     const dl = await db.query(
-      `SELECT reason FROM dead_letters WHERE op = 'DELETE' AND record_id = 'odo-ok'`,
+      `SELECT op FROM dead_letters WHERE record_table = 'gremlins' AND record_id = 'g-2' ORDER BY op`,
     );
-    expect(dl.rowCount).toBe(1);
-    const flags = await db.query(
-      `SELECT 1 FROM flags WHERE kind = 'dead-lettered-op' AND record_id = 'odo-ok'`,
-    );
-    expect(flags.rowCount).toBe(1);
-
-    // And the row RESURRECTS locally — the server state wins after upload,
-    // proving the delete was not silently absorbed client-side either.
-    await waitFor(async () => {
-      const rows = await A.getAll(`SELECT id FROM odometer_readings WHERE id = 'odo-ok'`);
-      return rows.length === 1 ? true : null;
-    }, 'deleted row resurrected from server state');
+    expect(dl.rows.map((r) => r.op)).toEqual(['DELETE', 'PUT']);
   } finally {
     await closeAll([A]);
   }

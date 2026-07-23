@@ -8,6 +8,13 @@
       "when": 1784716091955,
       "tag": "0000_volatile_tarantula",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1784741568547,
+      "tag": "0001_magenta_namor",
+      "breakpoints": true
     }
   ]
 }
