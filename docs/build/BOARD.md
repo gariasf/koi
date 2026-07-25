@@ -14,8 +14,13 @@ lives in §4 — this board tracks status, not prose.
 
 ## Now / Next
 
-- **NEXT (Session 4, after owner gate): S-4 client review queue** — then ③ local→sync
-  migration → passkey full round-trip (order per §4.A). S-6 shipped (Session 3).
+- **NEXT (Session 4, owner-approved 2026-07-25): scaffold @koi/mobile → S-4 review queue.**
+  S-4 (where this session's flags land) has no home until the client app exists, so Session 4
+  is: Expo SDK pin + Phase-4 re-confirm (bucket H) → scaffold @koi/mobile (Bundle A) → PowerSync
+  client connector honoring the S-6 client contract (delete=DELETE, cascade=children-first,
+  undo=re-INSERT; NO deleted_at column per D-046; trackPrevious ON) → S-4 review queue → on-device
+  Hermes CI step (bucket C). Full paste-ready brief in `docs/build/next-session.md`. Then ③
+  local→sync migration → passkey (order per §4.A). S-6 shipped (Session 3).
 - **Owner gate — tombstone stance RESOLVED (2026-07-25, D-046):** owner chose **bucket-filter**.
   Sync rules now carry only live rows (`WHERE deleted_at IS NULL`); a delete propagates as a
   checkpoint row-removal, clients never hold tombstones, and deleted content never ships to a
