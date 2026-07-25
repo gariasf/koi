@@ -157,3 +157,21 @@ Format: `D-NNN · <date> · <status> — <one-line decision>. <why, one or two s
   counterparty's identity (deleter on edit-after-delete, displaced writer on delete-conflict/
   column-conflict) — fine for single-user-multi-device, owed for the S-14 household review UI; the
   data is captured server-side and retrofittable, deferred to S-4/S-14.
+- D-046 · 2026-07-25 · LOCKED — **Bucket-filter adopted for tombstone sync** (owner decision on the
+  D-045 gate, Build Session 3 follow-up). Supersedes the D-039 sync-down-and-filter surface: the
+  PowerSync buckets now carry only LIVE rows (`SELECT … FROM cars/odometer_readings WHERE deleted_at
+  IS NULL`), so a delete sets `deleted_at` server-side, the row leaves the bucket, and PowerSync
+  propagates the delete as a checkpoint ROW-REMOVAL. No tombstone content ever reaches clients:
+  clients have no `deleted_at` column, no filter-everywhere burden, and a device enrolled AFTER a
+  delete bootstraps only live rows — so deleted content never ships to it (H1: "delete everything…
+  no undo"). Undo is a re-INSERT (the toast closure holds the row) → server clears `deleted_at` →
+  the row re-matches the bucket → the checkpoint adds it back everywhere; the cascade is atomic here
+  too (car+children leave the bucket in one replication transaction → one checkpoint). Server-side
+  S-6 logic is UNCHANGED — planDelete/resurrection/cascade/late-child/edit-vs-delete all run on the
+  canonical Postgres rows, which still keep tombstones; only the sync surface changed. `deleted_at`
+  stays accepted-and-ignored on upload (a client that mirrors it must not dead-letter). This
+  DISCHARGES the D-039/D-045 S-7 obligation "stop shipping tombstone content to new devices" (now
+  structurally true); S-7 still owes the `dead_letters` sweep (D-044). Proven on the real stack —
+  the full torture tier (13 scenarios, two `@powersync/node` clients) passes with row-removal
+  semantics: propagation, atomic cascade removal, late child never reaching clients as data, undo
+  round-trip re-entry, foreign-device re-create staying removed.

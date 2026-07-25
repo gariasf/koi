@@ -90,17 +90,17 @@ it('a reading for a deleted car is kept tombstone-born + flagged, parent stays d
     const car = await db.query(`SELECT deleted_at FROM cars WHERE id = $1`, [CAR_ID]);
     expect(car.rows[0].deleted_at).not.toBeNull(); // parent still deleted
 
-    // Both clients: late child hidden, flag present, nothing dead-lettered.
+    // The late child is tombstone-born → never enters the live bucket → it
+    // reaches no client as data (B's optimistic local copy is removed once the
+    // server rejects it into a tombstone). Only the flag propagates.
     await waitForQueueDrained(A, 'A');
     await waitForQueueDrained(B, 'B');
     for (const c of [A, B]) {
       await waitFor(async () => {
-        const live = await c.getAll(
-          `SELECT id FROM odometer_readings WHERE id = 'odo-late' AND deleted_at IS NULL`,
-        );
+        const rows = await c.getAll(`SELECT id FROM odometer_readings WHERE id = 'odo-late'`);
         const flags = await c.getAll(`SELECT id FROM flags WHERE kind = 'late-child'`);
-        return live.length === 0 && flags.length === 1 ? true : null;
-      }, 'client sees late child hidden + flagged');
+        return rows.length === 0 && flags.length === 1 ? true : null;
+      }, 'client sees no late-child row + one late-child flag');
     }
     const dl = await db.query(`SELECT count(*)::int AS n FROM dead_letters`);
     expect(dl.rows[0].n).toBe(0);

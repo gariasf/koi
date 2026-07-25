@@ -101,17 +101,15 @@ it('Order B (edit first, delete second): delete-conflict preserves the concurren
     expect(server.rows[0].deleted_at).not.toBeNull(); // delete wins visibility
     expect(server.rows[0].reading_km).toBe(62000); // edit preserved, not lost
 
-    // Both clients converge: row hidden, one flag each, nothing dead-lettered.
+    // Both clients converge: row removed, one flag each, nothing dead-lettered.
     await waitForQueueDrained(A, 'A');
     await waitForQueueDrained(B, 'B');
     for (const c of [A, B]) {
       await waitFor(async () => {
-        const rows = await c.getAll<{ deleted_at: string | null }>(
-          `SELECT deleted_at FROM odometer_readings WHERE id = 'odo-1'`,
-        );
+        const rows = await c.getAll(`SELECT id FROM odometer_readings WHERE id = 'odo-1'`);
         const flags = await c.getAll(`SELECT id FROM flags WHERE kind = 'delete-conflict'`);
-        return rows[0]?.deleted_at != null && flags.length === 1 ? true : null;
-      }, 'client converged: tombstone + one delete-conflict flag');
+        return rows.length === 0 && flags.length === 1 ? true : null;
+      }, 'client converged: row removed + one delete-conflict flag');
     }
     const dl = await db.query(`SELECT count(*)::int AS n FROM dead_letters`);
     expect(dl.rows[0].n).toBe(0);
@@ -156,12 +154,10 @@ it('Order A (delete first, edit second): edit-after-delete keeps + surfaces the 
     await waitForQueueDrained(B, 'B');
     for (const c of [A, B]) {
       await waitFor(async () => {
-        const rows = await c.getAll<{ deleted_at: string | null }>(
-          `SELECT deleted_at FROM odometer_readings WHERE id = 'odo-1'`,
-        );
+        const rows = await c.getAll(`SELECT id FROM odometer_readings WHERE id = 'odo-1'`);
         const flags = await c.getAll(`SELECT id FROM flags WHERE kind = 'edit-after-delete'`);
-        return rows[0]?.deleted_at != null && flags.length === 1 ? true : null;
-      }, 'client converged: tombstone + one edit-after-delete flag');
+        return rows.length === 0 && flags.length === 1 ? true : null;
+      }, 'client converged: row removed + one edit-after-delete flag');
     }
     // No domain (monotonicity) flag on the tombstoned reading (inv.11).
     const dv = await db.query(`SELECT count(*)::int AS n FROM flags WHERE kind LIKE 'odometer%'`);

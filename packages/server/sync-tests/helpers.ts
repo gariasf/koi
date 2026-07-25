@@ -36,8 +36,9 @@ const carColumns = {
   year: column.integer,
   tank_capacity_l: column.integer,
   initial_odometer_km: column.integer,
-  // S-6: tombstone syncs down; clients filter `deleted_at IS NULL`.
-  deleted_at: column.text,
+  // S-6 (D-046, bucket-filter): the bucket carries only live rows
+  // (`WHERE deleted_at IS NULL`), so clients never receive a tombstone — there
+  // is no deleted_at column client-side. A delete arrives as a row-removal.
   record_version: column.integer,
 };
 
@@ -48,7 +49,6 @@ const readingColumns = {
   recorded_date: column.text,
   source: column.text,
   device_id: column.text,
-  deleted_at: column.text,
   record_version: column.integer,
 };
 

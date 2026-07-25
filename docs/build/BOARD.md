@@ -16,11 +16,14 @@ lives in §4 — this board tracks status, not prose.
 
 - **NEXT (Session 4, after owner gate): S-4 client review queue** — then ③ local→sync
   migration → passkey full round-trip (order per §4.A). S-6 shipped (Session 3).
-- **Owner gate owed (2026-07-23):** Session 3 (S-6) done — see the session log + D-039..D-045.
-  One decision wants owner sign-off: the tombstone sync stance (D-045 / `docs/build/spec-delta.md`)
-  ships sync-down-and-filter per brief; bucket-filter is the cleaner alternative (H1: no deleted
-  content to new devices). S-7 inherits two obligations (stop shipping tombstone content to new
-  devices; sweep `dead_letters`). Do NOT open S-4/③ until this gate passes.
+- **Owner gate — tombstone stance RESOLVED (2026-07-25, D-046):** owner chose **bucket-filter**.
+  Sync rules now carry only live rows (`WHERE deleted_at IS NULL`); a delete propagates as a
+  checkpoint row-removal, clients never hold tombstones, and deleted content never ships to a
+  device enrolled after the delete (H1 satisfied structurally). This discharges the "stop shipping
+  tombstone content to new devices" S-7 obligation; S-7 still owes the `dead_letters` sweep.
+  Re-proven on the real stack (13-scenario torture tier green). **Session-3 approval to open S-4/③
+  is still owed** — do NOT open them until the owner signs off.
+- **Owner gate owed (2026-07-23):** Session 3 (S-6) done — see the session log + D-039..D-046.
 - **Owner gate passed (2026-07-22):** Session 2 approved — D-037 conflict semantics
   (later-arrival wins + displaced-value flag), D-038 interim stances (DELETEs
   dead-letter until S-6; archived_at/resolved_at unsynced until their write flows;
@@ -197,3 +200,11 @@ lives in §4 — this board tracks status, not prose.
   findings refuted. **Owner gate owed before S-4/③** — D-045 tombstone-sync stance choice
   (`spec-delta.md`), and S-7 inherits: stop shipping tombstone content to new devices + sweep
   `dead_letters`.
+- **2026-07-25 · Session 3 follow-up — bucket-filter (D-046).** Owner resolved the D-045 tombstone
+  sync gate: switched from sync-down-and-filter to **bucket-filter** (`WHERE deleted_at IS NULL` in
+  `infra/powersync/sync_rules.yaml`). Deletes now propagate as checkpoint row-removals; the client
+  schema drops `deleted_at` entirely (clients never hold tombstones); deleted content never ships to
+  a device enrolled after a delete — H1 satisfied structurally, which discharges that S-7 obligation
+  (only the `dead_letters` sweep remains). Server-side S-6 logic unchanged. Torture assertions
+  flipped from "tombstone visible on client" to "row removed"; all 13 scenarios re-proven on the
+  real stack; unit tier unchanged (39). Session-3 approval to open S-4/③ still owed.

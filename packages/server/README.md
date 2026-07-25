@@ -36,9 +36,12 @@ S-3: there is no `current_odo` column anywhere; derive it with
 
 ## The delete model in one paragraph (S-6)
 
-A delete never removes a row — the DELETE handler writes a tombstone (`deleted_at`
-+ `deleted_by`/`deleted_by_device`/`deleted_via`), synced down so every device
-hides the row (`deleted_at IS NULL` filter). `deleted_at` is a first-class column
+A delete never removes a row on the server — the DELETE handler writes a
+tombstone (`deleted_at` + `deleted_by`/`deleted_by_device`/`deleted_via`). The
+PowerSync buckets carry only live rows (`WHERE deleted_at IS NULL`, D-046), so
+the tombstone drops the row out of the bucket and every device sees the delete as
+a checkpoint **row-removal** — no tombstone content ever reaches clients, and a
+device enrolled after a delete never receives it (H1). `deleted_at` is a first-class column
 in the `column_versions` ledger, so delete-vs-edit and delete-vs-undo races reuse
 the base_version machinery (`planDelete` mirrors `planPatch`). The delete wins
 visibility in both arrival orders and the losing edit is never silently absorbed:
@@ -53,9 +56,9 @@ one transaction (peers see car + children gone in one checkpoint); a reading
 arriving for a deleted car is kept tombstone-born and flagged `late-child`, never
 dropped, never resurrecting the parent. DELETE replay on a tombstone is a noop;
 the D-038 DELETE dead letters are terminal (no auto-replay, D-044). Physical purge
-is S-7, a distinct mechanism. Server-managed columns clients mirror
-(`record_version`, `deleted_at`) are accepted-and-ignored by the strict PUT/PATCH
-schemas, so the undo re-INSERT never dead-letters. A multi-car batch can deadlock
+is S-7, a distinct mechanism. Server-managed columns are accepted-and-ignored by
+the strict PUT/PATCH schemas (`record_version`, which clients mirror, and
+`deleted_at` for robustness), so the undo re-INSERT never dead-letters. A multi-car batch can deadlock
 a concurrent opposite-order batch (the car lock orders a car before its own
 children, not two cars); such a transient error is retried, never dead-lettered —
 `upload.ts` classifies retryable SQLSTATEs so a valid op is never lost to

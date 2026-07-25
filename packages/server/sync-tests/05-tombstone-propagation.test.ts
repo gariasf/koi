@@ -1,9 +1,9 @@
 /**
- * S-6 (D-039): a delete is a tombstone that syncs down. One device deletes a
- * reading; the tombstone (deleted_at set) reaches BOTH clients, so the row is
- * hidden everywhere (`deleted_at IS NULL` filter), the canonical row survives
- * (no physical removal), attribution is recorded server-side, and nothing
- * dead-letters or flags — a clean delete is not a review event.
+ * S-6 (D-039/D-046, bucket-filter): a delete is a server-side tombstone; the row
+ * leaves the live bucket, so it is REMOVED from every client via a checkpoint
+ * row-removal (no tombstone content ever ships). The canonical row survives on
+ * the server (no physical removal — attribution recorded there), and a clean
+ * delete neither dead-letters nor flags — it is not a review event.
  */
 
 import { afterAll, beforeAll, expect, it } from 'vitest';
@@ -32,7 +32,7 @@ afterAll(async () => {
   await db.end();
 });
 
-it('a delete tombstones + propagates to every device; the row is hidden, not removed', async () => {
+it('a delete tombstones server-side + removes the row from every device', async () => {
   const A = makeClient('a5t');
   const B = makeClient('b5t');
   try {
@@ -71,19 +71,13 @@ it('a delete tombstones + propagates to every device; the row is hidden, not rem
     expect(server.deleted_via).toBe('direct');
     expect(Number(server.record_version)).toBe(2); // create v1 → tombstone v2
 
-    // Both clients: tombstone synced down (row present with deleted_at set), so
-    // the live-filtered view hides it while the row itself is preserved.
+    // Both clients: the row left the live bucket, so it is removed locally — no
+    // tombstone content on the device at all.
     for (const c of [A, B]) {
       await waitFor(async () => {
-        const rows = await c.getAll<{ deleted_at: string | null }>(
-          `SELECT deleted_at FROM odometer_readings WHERE id = 'odo-1'`,
-        );
-        return rows[0]?.deleted_at != null ? true : null;
-      }, 'tombstone propagated to client');
-      const live = await c.getAll(
-        `SELECT id FROM odometer_readings WHERE id = 'odo-1' AND deleted_at IS NULL`,
-      );
-      expect(live).toHaveLength(0);
+        const rows = await c.getAll(`SELECT id FROM odometer_readings WHERE id = 'odo-1'`);
+        return rows.length === 0 ? true : null;
+      }, 'delete propagated as a row-removal to client');
     }
 
     // Clean delete: no flags, no dead letters.

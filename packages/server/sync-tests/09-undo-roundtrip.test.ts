@@ -1,9 +1,10 @@
 /**
- * S-6 undo-survives-sync (D-040, inv.31): the deleting device's undo re-INSERTs
- * the row (INSERT OR REPLACE of the captured row, carrying record_version — the
- * dead-letter trap that must NOT fire) → the server resurrects it flag-free and
- * the row comes back on EVERY device. A foreign device cannot silently resurrect
- * another device's delete: its re-create keeps the tombstone and is flagged.
+ * S-6 undo-survives-sync (D-040, inv.31): under bucket-filter the delete removes
+ * the row locally, so the undo re-INSERTs the captured row (carrying
+ * record_version — the dead-letter trap that must NOT fire) → the server
+ * resurrects it flag-free and the row comes back on EVERY device. A foreign
+ * device cannot silently resurrect another device's delete: its re-create keeps
+ * the tombstone (row stays gone) and is flagged.
  */
 
 import { afterAll, beforeAll, beforeEach, expect, it } from 'vitest';
@@ -58,23 +59,22 @@ it('same-device undo resurrects flag-free, on every device — record_version in
     }, 'odo-1 present on A');
 
     await A.execute(`DELETE FROM odometer_readings WHERE id = 'odo-1'`);
-    // Wait for the tombstone to round-trip so the undo hits INSERT OR REPLACE on
-    // a locally-present tombstoned row (the F19/F23 path).
+    // Under bucket-filter the delete removes odo-1 from A locally (the row left
+    // the live bucket) — exactly the inv.31 state: the toast closure, not the
+    // local row, holds the data to undo.
     await waitForQueueDrained(A, 'A');
     await waitFor(async () => {
-      const r = await A.getAll<{ deleted_at: string | null }>(
-        `SELECT deleted_at FROM odometer_readings WHERE id = 'odo-1'`,
-      );
-      return r[0]?.deleted_at != null ? true : null;
-    }, 'tombstone synced back to A');
+      const r = await A.getAll(`SELECT id FROM odometer_readings WHERE id = 'odo-1'`);
+      return r.length === 0 ? true : null;
+    }, 'delete removed odo-1 from A');
 
     // Undo: re-INSERT the captured row INCLUDING record_version (which the client
-    // schema carries) and a null deleted_at. record_version must be accepted and
-    // ignored, not dead-lettered.
+    // schema still carries — it syncs down). record_version in the PUT opData
+    // must be accepted and ignored, not dead-lettered (the F19 trap).
     await A.execute(
-      `INSERT OR REPLACE INTO odometer_readings
-         (id, car_id, reading_km, recorded_date, source, device_id, record_version, deleted_at)
-       VALUES (?, ?, ?, ?, 'manual', 'device-A', ?, NULL)`,
+      `INSERT INTO odometer_readings
+         (id, car_id, reading_km, recorded_date, source, device_id, record_version)
+       VALUES (?, ?, ?, ?, 'manual', 'device-A', ?)`,
       ['odo-1', CAR_ID, 90000, '2026-07-21', 1],
     );
     await waitForQueueDrained(A, 'A');
@@ -92,12 +92,10 @@ it('same-device undo resurrects flag-free, on every device — record_version in
     const dl = await db.query(`SELECT count(*)::int AS n FROM dead_letters`);
     expect(dl.rows[0].n).toBe(0); // record_version in opData did NOT dead-letter
 
-    // The row is live again on BOTH devices.
+    // The row is back in the live bucket on BOTH devices.
     for (const c of [A, B]) {
       await waitFor(async () => {
-        const r = await c.getAll(
-          `SELECT id FROM odometer_readings WHERE id = 'odo-1' AND deleted_at IS NULL`,
-        );
+        const r = await c.getAll(`SELECT id FROM odometer_readings WHERE id = 'odo-1'`);
         return r.length === 1 ? true : null;
       }, 'reading live again on client');
     }
@@ -129,23 +127,20 @@ it('a foreign device cannot silently resurrect another device delete — kept de
       }, 'odo-2 on both clients');
     }
 
-    // A deletes it; the tombstone reaches B.
+    // A deletes it; B sees odo-2 removed (it left the live bucket).
     await A.execute(`DELETE FROM odometer_readings WHERE id = 'odo-2'`);
     await waitForQueueDrained(A, 'A');
     await waitFor(async () => {
-      const r = await B.getAll<{ deleted_at: string | null }>(
-        `SELECT deleted_at FROM odometer_readings WHERE id = 'odo-2'`,
-      );
-      return r[0]?.deleted_at != null ? true : null;
-    }, 'tombstone synced to B');
+      const r = await B.getAll(`SELECT id FROM odometer_readings WHERE id = 'odo-2'`);
+      return r.length === 0 ? true : null;
+    }, 'delete removed odo-2 from B');
 
     // B re-creates it with a DIFFERENT reading (a stale create / import, not an
     // undo). It keeps the reading's original device_id (the closure's value), so
     // only reading_km differs.
     await B.execute(
-      `INSERT OR REPLACE INTO odometer_readings
-         (id, car_id, reading_km, recorded_date, source, device_id, deleted_at)
-       VALUES (?, ?, ?, ?, 'manual', 'device-A', NULL)`,
+      `INSERT INTO odometer_readings (id, car_id, reading_km, recorded_date, source, device_id)
+       VALUES (?, ?, ?, ?, 'manual', 'device-A')`,
       ['odo-2', CAR_ID, 99999, '2026-07-21'],
     );
     await waitForQueueDrained(B, 'B');
@@ -164,13 +159,12 @@ it('a foreign device cannot silently resurrect another device delete — kept de
     const server = await db.query(`SELECT deleted_at FROM odometer_readings WHERE id = 'odo-2'`);
     expect(server.rows[0].deleted_at).not.toBeNull(); // NOT resurrected
 
-    // B, too, sees it stay hidden (server state wins).
+    // B's optimistic local copy is removed again once the server rejects the
+    // re-create into a tombstone (server state wins) — odo-2 stays gone on B.
     await waitFor(async () => {
-      const r = await B.getAll(
-        `SELECT id FROM odometer_readings WHERE id = 'odo-2' AND deleted_at IS NULL`,
-      );
+      const r = await B.getAll(`SELECT id FROM odometer_readings WHERE id = 'odo-2'`);
       return r.length === 0 ? true : null;
-    }, 'odo-2 stays hidden on B');
+    }, 'odo-2 stays removed on B');
     const dl = await db.query(`SELECT count(*)::int AS n FROM dead_letters`);
     expect(dl.rows[0].n).toBe(0);
   } finally {

@@ -59,10 +59,7 @@ it('deleting a car cascade-tombstones its readings atomically (server backstop)'
     });
     for (const c of [A, B]) {
       await waitFor(async () => {
-        const r = await c.getAll(
-          `SELECT id FROM odometer_readings WHERE car_id = ? AND deleted_at IS NULL`,
-          [CAR_ID],
-        );
+        const r = await c.getAll(`SELECT id FROM odometer_readings WHERE car_id = ?`, [CAR_ID]);
         return r.length === 2 ? true : null;
       }, 'two readings live on both clients');
     }
@@ -92,18 +89,16 @@ it('deleting a car cascade-tombstones its readings atomically (server backstop)'
       expect(new Date(k.deleted_at).getTime()).toBe(new Date(rows.carDel).getTime());
     }
 
-    // Both clients: car + both readings hidden (tombstones propagated).
+    // Both clients: car + both readings removed together (they left the bucket
+    // in one replication transaction → one checkpoint).
     await waitForQueueDrained(A, 'A');
     await waitForQueueDrained(B, 'B');
     for (const c of [A, B]) {
       await waitFor(async () => {
-        const car = await c.getAll(`SELECT id FROM cars WHERE id = ? AND deleted_at IS NULL`, [CAR_ID]);
-        const kids = await c.getAll(
-          `SELECT id FROM odometer_readings WHERE car_id = ? AND deleted_at IS NULL`,
-          [CAR_ID],
-        );
+        const car = await c.getAll(`SELECT id FROM cars WHERE id = ?`, [CAR_ID]);
+        const kids = await c.getAll(`SELECT id FROM odometer_readings WHERE car_id = ?`, [CAR_ID]);
         return car.length === 0 && kids.length === 0 ? true : null;
-      }, 'car + children hidden on client');
+      }, 'car + children removed on client');
     }
     const dl = await db.query(`SELECT count(*)::int AS n FROM dead_letters`);
     expect(dl.rows[0].n).toBe(0);

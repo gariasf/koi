@@ -6,30 +6,27 @@ records where the build refines, defers, or flags a spec point, for owner review
 
 ## S-6 delete model (Build Session 3, D-039..D-045)
 
-### Tombstone sync stance — owner decision wanted (D-045)
-S-6 ships **sync-down-and-filter** per the Session 3 brief: `deleted_at` is in the PowerSync
-sync rules, tombstoned rows sync down, and clients filter `deleted_at IS NULL`. The
-adversarial design review surfaced a cleaner alternative that is worth an explicit decision:
+### Tombstone sync stance — DECIDED: bucket-filter (D-046, 2026-07-25)
+The owner chose **bucket-filter** over the sync-down-and-filter stance S-6 originally shipped.
+`infra/powersync/sync_rules.yaml` now selects only live rows (`WHERE deleted_at IS NULL`):
 
-- **Bucket-filter** (`WHERE deleted_at IS NULL` in `infra/powersync/sync_rules.yaml`): a
-  delete propagates to peers as a checkpoint **row-removal** instead of a tombstone row.
-  - No "filter `deleted_at IS NULL` everywhere" burden on every client query (a single
-    missed filter leaks a deleted record back into the trail/economy/money surfaces).
-  - Cascade atomicity is preserved (one checkpoint removes car + children together).
-  - Undo still works: the inv.31 toast closure holds the row on the deleting device and
-    re-INSERTs it (→ PUT → server clears `deleted_at` → the row re-enters the bucket).
-  - **H1 (product law):** deleted content never ships to a device enrolled *after* the
-    delete. Under sync-down-and-filter, a new phone bootstraps the full content of records
-    the user destroyed under inv.30's typed confirm ("There is no undo") until S-7 purges.
+- A delete propagates as a checkpoint **row-removal**, not a tombstone row.
+- No "filter `deleted_at IS NULL` everywhere" burden on client queries — a deleted row is
+  simply absent from the device, so it cannot leak into the trail/economy/money surfaces.
+- Cascade atomicity preserved (one checkpoint removes car + children together).
+- Undo still works: the inv.31 toast closure holds the row on the deleting device and
+  re-INSERTs it (→ PUT → server clears `deleted_at` → the row re-enters the bucket).
+- **H1 (product law) satisfied structurally:** a device enrolled *after* a delete bootstraps
+  only live rows, so deleted content never ships to it. No timed purge is relied on for this.
 
-The two are functionally equivalent for a device that already held the row; they differ on
-the new-device-exposure (H1) and the client-filter burden. Kept as sync-down-and-filter for
-now to honor the brief; **owner to confirm or switch to bucket-filter before clients ship.**
+Server-side S-6 logic is unchanged (tombstones still exist in Postgres); only the sync surface
+changed. Proven on the real stack — the full 13-scenario torture tier passes with row-removal
+semantics.
 
-### S-7 obligations this stance creates
-- Purge must **stop shipping tombstone content to new devices** — either switch to
-  bucket-filter, or claw tombstone content off replicas (and out of the bucket) at purge.
-- Purge must **sweep `dead_letters`** — they retain full client payloads and may hold
+### S-7 obligations
+- ~~Stop shipping tombstone content to new devices~~ — **discharged by bucket-filter (D-046):**
+  new devices never receive tombstoned rows.
+- Purge must still **sweep `dead_letters`** — they retain full client payloads and may hold
   content a user has asked to erase (D-044).
 
 ### Deferred to S-4 / S-14
