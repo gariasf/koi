@@ -1,78 +1,69 @@
-# Next session kickoff — Session 4: scaffold @koi/mobile → S-4 review queue
+# Next session kickoff — Session 5: ③ local-only → sync-on migration
 
-Paste the block below to start Session 4. (Working-memory artifact; refresh or delete it
-once Session 4 is underway.)
+Paste the block below to start Session 5, **after** signing off Session 4 at the gate
+(the client now exists; ③ and passkey were the stop line). Working-memory artifact;
+refresh or delete it once Session 5 is underway.
 
 ---
 
-Build phase, Session 4. Repo live: ~/Documents/gariasf/koi, remote github.com/gariasf/koi,
-CI green (conformance + checks + sync-tests torture tier). Sessions 1–3 done and gated:
-@koi/domain live (vectors md5 f93b1d6b…, untouchable); sync SERVER complete for cars +
-odometer_readings — ⑤ base_version per-column protocol (D-037), exhaustive op-handling +
-dead-letters (D-038), and the full S-6 delete model (D-039..D-046: tombstones, same-device
-undo resurrection, atomic cascade, late-child, edit-vs-delete, retryable-error handling)
-all proven on two @powersync/node clients (13-scenario torture tier). Tombstone sync uses
-**bucket-filter** (D-046): buckets carry only live rows (`WHERE deleted_at IS NULL`), a
-delete is a checkpoint row-removal, clients hold NO deleted_at column. There is still NO
-client app — every client-facing blocker is gated on that.
+Build phase, Session 5. Repo: ~/Documents/gariasf/koi, remote github.com/gariasf/koi.
+Sessions 1–4 done: `@koi/domain` live (vectors md5 f93b1d6b…, untouchable, now also proven
+on the Hermes RN ships — D-050); the sync server complete for cars + odometer_readings
+(⑤ base_version D-037, exhaustive op-handling D-038, the full S-6 delete model
+D-039..D-046 with bucket-filter); and **the client exists** — `@koi/mobile` on Expo SDK 57
+/ RN 0.86 (D-048) with the PowerSync client honouring the whole S-6 contract (D-049) and
+the S-4 review queue + `resolved_at` latch (D-047). Two sync tiers are green in CI: the
+server's 13 scenarios on purpose-built clients, and 9 scenarios driving the APP's own
+schema/connector/write functions (the same module also passes on the iOS simulator).
 
-Read first: koi/CLAUDE.md (ritual + ground rules), docs/build/BOARD.md (Now/Next + buckets
-D and H), then: decisions.md D-032 (architecture LOCKED), D-037/D-038 (protocol as built),
-D-039..D-046 (delete model + bucket-filter), packages/server/README.md (the protocol + delete
-model in two paragraphs), docs/build/spec-delta.md (bucket-filter + deferred items),
-docs/investigation/04-stack.md (Bundle A / Expo stack + niche-tool exit plans), and
-koi-core-spec.md §D (the app surface: capture, ledger, record, Insights) + §B2 inv.31/inv.30.
-Architecture is LOCKED (D-032) — build, don't relitigate.
+Read first: koi/CLAUDE.md (ritual + ground rules), docs/build/BOARD.md (Now/Next, buckets
+A and D), then: decisions.md D-032 (architecture LOCKED), D-037/D-038 (protocol),
+D-039..D-046 (delete model + bucket-filter), D-047 (the S-4 queue + latch), D-049 (the
+client contract as built), packages/server/README.md (protocol · delete model · latch, one
+paragraph each), packages/mobile/README.md (what is load-bearing on the client),
+docs/build/spec-delta.md, and koi-core-spec.md §H1/§C8 (erase + settings) plus §B2 inv.31.
+Architecture is LOCKED — build, don't relitigate.
 
-This session stands up the client. Goals, in order:
+This session does ③ — **the local-only → sync-on migration, lossless** (the last ⛔ in
+bucket A before auth). The constitutional floor (D-006) is that the app is fully
+functional local-only with no account, so the migration is the moment a user who has been
+keeping records privately turns sync on:
 
-0. **Prep (board bucket H):** pin the Expo SDK version + re-confirm the Phase-4 stack fits
-   (Bundle A: Expo/RN, one codebase iOS+Android; Skia + Victory Native XL native charts).
-   Record the pin + any re-confirmation as a D-0xx.
+1. **Local-only mode must exist first.** Today `@koi/mobile` always connects. Split it:
+   a local-only database (no connector, no tokens, no endpoint) that is the default, and
+   an explicit opt-in that enables sync. Decide and record how the local-only database
+   relates to the synced one — same file promoted in place, or a copy-forward migration —
+   and why (the promote-in-place path has to prove that every pre-existing row uploads
+   exactly once).
+2. **Lossless, and provably so.** Every local row must arrive server-side with its
+   identity intact: ids are already UUIDv7 minted client-side, but `record_version` does
+   not exist locally before sync, `household_id` is server-assigned, and readings must
+   still land under the right car. Expect a PUT storm — check it against the accept-with-2xx
+   contract, the 20 MiB body limit, and PowerSync's `getCrudBatch` chunking rather than one
+   giant transaction.
+3. **Torture-tier it** (the tier now has a home): local-only writes → enable sync → every
+   row present exactly once, no duplicate ids, no dead letters, no spurious flags (a
+   first-upload create-then-edit must not raise missing-base-version — D-037 law 3 already
+   covers the same-device case, so prove it end to end). Then: enable sync on a SECOND
+   device that also has local-only data (two histories, one household) and record what
+   happens — this is where S-9's import remap thinking (D-023) starts to bite.
+4. **The settings surface** (§C8): sync is strictly opt-in, and the privacy card's current
+   copy ("Your data never leaves this device…") becomes false the moment it is on. Do NOT
+   rewrite the privacy page (release gate, owner-reviewed) — but the in-app card must not
+   lie, so record what it says in both states in spec-delta.md.
 
-1. **Scaffold @koi/mobile** — Expo/React Native (TypeScript), added to the pnpm+Turbo
-   workspace. Wire `@koi/domain` in UNCHANGED (purity + golden vectors stay intact; the
-   on-device engine is the point). Ops stance holds (D-025): local builds, NO OTA / EAS
-   Update, telemetry off (EXPO_NO_TELEMETRY=1). Mind the Expo gotchas already logged (board
-   D): Link.AppleZoom needs `<Link asChild>` + StyleSheet.flatten; expo-symbols falls back to
-   emoji on Android (bundle domain glyphs).
+Do NOT start: better-auth passkey full round-trip (after ③), S-7 erase-everywhere, the
+archive write flow, the web companion, the privacy-page rewrite, income tracking, the §C
+app surface / charts (bucket D). `@koi/domain` stays untouched unless a pure check emerges;
+purity bans + vectors stay as-is. Popular tools (niche ones keep exit plans); telemetry off.
+Commits authored as owner only — no co-author trailer. Update BOARD.md + session log +
+decisions.md before ending. Stop for owner review before passkey work begins.
 
-2. **PowerSync client connector — honor the contracts the server already enforces:**
-   - Client schema: `trackPrevious` ON (the base_version echo, D-037). record_version is a
-     column (syncs down, echoed as base). **NO deleted_at column** — bucket-filter (D-046)
-     means clients never receive tombstones; a delete arrives as a row-removal. (Mirror
-     packages/server/sync-tests/helpers.ts, which is the reference client schema.)
-   - Upload connector: map CrudEntry → { op, type, id, data: opData, old: previousValues },
-     POST { deviceId, batch } to /upload; **throw on non-2xx so PowerSync retries** (the
-     server's retryable-error path — deadlock etc. — depends on this; accept-with-2xx means
-     non-2xx is only infra failure).
-   - Auth: use the KOI_DEV_AUTH token mint for now (better-auth/passkey is a later session).
-   - **Client delete contract (pinned by S-6, must match):** delete = SQL DELETE (→ DELETE
-     op); deleting a car = per-child DELETEs (children FIRST) then the car DELETE (D-041, so
-     each child's base echo runs per-child conflict analysis); undo = re-INSERT the captured
-     row from the toast closure (D-040, inv.31) — NEVER `UPDATE deleted_at`.
-   - Prove the S-6 semantics from the REAL app (not just the node torture tier): a delete
-     hides the row, undo restores it, a car delete cascades, and conflict flags surface.
+## Also outstanding (not this session unless the owner says so)
 
-3. **S-4 client review queue (the ⛔ blocker this unlocks)** — where the flags this
-   architecture produces finally land. Render + let the user resolve every kind:
-   column-conflict, missing-base-version, put-on-existing, dead-lettered-op, delete-conflict,
-   resurrected, write-on-tombstone, late-child, and the @koi/domain kinds (odometer/car).
-   Reuse the import "Review now" pattern (koi-core-spec §D / D-013): named records, user
-   decides, nothing auto-repaired. Add the `resolved_at` write flow and join `resolved_at`
-   to the sync rules WITH that flow (until then it is a dead-letter trap, exactly like
-   archived_at — see the sync_rules.yaml note). Flags reference rows that, if deleted, are no
-   longer on the device (bucket-filter) — the review UI leans on the flag payload
-   (displaced_value / incoming_value), which already carries what it needs.
-
-4. **On-device (RN-bundled) Hermes golden-vector CI step (board bucket C)** — now possible
-   with @koi/mobile: run the golden vectors on the RN-0.8x-bundled Hermes, discharging the
-   Ⓒ proxy-Hermes caveat. Keep the standalone-Hermes (jsvu) CI job too.
-
-Do NOT start: ③ local-only→sync migration (separate blocker, after S-4), better-auth passkey
-full round-trip (after ③), S-7 erase-everywhere, archive write flow, web companion, the
-privacy-page rewrite (release gate — its own task, owner-reviewed copy), income tracking.
-@koi/domain stays untouched unless a pure check emerges; purity bans + vectors stay as-is.
-Popular tools (niche ones keep exit plans); telemetry off. Commits authored as owner only —
-no co-author trailer. Update BOARD.md + session log + decisions.md before ending. Stop for
-owner review before ③/passkey work begins.
+- **Android build path is unverified** — no JDK on the dev machine. Bundle A's "one
+  codebase" claim needs one Gradle run plus the Android-over-network initial-sync
+  measurement (bucket B).
+- **A device/emulator golden-vector run** is the narrow remainder of Ⓒ: the per-OS Unicode
+  provider (`normalize('NFC')`) is the one thing D-050's host build cannot cover.
+- The capture-feel spike seed is still unmined; `spikes/` deletes once it is.

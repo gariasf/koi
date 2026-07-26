@@ -1,16 +1,109 @@
-# @koi/mobile — skeleton
+# @koi/mobile
 
-Becomes the Expo/React Native app (iOS + Android from one codebase — Bundle A,
-D-024/D-029). Not scaffolded yet; first steps live on the build board (bucket D/H):
+The Expo / React Native app — iOS and Android from one codebase (Bundle A,
+D-024/D-029), with `@koi/domain` running unmodified on the device. Pinned to
+**Expo SDK 57 (`expo ~57.0.8`) = React Native 0.86 + React 19.2.3** (D-048);
+companion versions come from Expo's own `bundledNativeModules.json`, not
+npm-latest, so `expo-doctor` stays at 20/20.
 
-- Pin the Expo SDK and re-confirm the SDK-sensitive Phase-4 claims before relying on
-  them (spike ran SDK 57; evidence base was SDK 56).
-- Capture surface + Insights chart seed: `../../../spikes/capture-feel/src`
-  (Ⓐ/Ⓑ-validated) — mine, don't copy blindly; spike code is never git-added.
-- Owns the on-device (RN-bundled) Hermes golden-vector CI step owed from Spike Ⓒ.
-- Known gotchas already boarded: `Link.AppleZoom` needs `asChild` + flattened style;
-  `expo-symbols` falls back to emoji on Android; iOS large-title vs nested-ScrollView
-  content inset.
+This is not the app surface yet. §C's four-tab shell, the capture sheets and the
+Insights charts are BOARD bucket D. What exists is the sync client and the
+surfaces that prove it: a garage, a car page, and the S-4 review queue.
 
-Ops stance (D-025): local builds, no OTA/EAS Update, `EXPO_NO_TELEMETRY=1`,
-~6-month SDK upgrade windows.
+## What is load-bearing here
+
+**The client half of the sync contracts** (`src/sync/`, `src/data/`). The server
+enforces these and its conflict analysis depends on the client keeping them:
+
+- `trackPrevious` ON, `record_version` as a column, and **no `deleted_at`
+  column** — under bucket-filter (D-046) a delete arrives as a checkpoint
+  row-removal, so there is nothing to filter and no tombstone on the device.
+- A delete is a **SQL DELETE**; an undo is a **re-INSERT of the row the toast
+  closure captured** (inv.31 / D-040), never an `UPDATE deleted_at`.
+- Deleting a car sends **per-child DELETEs first, then the car's own, in ONE
+  client transaction** (D-041). A car has no undo (inv.30) and its confirmation
+  is typed.
+- The connector **throws on non-2xx** so PowerSync retries: the server accepts
+  with 2xx and flags what it cannot apply, so a non-2xx is infra, and swallowing
+  it would discard a real write.
+
+**The S-4 review queue** (`src/review/`, `app/review/`) renders every flag kind
+the write-path can raise and lets the user resolve each one — nothing is repaired
+automatically, and no action is offered that the architecture cannot deliver
+(D-047). `resolved_at` is the one field a client writes on a flag.
+
+**`@koi/domain` is wired in unchanged.** The car page derives the current
+odometer through `deriveCurrentOdometerKm` (S-3: no stored `current_odo`
+anywhere) and validates a new reading with `checkOdometerReading` — the same pure
+function the server runs on upload.
+
+## Proving it
+
+```sh
+pnpm --filter @koi/mobile test        # unit tier: the review policy + copy layer
+pnpm --filter @koi/mobile test:sync   # the APP's modules against a real stack (owns :4000/:5433/:8080)
+```
+
+`test:sync` runs the nine-scenario suite in `src/selftest/scenarios.ts` under
+Node with `@powersync/node`. The **same module** runs on a device from the
+self-test screen, which is the point: one set of scenarios, two runtimes, no
+re-implementation that could be right while the app is wrong.
+
+```sh
+# on the simulator — real Hermes, real op-sqlite, real PowerSync RN SDK
+cd infra && docker compose -p koi up -d --wait postgres
+pnpm --filter @koi/server db:migrate && docker compose -p koi up -d powersync
+KOI_DEV_AUTH=1 pnpm --filter @koi/server dev      # :4000
+
+EXPO_NO_TELEMETRY=1 pnpm --filter @koi/mobile exec expo prebuild --platform ios
+EXPO_NO_TELEMETRY=1 EXPO_PUBLIC_KOI_SELFTEST=1 \
+  pnpm --filter @koi/mobile exec expo run:ios --device "iPhone 17 Pro"
+```
+
+`EXPO_PUBLIC_KOI_SELFTEST=1` sends the app straight to the scenarios on launch,
+so a screenshot of a launched app is the evidence. Without it that screen refuses
+to run: it writes and deletes real records.
+
+The second device in those races is a direct `POST /upload` with a different
+`deviceId` — not a shortcut around the protocol but the protocol itself,
+indistinguishable server-side from another phone.
+
+## The RN-bundled Hermes vectors
+
+```sh
+pnpm --filter @koi/domain conformance                     # builds the bundle, checks V8
+KOI_RN_HERMES_BIN=/path/to/hermes node scripts/rn-hermes-conformance.mjs
+```
+
+CI's `conformance-rn-hermes` job builds that VM from the exact `facebook/hermes`
+tag the installed react-native pins, asserts compiler identity and bytecode
+version, and runs the golden vectors twice — from source and as bytecode from
+RN's own `hermesc` (D-050). The jsvu Hermes in the other job is **not** this
+engine: it is HBC 96 against RN's 98.
+
+## Ops stance (D-025 / D-048)
+
+Local builds only. No EAS, no OTA — `expo-updates` is not installed. `ios/` and
+`android/` are generated by `expo prebuild` and gitignored (CNG), so a clean
+checkout regenerates them. `EXPO_NO_TELEMETRY=1` is the live switch
+(`DO_NOT_TRACK` is a no-op for Expo). No `metro.config.js` and no
+`babel.config.js`: SDK 57 derives the monorepo watch folders and injects the
+worklets plugin itself, and hand-written monorepo boilerplate is now an
+anti-pattern. pnpm's isolated `node_modules` works — `nodeLinker: hoisted` is not
+needed, despite both Expo's and PowerSync's own guidance reaching for it.
+
+## Known gaps in this build
+
+- **Light mode only.** Dark mode is co-primary in the spec (§D3 — authored, never
+  an inversion pass); this scaffold ships the light pair. The real palette work
+  belongs with the app surface.
+- **Android unverified this session** — no JDK on the dev machine. iOS was built
+  and run; the Gradle path is owed before Bundle A's "one codebase" claim is
+  fully earned.
+- **The boarded Expo gotchas are still owed** in real UI: `Link.AppleZoom` needs
+  `<Link asChild>` and a flattened child style (an array style there is a hard
+  dev error, not a warning), and `expo-symbols` needs the object form of `name`
+  plus a fallback or Android renders nothing. Neither is used yet.
+- The capture surface + chart seeds in `../../../spikes/capture-feel/src` are
+  still unmined; spike code is never git-added.
+- a11y is deprioritised near-term (D-028); the end-state pass (D-014) stands.

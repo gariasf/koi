@@ -48,4 +48,9 @@ pnpm install
 pnpm turbo run lint typecheck build test    # all packages
 pnpm --filter @koi/domain test              # one package
 pnpm --filter @koi/domain conformance:all   # golden vectors: node + jsc + hermes
+pnpm turbo run test:sync --concurrency=1    # sync tiers vs a real stack — serial: shared host ports
 ```
+
+`@koi/mobile` builds locally only (no EAS, no OTA): `expo prebuild --platform ios`
+then `expo run:ios`. `EXPO_PUBLIC_KOI_SELFTEST=1` runs the S-6/S-4 scenarios on
+launch. Details in `packages/mobile/README.md`.

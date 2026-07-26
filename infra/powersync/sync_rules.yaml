@@ -6,9 +6,12 @@
 # per-column attribution ledger for the base_version protocol) and server-only
 # tables (dead_letters) never reach clients. record_version DOES sync down —
 # it is the version clients echo back as base_version on upload (S-2/S-5).
-# archived_at (archive flow) and resolved_at (S-4 review queue) are NOT
-# synced yet: a column clients can see locally but the server strict-rejects
-# on upload is a dead-letter trap — each joins the rules WITH its write flow.
+# archived_at (archive flow) is NOT synced yet: a column clients can see
+# locally but the server strict-rejects on upload is a dead-letter trap — it
+# joins the rules WITH its write flow. resolved_at DID join, with the S-4
+# review-queue resolve flow (D-047): `flags:PATCH` accepts the latch (and
+# nothing else about a flag), so the trap is closed. flags:PUT/DELETE stay
+# unhandled on purpose — a client never authors or destroys evidence.
 #
 # S-6 (D-046, bucket-filter): the buckets carry only LIVE rows —
 # `WHERE deleted_at IS NULL`. A delete sets deleted_at server-side, the row
@@ -29,4 +32,4 @@ bucket_definitions:
     data:
       - SELECT id, household_id, make, model, nickname, plate, fuel_type, year, tank_capacity_l, initial_odometer_km, record_version FROM cars WHERE deleted_at IS NULL
       - SELECT id, household_id, car_id, reading_km, recorded_date, source, device_id, record_version FROM odometer_readings WHERE deleted_at IS NULL
-      - SELECT id, household_id, record_table, record_id, car_id, column_name, kind, message, displaced_value, incoming_value, actor, device_id, record_version, created_at FROM flags
+      - SELECT id, household_id, record_table, record_id, car_id, column_name, kind, message, displaced_value, incoming_value, actor, device_id, record_version, created_at, resolved_at FROM flags

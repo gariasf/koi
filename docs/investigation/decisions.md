@@ -175,3 +175,149 @@ Format: `D-NNN · <date> · <status> — <one-line decision>. <why, one or two s
   the full torture tier (13 scenarios, two `@powersync/node` clients) passes with row-removal
   semantics: propagation, atomic cascade removal, late child never reaching clients as data, undo
   round-trip re-entry, foreign-device re-create staying removed.
+- D-047 · 2026-07-25 · LOCKED — **S-4 client review queue + the `resolved_at` write flow** (⛔ blocker
+  of D-033, Build Session 4). The queue lives in `@koi/mobile` and is where every flag this
+  architecture produces lands: all nine sync kinds (column-conflict · missing-base-version ·
+  put-on-existing · dead-lettered-op · delete-conflict · resurrected · write-on-tombstone ·
+  late-child · edit-after-delete) and all seven `@koi/domain` kinds, each named, explained in plain
+  words, and resolved by the user — nothing auto-repaired (the import "Review now" pattern, §B3/
+  D-013). A kind an older build does not know is still rendered, with the server's own message doing
+  the explaining; a flag is never silently dropped by the surface that exists to show it.
+  **The write flow:** `flags:PATCH` accepts `resolved_at` and NOTHING else about a flag, and
+  `resolved_at` joined `sync_rules.yaml` in the same change — a synced column with no accepting
+  handler is a dead-letter trap, the `archived_at` lesson (D-038), and `archived_at` still waits for
+  its own flow. `flags:PUT`/`flags:DELETE` stay OUT of the registry and dead-letter loudly: a client
+  must not author a flag the server never raised, nor destroy the record of one. The server stamps
+  its own clock and reads the client value as intent only (non-null = resolve, null = re-open, which
+  is how the undo toast reverses a mis-tap); resolution never touches `record_version`, which on a
+  flag row is the version of the FLAGGED record. The latch deliberately carries NO base_version
+  machinery, and that is not an exception to "never silent LWW" (D-037): the latch holds no user
+  content, its two states are both user intents, both visible, both one tap apart, and two devices
+  resolving the same flag agree by construction.
+  **Honesty rules the UI enforces** (§D5, and they are tested): a review screen never offers what
+  the architecture cannot deliver — a car never resurrects via PUT (inv.30) and only the deleting
+  device's own undo resurrects a reading (D-040), so for a DELETED record the queue offers "enter it
+  again as a new reading" (a new id, honestly a new record), never "restore". A restore of a
+  displaced value is an ordinary PATCH, analysed like any other, and drops columns the server would
+  strict-reject (`household_id`/`car_id`) so the act of reviewing can never itself dead-letter.
+  Because bucket-filter (D-046) means a deleted row is absent from the device, the queue names such
+  records from the flag payload (`displaced_value`/`incoming_value`) — the payload's reason to exist.
+  Proven end-to-end from the app (scenario tier): latch → server stamp → re-open, no dead letters.
+- D-048 · 2026-07-25 · LOCKED — **Expo SDK pinned + Phase-4 stack re-confirmed** (BOARD bucket H,
+  Build Session 4). Pin: **Expo SDK 57 (`expo ~57.0.8`) = React Native 0.86.0 + React 19.2.3**, with
+  every companion taken verbatim from `expo@57.0.8`'s `bundledNativeModules.json` rather than
+  npm-latest (react-native-screens ~4.26.0, safe-area-context ~5.7.0, gesture-handler ~2.32.0,
+  reanimated 4.5.0 with react-native-worklets 0.10.0 — a strict pair, worklets 0.11.x breaks it,
+  get-random-values ~1.11.0). `expo-doctor` 20/20. **PowerSync client: `@powersync/react-native`
+  2.0.0 + `@op-engineering/op-sqlite` 17.1.2, exact pins**, and `@powersync/node` bumped 0.19.4 →
+  0.20.0 so client and the reference test client sit on ONE `@powersync/common` (2.0.0) API — the
+  13-scenario torture tier re-greened unchanged on it. This pin bends the popular/mature rule
+  (D-022) knowingly: RN 0.82+ is bridgeless-only, and the 1.35.x line's only drivers are
+  legacy-bridge quick-sqlite and an adapter capped at op-sqlite ^15 — there is no mature path on
+  RN 0.86, and the only "safe" alternative would be re-litigating the whole Expo pin downward. Exit
+  plan unchanged (data is plain SQLite; engine swap = the Phase-3 exit to plain Postgres), plus a
+  standing check that `@powersync/common` resolves to exactly one copy. **Scaffold stances:** CNG —
+  `app.json` + `expo prebuild`, `ios/` and `android/` generated and gitignored, local builds only,
+  no EAS, no OTA (`expo-updates` not installed at all); no `metro.config.js` and no
+  `babel.config.js` (SDK 57's defaults already derive monorepo watch folders and inject the worklets
+  plugin — hand-written monorepo boilerplate is now an anti-pattern); `EXPO_NO_TELEMETRY=1` is the
+  live switch (`DO_NOT_TRACK` is a no-op for Expo, kept for other tools); TypeScript stays on the
+  workspace catalog (5.x) with `expo.install.exclude: ["typescript"]` — SDK 57's tooling *expects*
+  ~6.0.3 but nothing requires it, and fragmenting the single-version rule costs more than it buys
+  (a later catalog bump to ~6.0.3 is its own decision; TS 7 is blocked by typescript-eslint 8.x).
+  **pnpm's isolated node_modules SURVIVED contact** — Expo's guide and PowerSync's own reference app
+  both reach for `nodeLinker: hoisted`, and it proved unnecessary: `pod install` autolinked 294 pods
+  through `.pnpm/` paths, Metro resolved `@koi/domain` through its exports map with no alias, and the
+  app built and ran. D-025's stance stands unchanged. **Phase-4 charts re-confirmed on paper, not
+  installed:** Skia 2.6.2 + Victory Native XL 41.26.0 are the SDK-57-blessed pair and their peers
+  accept the pin; XL's Phase-4 "quiet spell" ended (8 releases in a month) but it stays the niche
+  exception, and its exit (rebuild two chart types on raw Skia + d3-scale) got cheaper — d3-scale and
+  d3-shape are already its transitive deps. Neither is installed until the chart work, so this
+  session ships no unused native pods.
+- D-049 · 2026-07-25 · LOCKED — **The S-6 client contract, built and proven from the real app**
+  (Build Session 4). `@koi/mobile` holds the client half of D-039..D-046 exactly as the server
+  pinned it: client schema mirrors `sync_rules.yaml` with `trackPrevious` ON (the base_version echo
+  is what makes D-037 work at all), `record_version` as a column, and **no `deleted_at` column
+  anywhere** — under bucket-filter a delete arrives as a checkpoint row-removal, so there is nothing
+  to filter. A delete is a SQL DELETE; an undo is a re-INSERT of the row captured by the toast
+  closure (inv.31/D-040), never an `UPDATE deleted_at`; a car delete sends per-child DELETEs FIRST
+  then the car's own, all in ONE client transaction (D-041) so each known child gets its own
+  base-echo conflict analysis and peers still see car + children leave together; a car has no undo
+  and the confirmation is typed (inv.30/§C4). The connector maps `CrudEntry` →
+  `{op, type, id, data: opData, old: previousValues}`, posts `{deviceId, batch}`, and **throws on
+  non-2xx** so PowerSync retries — the server's retryable-error path (D-040) depends on it. Auth is
+  the `KOI_DEV_AUTH` mint until better-auth. **Proof, not assertion:** nine scenarios (versioned
+  round trip · delete removes the row · undo restores it flag-free · atomic cascade · column-conflict
+  from a peer · write-on-tombstone · late-child · a domain violation reaching the queue · the S-4
+  latch round trip) run from ONE module in two places — under Node in CI against the real stack with
+  the app's own schema/connector/write functions (`@koi/mobile` sync tier, `turbo run test:sync
+  --concurrency=1` alongside the server's 13), and on the iOS simulator through real Hermes +
+  op-sqlite + the RN SDK. The second device in those races is a direct POST to `/upload` with another
+  `deviceId`: not a shortcut around the protocol but the protocol itself, indistinguishable
+  server-side from another phone. Ordering lesson worth keeping: a local DELETE leaves the local
+  database instantly, long before it is uploaded, so a race scenario must gate on "the server has my
+  write" (an empty CRUD queue) — gating on "the row is gone here" tests a different, also-correct
+  code path and quietly proves nothing.
+- D-050 · 2026-07-25 · LOCKED — **The Ⓒ proxy-Hermes caveat is discharged** (BOARD bucket C, Build
+  Session 4). The standalone Hermes `jsvu` installs is NOT the engine React Native ships: jsvu tracks
+  the newest facebook/hermes GitHub *release* (v0.13.0, self-reporting Hermes 0.12.0, **HBC bytecode
+  96**) while RN 0.86 ships **HBC 98** — hand that VM bytecode from RN's own compiler and it refuses
+  to run it (exit 5, "Wrong bytecode version"). RN 0.86 also ships no `sdks/hermesc` any more: the
+  compiler is the npm package `hermes-compiler` (a direct react-native dependency, hermesc-only) and
+  the engine tag lives in `sdks/.hermesv1version`. New CI job `conformance-rn-hermes`: read the tag
+  from the INSTALLED react-native (a drifted pin fails loudly rather than testing the wrong engine),
+  build a Hermes VM from that exact tag with Meta's release flags plus the two RN itself passes for
+  Hermes V1 (`HEAP_HV_PREFER32`, Intl), cache it per tag, then assert **compiler identity**
+  (byte-identical bytecode from RN's hermesc and the VM's own, same HBC version) before running the
+  golden vectors twice — from source and as bytecode emitted by RN's own hermesc. Both hold at md5
+  `f93b1d6b1717043d97f16b0a17416681`. The jsvu job stays as a cheap cross-engine canary and now logs
+  its own version so the gap is visible in the log. **Stated honestly, what is still NOT covered:**
+  the per-OS Unicode provider (host Linux Hermes uses PlatformUnicodeICU, Android
+  PlatformUnicodeJava, Apple PlatformUnicodeCF) and `@koi/domain`'s ordering calls
+  `normalize('NFC')` — only a device/emulator vector run closes that, and it stays owed as a narrow
+  follow-up rather than being quietly folded into this discharge. Also not covered: the Metro
+  transform pipeline for the vectors specifically (Metro DOES bundle `@koi/domain` for the app, and
+  that path is exercised by the app build and the on-simulator scenario run). `@koi/domain` itself
+  was not touched: the new script lives in `@koi/mobile`, which is where the RN dependency belongs.
+- D-051 · 2026-07-26 · LOCKED — **Adversarial review of Session 4, self-adjudicated after the
+  workflow's verify pass hit a token-quota wall mid-run** (6 review lenses launched, 4 completed
+  raw findings — sync-protocol/ui-honesty/server-latch/privacy-safety — before verification died;
+  build-ops/test-integrity never ran). With the machine-verify pass unavailable, findings were
+  read against the actual code by hand instead of trusted at face value. **Fixed, same session:**
+  (1) `packages/server/sync-tests/helpers.ts` — the reference client schema was missing
+  `resolved_at` and its comment still claimed the column was unsynced, contradicting D-047; (2) a
+  real evidence-display + restore bug in the S-4 payload reader — `column-conflict`'s bare-scalar
+  `displaced_value`/`incoming_value` and `delete-conflict`'s always-object snapshot were
+  disambiguated only by "does `column_name` contain a comma", so a single-column `delete-conflict`
+  got its snapshot nested a second time under its own key (silently breaking the restore write) and
+  `column-conflict`'s evidence rendered as "carries no values of its own" (silently hiding it before
+  offering a blind overwrite); fixed by keying the shape on `kind` (`namedPayloadEntries`,
+  `packages/mobile/src/review/kinds.ts`), used by both the restore write and the display so they
+  cannot drift apart again; (3) `restoreDisplaced` reported success whenever a value was
+  restorable, never checking whether the `UPDATE` actually matched a row — a restore attempted on a
+  record gone by the time the write lands (a race, not the common case) latched the flag resolved
+  on a write that did nothing; fixed to confirm presence inside the same transaction and report
+  honestly; (4) the "enter it again as a new reading" honesty affordance (D-047) could itself lie:
+  for `late-child` specifically, the reading's own car is *always* deleted, so re-entering under it
+  hits `insertLateChild` again and the new row is born tombstoned — vanishing from the device a
+  second time with no explanation. Fixed: re-enter only offers when the target car is confirmed
+  live (via the existing join), otherwise the screen says plainly why it cannot act — the honest
+  fix (a car picker) is app-surface work, not built here; (5) the undo/success toast's 6 s window
+  could reset on any unrelated parent re-render (a live query firing elsewhere on the same screen),
+  because the dismiss timer's effect depended on an inline closure recreated every render;
+  fixed by reading it through a ref so only an actual new toast restarts the clock; (6)
+  `PATCHABLE_COLUMNS` moved from a plain object to a `Map` — `record_table` arrives as synced data,
+  and a value like `"constructor"` would otherwise resolve through the prototype chain instead of
+  missing cleanly. Eight regression tests added (38 mobile unit tests total, up from 30); both sync
+  tiers re-verified green against the real stack after the fixes (server 13 + mobile 9 scenarios).
+  **Recorded, not fixed — architectural tradeoffs, not bugs:** the S-4 resolve latch carries no
+  base_version echo by design (D-047), which leaves one named race (a device offline at a
+  deliberate re-open can later replay its own stale resolve and silently re-close it — cost is one
+  extra tap, never lost content); `flags:PATCH` has no household scope check yet, consistent with
+  the existing household_id/car_id-re-homing deferral (D-038) until a sharing flow (S-14) makes it
+  reachable; flag payloads carrying a deleted record's values necessarily reach every device
+  including ones enrolled after the delete, an H1 tension inherent to reviewing delete-related
+  conflicts at all — S-7 needs a sibling retention policy for flag payloads, not just
+  `dead_letters` (spec-delta.md). **Left unreviewed by the workflow** (quota, not signal): CI/build
+  correctness and deeper test-integrity questions beyond what this pass covered by hand — a
+  narrower follow-up pass on those two lenses is owed, not urgent enough to block the gate.

@@ -1,9 +1,11 @@
 import { describe, expect, it } from 'vitest';
 
+import { registry } from '../src/sync/handlers.js';
 import {
   carPatchSchema,
   carPutSchema,
   extractBaseVersion,
+  flagResolvePatchSchema,
   readingPatchSchema,
   readingPutSchema,
   uploadBodySchema,
@@ -74,6 +76,38 @@ describe('wire schemas', () => {
       }).success,
     ).toBe(true);
     expect(uploadBodySchema.safeParse({ batch: [] }).success).toBe(false);
+  });
+});
+
+/**
+ * S-4 (D-047): a flag is evidence. A client may latch it resolved (or re-open
+ * it), and may not touch anything else about it — nor invent or destroy one.
+ */
+describe('flag resolution is the only client write on a flag', () => {
+  it('accepts the resolve latch in both directions', () => {
+    expect(flagResolvePatchSchema.safeParse({ resolved_at: '2026-07-25T10:00:00Z' }).success).toBe(
+      true,
+    );
+    expect(flagResolvePatchSchema.safeParse({ resolved_at: null }).success).toBe(true);
+  });
+
+  it('rejects edits to the evidence itself, so they dead-letter loudly', () => {
+    for (const data of [
+      { kind: 'column-conflict' },
+      { message: 'nothing to see here' },
+      { displaced_value: { value: 1 } },
+      { record_id: 'someone-elses-row' },
+      { resolved_at: '2026-07-25T10:00:00Z', message: 'edited' },
+      {},
+    ]) {
+      expect(flagResolvePatchSchema.safeParse(data).success).toBe(false);
+    }
+  });
+
+  it('registers flags:PATCH only — PUT and DELETE on a flag stay dead-lettered', () => {
+    expect(registry.has('flags:PATCH')).toBe(true);
+    expect(registry.has('flags:PUT')).toBe(false);
+    expect(registry.has('flags:DELETE')).toBe(false);
   });
 });
 

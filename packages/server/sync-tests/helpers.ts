@@ -24,8 +24,9 @@ export const CAR_ID = 'car-golf';
 export const HOUSEHOLD_ID = 'household-default';
 
 // Mirrors infra/powersync/sync_rules.yaml exactly — a column visible locally
-// but strict-rejected on upload (archived_at, resolved_at) is a dead-letter
-// trap, so neither side carries them until their write flows land.
+// but strict-rejected on upload (archived_at) is a dead-letter trap, so it stays
+// off both sides until its write flow lands. resolved_at DID land (D-047): the
+// flags table below carries it, and flags:PATCH is its accepting handler.
 const carColumns = {
   household_id: column.text,
   make: column.text,
@@ -66,6 +67,9 @@ const flagColumns = {
   device_id: column.text,
   record_version: column.integer,
   created_at: column.text,
+  // The one field a client writes on a flag (D-047): non-null = resolve,
+  // null = re-open. flags:PATCH is the sole handler; PUT/DELETE stay unhandled.
+  resolved_at: column.text,
 };
 
 export function makeSchema(extraTables: Record<string, Table> = {}): Schema {

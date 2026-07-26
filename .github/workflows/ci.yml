@@ -1,9 +1,20 @@
-# CI: lint + build + test on every push/PR, plus golden-vector conformance on
-# V8 and standalone Hermes (Spike Ⓒ discipline, D-025/D-030).
+# CI: lint + build + test on every push/PR, the sync tiers against a real stack,
+# and golden-vector conformance on THREE engine surfaces (Spike Ⓒ discipline,
+# D-025/D-030):
 #
-# Still owed (BOARD bucket C): the ON-DEVICE, RN-BUNDLED Hermes golden-vector
-# run — it needs the @koi/mobile Expo app to exist. The standalone-Hermes job
-# below is the same proxy the spike used (jsvu build), not a substitute for it.
+#   conformance             V8 + the standalone Hermes jsvu installs. A cheap
+#                           cross-engine canary — and NOT the RN engine: jsvu
+#                           tracks the newest facebook/hermes GitHub release
+#                           (v0.13.0, HBC bytecode 96) while React Native 0.86
+#                           ships HBC 98. The job logs the engine's own version
+#                           so that gap stays visible in the log.
+#   conformance-rn-hermes   The discharge of the Ⓒ proxy-Hermes caveat (BOARD
+#                           bucket C): the vectors compiled by react-native's OWN
+#                           hermesc and run on a Hermes built from the exact
+#                           facebook/hermes tag react-native pins, with compiler
+#                           identity and bytecode version asserted, not assumed.
+#                           What it does not cover: the per-OS Unicode provider
+#                           on a real device (see the script's header).
 name: ci
 
 on:
@@ -29,8 +40,10 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm turbo run lint typecheck build test
 
-  # The sync torture tier (D-013/H5): real Postgres + PowerSync + the
-  # write-path server + @powersync/node clients, against infra/docker-compose.
+  # The sync tiers (D-013/H5): real Postgres + PowerSync + the write-path server.
+  # @koi/server's torture tier drives purpose-built clients; @koi/mobile's tier
+  # drives the APP's own schema, connector and write functions. Both bind the same
+  # host ports, so they must not overlap — hence --concurrency=1.
   sync-tests:
     runs-on: ubuntu-latest
     steps:
@@ -41,7 +54,7 @@ jobs:
           node-version: 24
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - run: pnpm turbo run test:sync --filter=@koi/server
+      - run: pnpm turbo run test:sync --concurrency=1
 
   conformance:
     runs-on: ubuntu-latest
@@ -57,4 +70,66 @@ jobs:
         run: |
           npx jsvu --os=linux64 --engines=hermes
           echo "HERMES_BIN=$HOME/.jsvu/bin/hermes" >> "$GITHUB_ENV"
+      - name: Log which Hermes this actually is (it is NOT the RN one)
+        run: "$HERMES_BIN" -version
       - run: pnpm --filter @koi/domain conformance:ci
+
+  conformance-rn-hermes:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+
+      # The tag comes from the INSTALLED react-native, never hardcoded, so an
+      # Expo SDK bump moves the engine under test with it.
+      - id: hermes
+        name: Which Hermes does react-native ship?
+        run: node packages/mobile/scripts/print-rn-hermes-tag.mjs >> "$GITHUB_OUTPUT"
+
+      # Unconditional: the built binaries link ICU dynamically, so the runtime
+      # libraries are needed on a cache HIT too, not only when building.
+      - name: Hermes build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            build-essential cmake ninja-build libicu-dev libreadline-dev python3
+
+      - id: hermes-cache
+        uses: actions/cache@v4
+        with:
+          path: .hermes-host/bin
+          key: hermes-host-${{ runner.os }}-${{ steps.hermes.outputs.tag }}
+
+      # Meta's own release flags, plus the two react-native itself passes for
+      # Hermes V1 (HEAP_HV_PREFER32 and Intl, per ReactAndroid's hermes-engine
+      # build) so the host VM matches the shipped configuration. ~1 min on a
+      # hosted runner; cached per tag afterwards.
+      - name: Build the Hermes react-native ships (from source, ${{ steps.hermes.outputs.tag }})
+        if: steps.hermes-cache.outputs.cache-hit != 'true'
+        run: |
+          git clone --depth 1 --branch "${{ steps.hermes.outputs.tag }}" \
+            https://github.com/facebook/hermes.git "$RUNNER_TEMP/hermes-src"
+          cmake -S "$RUNNER_TEMP/hermes-src" -B "$RUNNER_TEMP/hermes-build" -G Ninja \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DHERMES_ENABLE_TEST_SUITE=OFF \
+            -DHERMES_ENABLE_DEBUGGER=False \
+            -DHERMES_ENABLE_INTL=True \
+            -DHERMESVM_HEAP_HV_MODE=HEAP_HV_PREFER32
+          cmake --build "$RUNNER_TEMP/hermes-build" --target hermes hermesc -j "$(nproc)"
+          mkdir -p .hermes-host/bin
+          cp "$RUNNER_TEMP/hermes-build/bin/hermes" "$RUNNER_TEMP/hermes-build/bin/hermesc" \
+            .hermes-host/bin/
+
+      # Builds conformance/main.ts and checks V8 first, so a divergence is
+      # attributed to the engine rather than to the bundle.
+      - run: pnpm --filter @koi/domain conformance
+
+      - name: Golden vectors on the RN-bundled Hermes
+        env:
+          KOI_RN_HERMES_BIN: ${{ github.workspace }}/.hermes-host/bin/hermes
+        run: node packages/mobile/scripts/rn-hermes-conformance.mjs

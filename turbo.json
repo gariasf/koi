@@ -11,8 +11,15 @@
     "test": {
       "dependsOn": ["^build"]
     },
-    "lint": {},
-    "typecheck": {},
+    // Both need dependencies BUILT: a package that consumes @koi/domain resolves
+    // it through its "exports" map at dist/index.d.ts, so on a clean checkout
+    // typecheck fails with TS2307 without this.
+    "lint": {
+      "dependsOn": ["^build"]
+    },
+    "typecheck": {
+      "dependsOn": ["^build"]
+    },
     "conformance": {
       "dependsOn": ["^build"],
       "cache": false

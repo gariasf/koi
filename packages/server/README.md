@@ -64,6 +64,21 @@ children, not two cars); such a transient error is retried, never dead-lettered 
 `upload.ts` classifies retryable SQLSTATEs so a valid op is never lost to
 contention.
 
+## The review-queue latch in one paragraph (S-4)
+
+Every flag this write-path raises lands in the client's review queue
+(`@koi/mobile`), and the only thing a client may write back about a flag is
+`resolved_at` — the "I have looked at this" latch, accepted by `flags:PATCH`
+(D-047). `flags:PUT` and `flags:DELETE` are deliberately absent from the
+registry, so a client can neither author a flag the server never raised nor
+destroy the record of one: both dead-letter loudly. `resolved_at` joined
+`sync_rules.yaml` together with that handler — a column clients can see but the
+server strict-rejects is a dead-letter trap (`archived_at` is still waiting for
+its archive flow for exactly this reason). The server stamps its own clock and
+reads the client value as intent only (non-null = resolve, null = re-open, which
+is how the undo toast reverses a mis-tap), and resolution never touches
+`record_version`, which on a flag row is the version of the *flagged* record.
+
 ## Commands
 
 The credential-less dev token mint (`POST /api/auth/token`) only exists when

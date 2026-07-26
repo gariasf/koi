@@ -1,6 +1,67 @@
 {
   "name": "@koi/mobile",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "private": true,
-  "description": "Koi mobile app - Expo/React Native, one codebase for iOS + Android (Bundle A, D-024/D-029). Skeleton: the app scaffold lands per BOARD bucket D/H (Expo SDK pin + Phase-4 re-confirmation first)."
+  "description": "Koi mobile app - Expo/React Native, one codebase for iOS + Android (Bundle A, D-024/D-029). PowerSync client + S-4 review queue (D-047/D-048).",
+  "main": "expo-router/entry",
+  "scripts": {
+    "start": "expo start --dev-client",
+    "ios": "expo run:ios",
+    "android": "expo run:android",
+    "prebuild:ios": "expo prebuild --platform ios",
+    "doctor": "expo-doctor",
+    "lint": "eslint .",
+    "typecheck": "tsc -p tsconfig.json && tsc -p tsconfig.test.json",
+    "test": "vitest run",
+    "test:sync": "vitest run --config vitest.sync.config.ts"
+  },
+  "dependencies": {
+    "@koi/domain": "workspace:*",
+    "@op-engineering/op-sqlite": "17.1.2",
+    "@powersync/common": "2.0.0",
+    "@powersync/react": "2.0.0",
+    "@powersync/react-native": "2.0.0",
+    "expo": "~57.0.8",
+    "expo-constants": "~57.0.7",
+    "expo-font": "~57.0.1",
+    "expo-haptics": "~57.0.1",
+    "expo-linking": "~57.0.4",
+    "expo-router": "~57.0.8",
+    "expo-splash-screen": "~57.0.5",
+    "expo-status-bar": "~57.0.1",
+    "expo-symbols": "~57.0.1",
+    "expo-system-ui": "~57.0.1",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
+    "react-native": "0.86.0",
+    "react-native-gesture-handler": "~2.32.0",
+    "react-native-get-random-values": "~1.11.0",
+    "react-native-reanimated": "4.5.0",
+    "react-native-safe-area-context": "~5.7.0",
+    "react-native-screens": "~4.26.0",
+    "react-native-worklets": "0.10.0",
+    "uuid": "^14.0.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.20.0",
+    "@koi/server": "workspace:*",
+    "@powersync/node": "0.20.0",
+    "@types/node": "catalog:",
+    "@types/react": "~19.2.2",
+    "eslint": "catalog:",
+    "expo-dev-client": "~57.0.8",
+    "expo-doctor": "^1.20.1",
+    "pg": "^8.16.0",
+    "@types/pg": "^8.15.0",
+    "typescript": "catalog:",
+    "typescript-eslint": "catalog:",
+    "vitest": "catalog:"
+  },
+  "expo": {
+    "install": {
+      "exclude": [
+        "typescript"
+      ]
+    }
+  }
 }

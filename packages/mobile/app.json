@@ -1,0 +1,21 @@
+{
+  "expo": {
+    "name": "Koi",
+    "slug": "koi",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "scheme": "koi",
+    "userInterfaceStyle": "automatic",
+    "ios": {
+      "bundleIdentifier": "tv.titanos.koi",
+      "supportsTablet": false
+    },
+    "android": {
+      "package": "tv.titanos.koi"
+    },
+    "plugins": ["expo-router"],
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}

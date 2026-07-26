@@ -14,13 +14,22 @@ lives in §4 — this board tracks status, not prose.
 
 ## Now / Next
 
-- **NEXT (Session 4, owner-approved 2026-07-25): scaffold @koi/mobile → S-4 review queue.**
-  S-4 (where this session's flags land) has no home until the client app exists, so Session 4
-  is: Expo SDK pin + Phase-4 re-confirm (bucket H) → scaffold @koi/mobile (Bundle A) → PowerSync
-  client connector honoring the S-6 client contract (delete=DELETE, cascade=children-first,
-  undo=re-INSERT; NO deleted_at column per D-046; trackPrevious ON) → S-4 review queue → on-device
-  Hermes CI step (bucket C). Full paste-ready brief in `docs/build/next-session.md`. Then ③
-  local→sync migration → passkey (order per §4.A). S-6 shipped (Session 3).
+- **OWNER GATE OWED (2026-07-26): Session 4 done — the client exists.** @koi/mobile is scaffolded and
+  running (Expo SDK 57 / RN 0.86 pinned, D-048), the PowerSync client honours the full S-6 contract
+  (D-049), and the **S-4 review queue is built with its `resolved_at` write flow** (D-047) — one ⛔
+  blocker down. The Ⓒ proxy-Hermes caveat is discharged (D-050). Proven twice: the app's own modules
+  against a real stack in CI, and the same nine scenarios on the iOS simulator (real Hermes +
+  op-sqlite + RN SDK). **Adversarially reviewed (D-051):** the workflow's verify pass hit a token
+  quota mid-run, so findings from the 4 lenses that did complete were adjudicated by hand instead —
+  6 real defects fixed (a stale reference-client schema, an evidence-display + restore bug in the
+  S-4 payload reader, a silent-success bug in the restore write, a review-queue action that could
+  silently vanish a re-entered reading, a toast timer that could reset early, a prototype-pollution
+  hardening gap), 3 tradeoffs recorded rather than changed, both sync tiers re-verified green
+  afterward. build-ops/test-integrity lenses never ran — a narrower follow-up pass is owed, not
+  blocking. **Do NOT open ③ (local-only → sync migration) or the better-auth passkey round-trip
+  until the owner signs off** — that was the stop line for this session.
+- **NEXT (Session 5, pending that gate): ③ local-only → sync-on migration**, then passkey (order per
+  §4.A). Brief in `docs/build/next-session.md`.
 - **Owner gate — tombstone stance RESOLVED (2026-07-25, D-046):** owner chose **bucket-filter**.
   Sync rules now carry only live rows (`WHERE deleted_at IS NULL`); a delete propagates as a
   checkpoint row-removal, clients never hold tombstones, and deleted content never ships to a
@@ -48,7 +57,7 @@ lives in §4 — this board tracks status, not prose.
 | done | ⛔ | accept-with-2xx exhaustive op-handling (dead-letter/flag unknown ops, never skip) — Session 2, D-038: registry + content-hash dead letters + synced flags |
 | done | ⛔ | S-14 household non-preclusion — schema stance from the first migration — Session 2: households table + household_id + updated_by on every record from migration 0000 |
 | done | ⛔ | S-6 delete model (tombstones, undo-survives-sync, cascade, late-child flag) — Session 3, D-039..D-045: migration 0001 tombstone cols + `deleted_via` provenance; DELETE→tombstone; same-device resurrection; atomic cascade + per-child conflict; late-child; edit-vs-delete both orders; DELETE dead letters terminal (D-044); proven on two @powersync/node clients |
-| todo | ⛔ | S-4 client post-merge review queue ("Review now" pattern; where flags land) |
+| done | ⛔ | S-4 client post-merge review queue ("Review now" pattern; where flags land) — Session 4, D-047: all 9 sync kinds + 7 domain kinds rendered and resolvable in @koi/mobile; `flags:PATCH` resolve latch + `resolved_at` joined to the sync rules with it; unknown kinds still shown; no action offered that the architecture cannot deliver (deleted records get "enter it again", never "restore") |
 | todo | ⛔ | ③ local-only → sync-on first-enable migration, lossless |
 | todo | ▲ | S-7 erase-everywhere (truncate + purge ledger + compaction + ≤24 h revocation) |
 | todo | ▲ | S-9 import remap + dedup ordinal |
@@ -56,7 +65,7 @@ lives in §4 — this board tracks status, not prose.
 | todo | ▲ | S-12 preference split (synced vs device-local) |
 | todo | ▲ | S-13 per-device notification scheduling (no push infra) |
 | todo | ▲ | engine-agnostic domain set: lineage swap, occurrence identity, dedup ordinal, settings singleton, "keep both", post-flag validation |
-| doing | ▲ | sync torture-test suite (Spike ② scenarios graduate into it) — Session 2 seeded 5; Session 3 grew it to 13 (S-6 tier: tombstone propagation · edit-vs-delete both orders · atomic cascade · late child · undo round-trip + foreign-reject · DELETE replay idempotency) on two @powersync/node clients + CI job; grows with S-4/③ |
+| doing | ▲ | sync torture-test suite (Spike ② scenarios graduate into it) — Session 2 seeded 5; Session 3 grew it to 13 (S-6 tier) on two @powersync/node clients + CI job; Session 4 added a SECOND tier: 9 scenarios driving @koi/mobile's own schema/connector/write functions, run under Node in CI and on the iOS simulator from one module (D-049); grows with ③ |
 
 ### B · Backend / infra / auth
 | st | sev | item |
@@ -69,14 +78,14 @@ lives in §4 — this board tracks status, not prose.
 ### C · Domain / CI
 | st | sev | item |
 |---|---|---|
-| todo | ▲ | on-device (RN-bundled) Hermes golden-vector CI step — needs @koi/mobile app; CI's standalone-Hermes (jsvu) job is the spike proxy, not the discharge |
+| done | ▲ | on-device (RN-bundled) Hermes golden-vector CI step — Session 4, D-050: new `conformance-rn-hermes` job builds Hermes from the tag the installed react-native pins, asserts compiler identity + HBC version (RN 0.86 is HBC 98; the jsvu proxy is 96), runs the vectors from source AND as RN-hermesc bytecode — md5 f93b1d6b… both ways. jsvu job kept as a canary. Still owed, narrowly: a device/emulator run for the per-OS Unicode provider (normalize NFC) |
 | done | ▽ | @koi/domain primitives build-out — Session 1: money/civil-date/ordering/ids/economy, ESLint bans, vectors byte-identical tri-engine (md5 f93b1d6b…). date-fns v4 stays the sanctioned calendar dep; primitives needed none of it (hardening calls delegated to assistant at gate; kept) |
 | todo | ▽ | i18n setup: i18next + shared JSON catalogs (@koi/i18n); adopt the Selector API from the start — i18next v27 plans to drop type-level string keys (parking-lot promotion, D-035) |
 
 ### D · Clients (mobile + web)
 | st | sev | item |
 |---|---|---|
-| todo | ▲ | full Bundle A app build (capture + ledger + record + Insights) |
+| todo | ▲ | full Bundle A app build (capture + ledger + record + Insights) — Session 4 scaffolded @koi/mobile and built the sync surfaces only (garage · car page · review queue); §C's four-tab shell + capture sheets + dark palette are this item |
 | todo | ▲ | chart §D4 finish: ghost bars, on-canvas peak label; iOS large-title inset fix |
 | todo | ▲ | Recharts web charts (share selectors only) |
 | todo | ▲ | web companion scope: read+edit no capture, import console, export, WCAG 2.2 AA |
@@ -107,7 +116,8 @@ lives in §4 — this board tracks status, not prose.
 | st | sev | item |
 |---|---|---|
 | done | ▲ | repo reset + git-init + naming + monorepo scaffold (Session 1, D-034) |
-| todo | ▲ | Expo SDK pin + Phase-4 re-confirmation (before @koi/mobile scaffold) |
+| done | ▲ | Expo SDK pin + Phase-4 re-confirmation — Session 4, D-048: SDK 57 (`expo ~57.0.8` = RN 0.86 + React 19.2.3) with companions from Expo's bundledNativeModules; PowerSync RN 2.0.0 + op-sqlite 17.1.2 (the 1.35.x line is bridgeless-dead) and @powersync/node bumped to match; charts re-confirmed on paper (Skia 2.6.2 + Victory XL 41.26) but not installed until the chart work; pnpm isolated node_modules survived — no `nodeLinker: hoisted` needed |
+| todo | ▲ | Android build path unverified (no JDK on the dev machine) — owed before Bundle A's "one codebase" claim is fully earned; also the Android-over-network initial-sync measurement in bucket B |
 | todo | ▽ | niche-tool exit-plan register upkeep (04-stack §5) |
 | todo | ▽ | dev tooling: `idb` + macOS Accessibility grant for scripted iOS UI |
 | todo | ▽ | deletion grace-window undo semantics (refines S-6/S-7) |
@@ -213,3 +223,33 @@ lives in §4 — this board tracks status, not prose.
   (only the `dead_letters` sweep remains). Server-side S-6 logic unchanged. Torture assertions
   flipped from "tombstone visible on client" to "row removed"; all 13 scenarios re-proven on the
   real stack; unit tier unchanged (39). Session-3 approval to open S-4/③ still owed.
+- **2026-07-25/26 · Session 4 — the client exists: @koi/mobile, S-6 client contract, S-4 review
+  queue, RN-Hermes CI (D-047..D-050).** Prep: Expo SDK 57 (`expo ~57.0.8` = RN 0.86 + React 19.2.3)
+  pinned to Expo's own `bundledNativeModules.json`, not npm-latest; PowerSync client settled on
+  `@powersync/react-native` 2.0.0 + `@op-engineering/op-sqlite` 17.1.2 after research showed the
+  1.35.x line has no working driver on RN 0.86 (bridgeless-only); `@powersync/node` bumped
+  0.19.4→0.20.0 so client and reference test client share one API shape — the 13-scenario server
+  torture tier re-greened unchanged on it. Scaffolded `@koi/mobile`: garage, car page, PowerSync
+  connector honouring the full S-6 client contract (delete=DELETE, cascade=children-first-one-tx,
+  undo=re-INSERT, no `deleted_at` column), and the S-4 review queue (all 9 sync kinds + 7 domain
+  kinds named, explained, resolved — never auto-repaired) with its `flags:PATCH` resolve-latch write
+  flow server-side. Built the RN-bundled Hermes discharge: a new CI job builds Hermes from the exact
+  tag react-native pins, asserts compiler identity + HBC version against the standalone-Hermes
+  proxy's drift (HBC 96 vs RN's 98), runs the vectors twice. **Proven twice, not asserted:** a new
+  9-scenario tier drives `@koi/mobile`'s own schema/connector/write functions against a real stack
+  under Node in CI, and the SAME module runs on the iOS simulator (real Hermes + op-sqlite + RN SDK)
+  — both green (screenshot: "All 9 scenarios pass"). pnpm's isolated node_modules survived contact
+  with native modules with no `nodeLinker: hoisted`, against both Expo's and PowerSync's own
+  guidance. **Adversarial review (D-051):** 6-lens workflow launched; 4 lenses completed raw
+  findings before the verify pass hit a token quota and died, so findings were read against the
+  actual code by hand instead of machine-verified. 6 real defects fixed (stale reference-client
+  schema missing `resolved_at`; a payload-shape bug that both hid `column-conflict` evidence AND
+  double-nested a single-column `delete-conflict`'s restore write; `restoreDisplaced` reporting
+  success without checking the UPDATE matched a row; "enter it again" silently vanishing for
+  `late-child` because its car is always deleted — insertLateChild tombstone-borns the re-entry
+  again; a toast dismiss-timer that could reset on any unrelated re-render; `PATCHABLE_COLUMNS`
+  hardened against prototype-chain collisions). 3 tradeoffs recorded in spec-delta.md rather than
+  changed (the latch's one named race; flags:PATCH's deferred household scope; flag payloads
+  necessarily outliving H1 for deleted-record evidence). 8 regression tests added (38 mobile unit
+  tests total); both sync tiers re-verified green after the fixes. build-ops/test-integrity lenses
+  never ran — owed as a narrower follow-up, not blocking. **Owner gate owed before ③/passkey.**

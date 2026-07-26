@@ -17,7 +17,9 @@
  * writing device } }. Server bookkeeping — never synced to clients.
  *
  * S-6 tombstones (D-039..D-043): a delete never removes a row — it sets
- * `deleted_at` (synced down; clients filter `deleted_at IS NULL`). Deletion
+ * `deleted_at`. The buckets carry only live rows (`WHERE deleted_at IS NULL`,
+ * bucket-filter D-046), so `deleted_at` never reaches a client at all: peers see
+ * a delete as a checkpoint ROW-REMOVAL and hold no tombstones. Deletion
  * attribution stays server-side: `deleted_by`/`deleted_by_device` (who) and
  * `deleted_via` ('direct' | 'cascade' — cascade provenance so S-4 can scope a
  * car-delete's child cohort without timestamp forensics; non-retrofittable, so
@@ -119,8 +121,10 @@ export const odometer_readings = pgTable(
  * Written in the SAME transaction as the data they attribute, so the
  * checkpoint carries both. `household_id` is nullable on purpose — writing a
  * flag must never be the thing that fails (e.g. a dead-lettered op for an
- * unknown household still gets flagged). `resolved_at` is groundwork for the
- * S-4 client review queue.
+ * unknown household still gets flagged). `resolved_at` is the S-4 review-queue
+ * latch: synced down since D-047 and the ONE field a client may write on a flag
+ * (`flags:PATCH`); the server stamps its own clock. `record_version` here is the
+ * version of the FLAGGED record, never of the flag itself.
  */
 export const flags = pgTable(
   'flags',

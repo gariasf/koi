@@ -4,9 +4,11 @@
  * and ANYTHING not present is dead-lettered + flagged, never skipped (Spike ②
  * rule, D-038).
  *
- * S-6 delete model (D-039..D-044). A delete never removes a row — it writes a
- * tombstone (`deleted_at` set + attribution), synced down so peers hide the row
- * (`deleted_at IS NULL` filter). `deleted_at` is a first-class attributed column
+ * S-6 delete model (D-039..D-044, D-046). A delete never removes a row — it
+ * writes a tombstone (`deleted_at` set + attribution). The buckets carry only
+ * live rows (bucket-filter, D-046), so the tombstone drops the row out of the
+ * bucket and peers see the delete as a checkpoint row-removal; no tombstone
+ * content ever reaches a client. `deleted_at` is a first-class attributed column
  * in `column_versions`, so delete-vs-edit and delete-vs-undo races reuse the
  * base_version machinery. The state transitions:
  *
@@ -55,6 +57,7 @@ import { sanitizeJson, sanitizeText } from './sanitize.js';
 import {
   carPatchSchema,
   carPutSchema,
+  flagResolvePatchSchema,
   readingPatchSchema,
   readingPutSchema,
   summarizeIssues,
@@ -850,6 +853,58 @@ function makeDelete(cfg: TableConfig): Handler {
 }
 
 /**
+ * S-4 review-queue resolution (D-047). A flag is server-authored evidence, so
+ * the ONLY thing a client may write about one is the `resolved_at` latch:
+ * `flags:PUT` and `flags:DELETE` stay OUT of the registry and dead-letter
+ * loudly — a client must not be able to author a flag the server never raised,
+ * nor destroy the record of one. `resolved_at` joins the sync rules together
+ * with this handler, because a column clients can see but the server rejects is
+ * a dead-letter trap (the archived_at lesson, D-038).
+ *
+ * No base_version machinery here, deliberately — and it is not an exception to
+ * "never silent LWW" (D-037), which exists to stop one device's typed CONTENT
+ * from being overwritten unseen. The latch holds no content: its two states are
+ * "I have looked at this" and "I have not", both user intents, both one tap
+ * apart, both visible in the queue, and two devices SETTLING ON THE SAME state
+ * agree by construction (a plain no-op, `resolving === current`). The server
+ * writes its OWN clock and reads the client's value as intent only (non-null =
+ * resolve, null = re-open, which is how the undo toast reverses a mis-tap) — a
+ * client clock never lands in the evidence. Resolution never touches
+ * `record_version`: on a flag that column is the version of the FLAGGED record,
+ * not of the flag.
+ *
+ * The one race this leaves open, named rather than hidden: a device offline at
+ * the moment of a deliberate re-open can later replay its OWN earlier "resolve"
+ * op and silently flip the flag closed again — last write wins, with no signal
+ * to arbitrate two genuine, differently-timed user intents. Accepted for the
+ * same reason the latch carries no base echo at all: the cost of losing is one
+ * extra tap on a note already visible in the queue, never lost content, and a
+ * single-user-multi-device household (today's only case) rarely produces the
+ * race in the first place.
+ */
+const resolveFlag: Handler = async (tx, entry) => {
+  const parsed = flagResolvePatchSchema.safeParse(entry.data ?? {});
+  if (!parsed.success) return deadLetter(`schema: ${summarizeIssues(parsed.error)}`);
+
+  // No household check: today's server serves exactly one household (S-14
+  // groundwork, not a live sharing flow), so there is no OTHER household's flag
+  // to reach. Add the scope check here the moment that stops being true — the
+  // same deferral already recorded for household_id/car_id re-homing (D-038).
+  const rows = await tx.select().from(flags).where(eq(flags.id, entry.id)).for('update');
+  const row = rows[0] as Record<string, unknown> | undefined;
+  if (row === undefined) return deadLetter('resolve for unknown flag');
+
+  const resolving = parsed.data.resolved_at !== null;
+  if (resolving === (row['resolved_at'] != null)) return { outcome: 'noop' };
+
+  await tx
+    .update(flags)
+    .set({ resolved_at: resolving ? sql`now()` : null })
+    .where(eq(flags.id, entry.id));
+  return { outcome: 'applied', flagKinds: [] };
+};
+
+/**
  * The exhaustive registry: (table, op) → handler. The upload pipeline
  * dead-letters anything absent from this map.
  */
@@ -860,4 +915,5 @@ export const registry: ReadonlyMap<string, Handler> = new Map([
   ['odometer_readings:PUT', makePut(readingsConfig)],
   ['odometer_readings:PATCH', makePatch(readingsConfig)],
   ['odometer_readings:DELETE', makeDelete(readingsConfig)],
+  ['flags:PATCH', resolveFlag],
 ]);

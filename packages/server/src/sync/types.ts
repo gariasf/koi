@@ -98,6 +98,17 @@ export const readingPatchSchema = readingPutSchema
   .omit({ household_id: true, car_id: true })
   .partial();
 
+/**
+ * The ONLY client-writable field on a flag (S-4 review queue): the resolve
+ * latch. Strict, so an attempt to edit the evidence itself (kind, message,
+ * displaced_value, the record it points at) dead-letters loudly instead of
+ * being silently stripped. The value is read as intent only — non-null =
+ * resolve, null = re-open — never as a timestamp to store (see `resolveFlag`).
+ */
+export const flagResolvePatchSchema = z.strictObject({
+  resolved_at: z.union([z.string(), z.null()]),
+});
+
 /** The record_version echo from CrudEntry.previousValues; null when absent/garbled. */
 export function extractBaseVersion(old: Record<string, unknown> | undefined): number | null {
   const raw = old?.['record_version'];
