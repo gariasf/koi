@@ -321,3 +321,36 @@ Format: `D-NNN · <date> · <status> — <one-line decision>. <why, one or two s
   `dead_letters` (spec-delta.md). **Left unreviewed by the workflow** (quota, not signal): CI/build
   correctness and deeper test-integrity questions beyond what this pass covered by hand — a
   narrower follow-up pass on those two lenses is owed, not urgent enough to block the gate.
+- D-052 · 2026-07-27 · LOCKED — **③ local-only → sync-on migration: no migration write path exists,
+  because none is needed** (the last ⛔ blocker in bucket A before auth, Build Session 5). Verified
+  from the PowerSync source, not assumed: `init()` has always applied the full synced schema
+  (`powersync_replace_schema`), and its native triggers queue every INSERT/UPDATE/DELETE into the
+  local `ps_crud` table the instant it happens — with or without a connection, and independent of
+  `connect()` ever being called. "Local-only" is therefore not a separate schema, a separate
+  database, or a copy-forward step: it is simply **never having called `connect()`**. Turning sync
+  on is exactly one call (`db.connect(connector)`); every write the user ever made while local-only
+  is already sitting in the queue, in FIFO order, and drains through the SDK's own upload loop —
+  naturally one small POST per original local transaction, never one giant body (no bodyLimit or
+  chunking work was needed). The wire shape of a backlogged create-then-edit (or create-then-delete)
+  is byte-for-byte identical to one made live: an INSERT with no base, then a PATCH/DELETE whose
+  base is null but whose displaced column was last written by THIS device — exactly the "baseless
+  offline create-then-edit flow" D-037 law 3 already promises never self-conflicts, whether the gap
+  was three seconds or three months. **Proven, not just reasoned**
+  (`packages/mobile/sync-tests/local-first.test.ts`, 3 new scenarios, all green against the real
+  stack): (1) a single device's full offline backlog — plain create, offline create-then-edit,
+  offline create-then-delete — drains with correct final `record_version`s and zero flags or dead
+  letters; (2) two devices, each with their OWN independent offline backlog and no shared history,
+  both connect (one concurrently with the other) and join the same household with no loss, no id
+  collisions, and — recorded, not solved — if both independently added "the same" conceptual car,
+  the honest outcome is two car rows (S-9 import-remap territory, not this migration's job); (3) the
+  pinned children-first-one-transaction car-delete cascade (D-041) survives being made entirely
+  offline before ever connecting. **Client-side (D-006/§C8):** `app_meta.sync_enabled`
+  (`packages/mobile/src/sync/mode.ts`) is local-only, device-local, defaults false — `KoiProvider`
+  never constructs a connector or reaches `apiUrl` while it is false, so local-only mode makes
+  **zero network calls**, matching the constitutional floor exactly. The garage screen's sync card
+  (a stand-in for the real §C8 settings surface, bucket D) offers a reversible toggle: "Turn on
+  sync" / "Turn off sync" (a pause — future writes stop uploading, nothing already sent is clawed
+  back), a live pending-count from `ps_crud` (`SELECT count(*)`, no polling needed — a real table,
+  reactive like any query), and copy that is honest in both states without touching the
+  release-gated privacy-page rewrite (exact strings in spec-delta.md). No confirmation dialog either
+  direction: enabling costs nothing undoable, disabling cannot lose data.

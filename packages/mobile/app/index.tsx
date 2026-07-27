@@ -11,7 +11,7 @@ import { useStatus } from '@powersync/react';
 import { useQuery } from '@powersync/react';
 import { Link, Redirect, useLocalSearchParams, useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { ActivityIndicator, Text, View, StyleSheet } from 'react-native';
 
 import { carLabel, insertCar, type CarRow } from '../src/data/cars';
 import { newId } from '../src/data/ids';
@@ -32,18 +32,24 @@ import { color, space, type } from '../src/ui/theme';
 import { SELFTEST } from '../src/sync/config';
 
 export default function GarageScreen(): React.JSX.Element {
-  const { db, deviceId } = useKoi();
+  const { db, deviceId, syncEnabled, connectError, enableSync, disableSync } = useKoi();
   const router = useRouter();
   const status = useStatus();
   const { data: cars = [] } = useQuery<CarRow>(`SELECT * FROM cars ORDER BY make, model`);
   const { data: counts = [] } = useQuery<{ n: number }>(OPEN_FLAG_COUNT_SQL);
   const openFlags = counts[0]?.n ?? 0;
+  // ps_crud is PowerSync's own local upload queue — a real table, live like any
+  // other query. It fills from the very first write regardless of connection
+  // (that is what makes turning sync on later a single connect() call, D-052).
+  const { data: pending = [] } = useQuery<{ n: number }>(`SELECT count(*) AS n FROM ps_crud`);
+  const pendingCount = pending[0]?.n ?? 0;
 
   const [adding, setAdding] = useState(false);
   const [make, setMake] = useState('');
   const [model, setModel] = useState('');
   const [fuelType, setFuelType] = useState('petrol');
   const [toast, setToast] = useState<ToastState | null>(null);
+  const [syncBusy, setSyncBusy] = useState(false);
 
   // A car delete confirms on the car page but reports here, because that page is
   // gone the moment the car is. No Undo rides this toast: a car delete has none
@@ -77,6 +83,29 @@ export default function GarageScreen(): React.JSX.Element {
     setModel('');
     setFuelType('petrol');
     setAdding(false);
+  };
+
+  // Turning sync on/off is the ③ switch (D-052): no confirmation dialog either
+  // way — enabling costs nothing undoable (existing records just start
+  // reaching a server this household owns) and disabling only pauses future
+  // uploads, it never un-syncs what already left.
+  const turnOnSync = async (): Promise<void> => {
+    setSyncBusy(true);
+    try {
+      await enableSync();
+    } finally {
+      setSyncBusy(false);
+    }
+  };
+
+  const turnOffSync = async (): Promise<void> => {
+    setSyncBusy(true);
+    try {
+      await disableSync();
+      setToast({ message: 'Sync paused. Records already sent stay on the server.' });
+    } finally {
+      setSyncBusy(false);
+    }
   };
 
   return (
@@ -125,12 +154,52 @@ export default function GarageScreen(): React.JSX.Element {
           <Button label="Add a car" onPress={() => setAdding(true)} />
         )}
 
-        <SectionLabel>This device</SectionLabel>
+        <SectionLabel>Sync</SectionLabel>
         <Card>
-          <Text style={type.faint}>
-            {status.connected ? 'Syncing' : 'Not connected'}
-            {status.hasSynced === true ? ' · first sync done' : ''}
-          </Text>
+          {syncEnabled ? (
+            <>
+              <Text style={type.body}>
+                This device syncs to your own server, so your other devices see the same records.
+                It never leaves servers you run.
+              </Text>
+              <Text style={type.faint}>
+                {connectError !== null
+                  ? `Not connected: ${connectError}`
+                  : status.connected
+                    ? 'Syncing'
+                    : 'Not connected'}
+                {status.hasSynced === true ? ' · first sync done' : ''}
+              </Text>
+              {pendingCount > 0 && (
+                <Text style={type.faint}>
+                  {pendingCount} {pendingCount === 1 ? 'change' : 'changes'} waiting to reach the
+                  server
+                </Text>
+              )}
+              <Button
+                label={syncBusy ? 'Working…' : 'Turn off sync'}
+                tone="quiet"
+                disabled={syncBusy}
+                onPress={() => void turnOffSync()}
+              />
+            </>
+          ) : (
+            <>
+              <Text style={type.body}>
+                Your data never leaves this device. No account, cloud sync or analytics.
+              </Text>
+              {pendingCount > 0 && (
+                <Text style={type.faint}>{pendingCount} records kept here so far.</Text>
+              )}
+              <Button
+                label={syncBusy ? 'Working…' : 'Turn on sync'}
+                tone="accent"
+                disabled={syncBusy}
+                onPress={() => void turnOnSync()}
+              />
+              {syncBusy && <ActivityIndicator />}
+            </>
+          )}
           <Text style={type.faint} selectable>
             {deviceId}
           </Text>

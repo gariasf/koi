@@ -14,6 +14,25 @@ lives in §4 — this board tracks status, not prose.
 
 ## Now / Next
 
+- **OWNER GATE OWED (2026-07-27): Session 5 done — ③ local-only → sync-on migration (D-052).** Bucket
+  A's last ⛔ before auth. Verified from the PowerSync source (not assumed): every write already
+  queues locally regardless of connection, so "local-only" is just never having called `connect()` —
+  turning sync on is one call, and the existing backlog drains through the SAME base_version
+  machinery that already covers "baseless offline create-then-edit" (D-037 law 3). No migration write
+  path was built because none was needed. Client: `app_meta.sync_enabled` gates `connect()` entirely
+  (zero network calls while off, matching the local-only-no-account floor); the garage screen carries
+  a reversible sync toggle with a live `ps_crud`-backed pending count and honest copy in both states
+  (spec-delta.md). Proven on the real stack: a new `sync-tests/local-first.test.ts` (3 scenarios) —
+  a full single-device offline backlog (create/edit/delete) drains flag-free with correct versions; two
+  independently-local-only devices both join one household with no loss; an offline car-cascade-delete
+  survives the same way. On-device: screenshotted the local-only default correctly refusing all network
+  activity with the server unreachable; the live tap-through-to-synced screenshot is blocked by the
+  still-missing Accessibility grant for scripted iOS UI (bucket H, tracked since Session 1) — not new,
+  and the automated real-stack proof already covers the same code path exhaustively. **Do NOT open the
+  better-auth passkey round-trip until the owner signs off** — that was the stop line for this session.
+- **NEXT (Session 6, pending that gate): better-auth passkey-primary + recovery codes, full round-trip**
+  (order per §4.A — the last piece before S-4/③ can be considered fully closed out). Brief in
+  `docs/build/next-session.md`.
 - **OWNER GATE OWED (2026-07-26): Session 4 done — the client exists.** @koi/mobile is scaffolded and
   running (Expo SDK 57 / RN 0.86 pinned, D-048), the PowerSync client honours the full S-6 contract
   (D-049), and the **S-4 review queue is built with its `resolved_at` write flow** (D-047) — one ⛔
@@ -58,14 +77,14 @@ lives in §4 — this board tracks status, not prose.
 | done | ⛔ | S-14 household non-preclusion — schema stance from the first migration — Session 2: households table + household_id + updated_by on every record from migration 0000 |
 | done | ⛔ | S-6 delete model (tombstones, undo-survives-sync, cascade, late-child flag) — Session 3, D-039..D-045: migration 0001 tombstone cols + `deleted_via` provenance; DELETE→tombstone; same-device resurrection; atomic cascade + per-child conflict; late-child; edit-vs-delete both orders; DELETE dead letters terminal (D-044); proven on two @powersync/node clients |
 | done | ⛔ | S-4 client post-merge review queue ("Review now" pattern; where flags land) — Session 4, D-047: all 9 sync kinds + 7 domain kinds rendered and resolvable in @koi/mobile; `flags:PATCH` resolve latch + `resolved_at` joined to the sync rules with it; unknown kinds still shown; no action offered that the architecture cannot deliver (deleted records get "enter it again", never "restore") |
-| todo | ⛔ | ③ local-only → sync-on first-enable migration, lossless |
+| done | ⛔ | ③ local-only → sync-on first-enable migration, lossless — Session 5, D-052: no migration write path needed (every write already queues locally pre-connect); `app_meta.sync_enabled` gates `connect()` (zero network calls off); proven via 3 new torture scenarios (single-device full backlog, two independent devices join one household, offline cascade delete), all flag-free |
 | todo | ▲ | S-7 erase-everywhere (truncate + purge ledger + compaction + ≤24 h revocation) |
 | todo | ▲ | S-9 import remap + dedup ordinal |
 | todo | ▲ | S-1/S-2/S-3/S-8/S-10/S-11 (ids · versioning · derived-never-sync · recurrence idempotency · unknown-field round-trip · offline-first capture) — S-2/S-3 schema stances landed in Session 2 (record_version everywhere; no current_odo column, derived via domain); server-side S-10 stance = strict-reject→dead-letter, client half still owed |
 | todo | ▲ | S-12 preference split (synced vs device-local) |
 | todo | ▲ | S-13 per-device notification scheduling (no push infra) |
 | todo | ▲ | engine-agnostic domain set: lineage swap, occurrence identity, dedup ordinal, settings singleton, "keep both", post-flag validation |
-| doing | ▲ | sync torture-test suite (Spike ② scenarios graduate into it) — Session 2 seeded 5; Session 3 grew it to 13 (S-6 tier) on two @powersync/node clients + CI job; Session 4 added a SECOND tier: 9 scenarios driving @koi/mobile's own schema/connector/write functions, run under Node in CI and on the iOS simulator from one module (D-049); grows with ③ |
+| doing | ▲ | sync torture-test suite (Spike ② scenarios graduate into it) — Session 2 seeded 5; Session 3 grew it to 13 (S-6 tier) on two @powersync/node clients + CI job; Session 4 added a SECOND tier: 9 scenarios driving @koi/mobile's own schema/connector/write functions, run under Node in CI and on the iOS simulator from one module (D-049); Session 5 added a THIRD file (`local-first.test.ts`, 3 scenarios): single-device offline backlog drain, two independently-local-only devices joining one household, offline cascade delete (D-052); grows with passkey |
 
 ### B · Backend / infra / auth
 | st | sev | item |
@@ -253,3 +272,36 @@ lives in §4 — this board tracks status, not prose.
   necessarily outliving H1 for deleted-record evidence). 8 regression tests added (38 mobile unit
   tests total); both sync tiers re-verified green after the fixes. build-ops/test-integrity lenses
   never ran — owed as a narrower follow-up, not blocking. **Owner gate owed before ③/passkey.**
+- **2026-07-27 · Session 5 — ③ local-only → sync-on migration, lossless (D-052).** Read the
+  PowerSync source before designing anything: `init()` has always applied the full synced schema,
+  and its native triggers queue every write into the local `ps_crud` table independent of
+  `connect()` — confirmed by reading `BasePowerSyncDatabase.ts` (shared-internals), not assumed from
+  docs. That single fact dissolved the whole migration problem: "local-only" is not a schema, a
+  database, or a copy-forward step — it is never having called `connect()` — and turning sync on is
+  one call, draining a backlog that already looks, on the wire, exactly like the "baseless offline
+  create-then-edit" case D-037 law 3 has covered since Session 2. No new server code was written.
+  Client: `src/sync/mode.ts` (`app_meta.sync_enabled`, device-local, default false) gates `connect()`
+  in `KoiProvider` — local-only makes zero network calls, not merely "fails gracefully" if one is
+  attempted. `src/sync/queue.ts` centralizes the upload-queue helpers (hoisted out of the Session 4
+  self-test scenarios, which now import it instead of duplicating it) and adds `pendingUploadCount`.
+  The garage screen's "Sync" card is a reversible toggle (on/off, no confirmation dialog either way —
+  enabling is undoable-by-nature, disabling can't lose data) with a live pending count from `ps_crud`
+  (a real queryable table, reactive like any other) and copy that is honest in both states without
+  touching the release-gated privacy page (exact strings recorded in spec-delta.md, marked NOT the
+  real §C8 surface). **Proven, not just reasoned:** `sync-tests/local-first.test.ts`, 3 new scenarios
+  against the real stack — a single device's full offline backlog (plain create, offline
+  create-then-edit, offline create-then-delete) drains with exact expected `record_version`s and zero
+  flags/dead-letters; two devices with independent offline histories both connect (one concurrently)
+  and join one household with no loss and no id collisions (recorded, not solved: two independently
+  offline-added "same" cars land as two rows — S-9 territory); an offline car-with-children delete
+  (children-first, one local transaction, D-041) survives having been made entirely before any
+  connection existed. Full pipeline green (11/11 tasks); both sync tiers (server 13 + mobile 9 + the
+  3 new) green against the real stack. On-device: screenshotted the local-only default correctly
+  making zero network attempts with the server unreachable — a leftover car from Session 4's local
+  storage was still there, itself a small proof that local persistence survives independent of any
+  server. The live "tap the toggle, watch it sync" screenshot was blocked by two dead ends tried in
+  order — `osascript`/Accessibility (no grant, a gap tracked since Session 1, bucket H) and a direct
+  SQLite edit (PowerSync's tables are extension-backed views; a bare `sqlite3` insert errors on a
+  missing internal function) — accepted rather than forced, since the automated real-stack tier
+  already exhaustively proves the identical code path. **Owner gate owed before better-auth/passkey
+  (Session 6).**

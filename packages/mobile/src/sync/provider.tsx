@@ -1,25 +1,33 @@
 /**
- * Opens the database, learns this device's id, and connects the connector — once,
- * for the whole app.
+ * Opens the database, learns this device's id, and — only if sync is already
+ * turned on — connects the connector. Once, for the whole app.
  *
  * Order matters: the device id has to exist before the connector is built,
  * because the id is the attribution key every S-6 same-device rule reads. The
  * screens render only after that, so no write can leave with a placeholder
  * identity.
  *
- * A failure to connect is shown, not hidden: the app keeps working (local-first;
- * the database is fully usable offline and the queue drains later), and the
- * banner says what is wrong.
+ * **Local-only is the default and makes no network call at all** (D-006/D-052):
+ * `isSyncEnabled` is a local read, and when it is false this component never
+ * constructs a connector, never mints a token, never reaches `apiUrl`. `init()`
+ * still applies the full synced schema either way — that is what makes turning
+ * sync on later just one `connect()` call: every write already sits in the
+ * local upload queue (`mode.ts`), waiting.
+ *
+ * A failure to connect (once sync IS on) is shown, not hidden: the app keeps
+ * working (local-first; the database is fully usable offline and the queue
+ * drains later), and the banner says what is wrong.
  */
 
 import { PowerSyncContext } from '@powersync/react';
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 
 import { color, space, type } from '../ui/theme';
 import { API_URL } from './config';
 import { KoiConnector } from './connector';
 import { getOrCreateDeviceId } from './device';
+import { isSyncEnabled, setSyncEnabled } from './mode';
 import { connectKoi, createKoiDatabase } from './powersync';
 
 import type { KoiDb } from '../data/db';
@@ -30,7 +38,10 @@ interface KoiSync {
   readonly powersync: CommonPowerSyncDatabase;
   readonly deviceId: string;
   readonly apiUrl: string;
+  readonly syncEnabled: boolean;
   readonly connectError: string | null;
+  readonly enableSync: () => Promise<void>;
+  readonly disableSync: () => Promise<void>;
 }
 
 const KoiSyncContext = createContext<KoiSync | null>(null);
@@ -42,32 +53,63 @@ export function useKoi(): KoiSync {
 }
 
 export function KoiProvider({ children }: { children: React.ReactNode }): React.JSX.Element {
-  const [sync, setSync] = useState<KoiSync | null>(null);
+  const [database, setDatabase] = useState<CommonPowerSyncDatabase | null>(null);
+  const [deviceId, setDeviceId] = useState<string | null>(null);
+  const [syncEnabled, setSyncEnabledState] = useState(false);
+  const [connectError, setConnectError] = useState<string | null>(null);
   const [fatal, setFatal] = useState<string | null>(null);
 
+  const connector = useCallback(
+    (id: string) => new KoiConnector({ apiUrl: API_URL, deviceId: id }),
+    [],
+  );
+
+  const enableSync = useCallback(async (): Promise<void> => {
+    if (database === null || deviceId === null) return;
+    await setSyncEnabled(database as unknown as KoiDb, true);
+    setSyncEnabledState(true);
+    try {
+      await connectKoi(database, connector(deviceId));
+      setConnectError(null);
+    } catch (e) {
+      setConnectError(e instanceof Error ? e.message : String(e));
+    }
+  }, [database, deviceId, connector]);
+
+  const disableSync = useCallback(async (): Promise<void> => {
+    if (database === null) return;
+    await setSyncEnabled(database as unknown as KoiDb, false);
+    await database.disconnect();
+    setSyncEnabledState(false);
+    setConnectError(null);
+  }, [database]);
+
   useEffect(() => {
-    let database: CommonPowerSyncDatabase | null = null;
+    let db: CommonPowerSyncDatabase | null = null;
     let cancelled = false;
 
     void (async () => {
       try {
-        database = createKoiDatabase();
-        await database.init();
-        const deviceId = await getOrCreateDeviceId(database as unknown as KoiDb);
-        let connectError: string | null = null;
-        try {
-          await connectKoi(database, new KoiConnector({ apiUrl: API_URL, deviceId }));
-        } catch (e) {
-          connectError = e instanceof Error ? e.message : String(e);
+        db = createKoiDatabase();
+        await db.init();
+        const id = await getOrCreateDeviceId(db as unknown as KoiDb);
+        // The local read that decides everything below: no account, no
+        // network reachability check, no implicit opt-in — only what THIS
+        // device already agreed to (default false).
+        const alreadyOn = await isSyncEnabled(db as unknown as KoiDb);
+
+        if (alreadyOn) {
+          try {
+            await connectKoi(db, new KoiConnector({ apiUrl: API_URL, deviceId: id }));
+          } catch (e) {
+            if (!cancelled) setConnectError(e instanceof Error ? e.message : String(e));
+          }
         }
+
         if (cancelled) return;
-        setSync({
-          db: database as unknown as KoiDb,
-          powersync: database,
-          deviceId,
-          apiUrl: API_URL,
-          connectError,
-        });
+        setDatabase(db);
+        setDeviceId(id);
+        setSyncEnabledState(alreadyOn);
       } catch (e) {
         if (!cancelled) setFatal(e instanceof Error ? e.message : String(e));
       }
@@ -75,7 +117,7 @@ export function KoiProvider({ children }: { children: React.ReactNode }): React.
 
     return () => {
       cancelled = true;
-      void database?.close();
+      void db?.close();
     };
   }, []);
 
@@ -88,7 +130,7 @@ export function KoiProvider({ children }: { children: React.ReactNode }): React.
     );
   }
 
-  if (sync === null) {
+  if (database === null || deviceId === null) {
     return (
       <View style={styles.centre}>
         <Text style={type.soft}>Opening…</Text>
@@ -96,13 +138,24 @@ export function KoiProvider({ children }: { children: React.ReactNode }): React.
     );
   }
 
+  const sync: KoiSync = {
+    db: database as unknown as KoiDb,
+    powersync: database,
+    deviceId,
+    apiUrl: API_URL,
+    syncEnabled,
+    connectError,
+    enableSync,
+    disableSync,
+  };
+
   return (
     <KoiSyncContext.Provider value={sync}>
-      <PowerSyncContext.Provider value={sync.powersync}>
-        {sync.connectError !== null && (
+      <PowerSyncContext.Provider value={database}>
+        {syncEnabled && connectError !== null && (
           <View style={styles.banner}>
             <Text style={type.faint}>
-              Not syncing: {sync.connectError}. Your records are safe on this device.
+              Not syncing: {connectError}. Your records are safe on this device.
             </Text>
           </View>
         )}

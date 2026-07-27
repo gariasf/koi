@@ -22,13 +22,9 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterAll, beforeAll, expect, it } from 'vitest';
 
-import {
-  crudQueueSettler,
-  runS6Scenarios,
-  SCENARIO_COUNT,
-  type ScenarioResult,
-} from '../src/selftest/scenarios';
+import { runS6Scenarios, SCENARIO_COUNT, type ScenarioResult } from '../src/selftest/scenarios';
 import { KoiConnector } from '../src/sync/connector';
+import { crudQueueSettler } from '../src/sync/queue';
 import { koiSchema } from '../src/sync/schema';
 
 import type { KoiDb } from '../src/data/db';

@@ -83,6 +83,54 @@ session states the limitation instead of building around it.
 §D3 makes dark mode co-primary and explicitly not an inversion pass. The scaffold
 ships the light pair only; the authored dark palette belongs with the app surface.
 
+## ③ local-only → sync-on migration (Build Session 5, D-052)
+
+### No migration write path exists, by design — the backlog was always there
+`init()` has always applied the full synced schema (Session 4 onward), and PowerSync's
+own triggers queue every write into the local `ps_crud` table the instant it happens,
+regardless of whether anything is connected. So "local-only" is not a separate schema,
+database, or code path — it is simply **never having called `connect()`**. Turning sync
+on is one call; every write the user ever made while local-only is already sitting in the
+queue, in order, keyed by the same base_version machinery a same-device edit always uses
+(D-037 law 3: "same-device sequential edits, including the baseless offline
+create-then-edit flow, never self-conflict") — because from the server's point of view, a
+row created and then edited three months apart while fully offline looks identical to one
+created and edited three seconds apart online. No new server logic was needed. Proven, not
+just reasoned: `sync-tests/local-first.test.ts` seeds a real backlog (creates, edits, a
+delete-then-undo, a car-with-children delete) on an unconnected database, then connects,
+then asserts server state directly — every row exactly once, versions correct, zero
+missing-base-version or column-conflict flags from the single-device case.
+
+### The in-app sync card's copy — NOT the real privacy page, recorded for the gate
+§C8's privacy card ("Your data never leaves this device. No account, cloud sync or
+analytics.") is real product copy on the release-gated privacy page (its rewrite is its
+own owner-reviewed task, per BOARD bucket F) — this session did not touch it. What exists
+now is a stand-in on the garage screen (the real Settings surface is bucket D), and its
+copy must not lie in either state:
+
+- **Sync off (default):** "Your data never leaves this device. No account, cloud sync or
+  analytics." — identical to §C8's existing line; still true.
+- **Sync on:** "This device syncs to your own server, so your other devices see the same
+  records. It never leaves servers you run." — deliberately narrower than any privacy-page
+  claim: it says WHERE data goes (a server the user runs) and does not repeat "no
+  account"/"no analytics" claims that stay true regardless, nor invent an "operator can
+  read" disclosure that belongs to the real privacy-page rewrite (D-016's web-requires-sync
+  wording note applies there, not here).
+
+Sync can be turned back off (a pause, not an erase): future writes stop uploading, but
+nothing already sent is clawed back, and disabling never touches the checkpoint or
+generates a synced tombstone-adjacent event. No confirmation dialog either direction —
+turning on costs nothing undoable (D-013 §D5 "nothing is fixed silently" is about repairs,
+not about consent for an already-opt-in action), and turning off cannot lose data.
+
+### Two independently-local-only devices joining the same household
+Proven (`sync-tests/local-first.test.ts`, scenario B): two devices each accumulate their
+own local-only history (different cars, different readings, no shared state) and both
+connect for the first time. Both backlogs drain; nothing is lost; no id collisions (UUIDv7).
+One thing recorded, not solved: if both devices independently added "the same" conceptual
+car before ever syncing, the result is two car rows in the garage — an honest outcome, not
+a bug (flag-never-fix), and dedup is S-9's import-remap territory, not this migration's job.
+
 ### Deferred to S-4 / S-14
 - Flag payloads do not yet carry the **counterparty's identity** (the deleter on an
   `edit-after-delete` flag; the displaced writer's device on `delete-conflict` /

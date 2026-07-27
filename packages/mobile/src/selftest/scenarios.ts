@@ -49,25 +49,6 @@ export interface ScenarioContext {
   readonly settle: () => Promise<void>;
 }
 
-/**
- * The gate above, built from any PowerSync database. The connector completes a
- * transaction only after the server answers 2xx, so an empty queue means applied,
- * not merely sent.
- */
-export function crudQueueSettler(
-  database: { getNextCrudTransaction: () => Promise<unknown> },
-  timeoutMs = 60_000,
-): () => Promise<void> {
-  return async () => {
-    const deadline = Date.now() + timeoutMs;
-    for (;;) {
-      if ((await database.getNextCrudTransaction()) == null) return;
-      if (Date.now() > deadline) throw new Error('timed out waiting for the upload queue to drain');
-      await new Promise((r) => setTimeout(r, 200));
-    }
-  };
-}
-
 export interface ScenarioResult {
   readonly name: string;
   readonly passed: boolean;

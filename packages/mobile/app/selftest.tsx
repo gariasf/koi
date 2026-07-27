@@ -14,14 +14,10 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 
-import {
-  crudQueueSettler,
-  runS6Scenarios,
-  SCENARIO_COUNT,
-  type ScenarioResult,
-} from '../src/selftest/scenarios';
+import { runS6Scenarios, SCENARIO_COUNT, type ScenarioResult } from '../src/selftest/scenarios';
 import { SELFTEST } from '../src/sync/config';
 import { useKoi } from '../src/sync/provider';
+import { crudQueueSettler } from '../src/sync/queue';
 import { Button, Card, Screen, SectionLabel } from '../src/ui/components';
 import { color, space, type } from '../src/ui/theme';
 
