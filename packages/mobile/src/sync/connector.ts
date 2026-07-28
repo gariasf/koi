@@ -16,8 +16,14 @@
  *    client transaction, so the server sees the same atomic unit the client wrote
  *    (that is what makes the children-first car cascade land in one checkpoint).
  *
- * Auth is the `KOI_DEV_AUTH` mint for now; better-auth (passkey-primary) replaces
- * `mintToken` wholesale and nothing else here changes.
+ * Auth is real (Build Session 6): a bearer token comes from better-auth's
+ * `GET /api/auth/token`, which requires a session — this module never signs
+ * anyone in, it only reads whatever session cookie `getSessionCookie` hands
+ * it (the real app supplies `auth/client.ts`'s `authClient.getCookie()`; the
+ * self-test/scenario harnesses supply their own, test-only source — see
+ * `selftest/scenarios.ts` and `sync-tests/`). There is deliberately no
+ * fallback path in this file for "no cookie yet": a connector with nothing to
+ * authenticate with must fail the mint, not quietly find another way in.
  */
 
 import type {
@@ -29,17 +35,32 @@ import type {
 export interface KoiConnectorOptions {
   /** `http://host:4000` — the @koi/server write-path API. */
   readonly apiUrl: string;
+  /** The PowerSync sync service itself — no longer implied by the token mint. */
+  readonly powerSyncUrl: string;
   /** This device's stable id: the attribution key the server's ledger stores. */
   readonly deviceId: string;
-  /** Dev-mint identity until better-auth lands. */
-  readonly username?: string;
+  /** The current better-auth session cookie; empty/falsy when signed out. */
+  readonly getSessionCookie: () => string | Promise<string>;
   /** Injectable for tests; defaults to the platform fetch. */
   readonly fetchImpl?: typeof fetch;
 }
 
 interface MintedToken {
   readonly token: string;
-  readonly endpoint: string;
+}
+
+async function mintPowerSyncToken(
+  fetchImpl: typeof fetch,
+  apiUrl: string,
+  getSessionCookie: KoiConnectorOptions['getSessionCookie'],
+): Promise<string> {
+  const cookie = await getSessionCookie();
+  const res = await fetchImpl(`${apiUrl}/api/auth/token`, {
+    headers: cookie ? { cookie } : {},
+  });
+  if (!res.ok) throw new Error(`token mint HTTP ${res.status}`);
+  const { token } = (await res.json()) as MintedToken;
+  return token;
 }
 
 export class KoiConnector implements PowerSyncBackendConnector {
@@ -49,19 +70,13 @@ export class KoiConnector implements PowerSyncBackendConnector {
     this.fetchImpl = options.fetchImpl ?? fetch;
   }
 
-  private async mintToken(): Promise<MintedToken> {
-    const res = await this.fetchImpl(`${this.options.apiUrl}/api/auth/token`, {
-      method: 'POST',
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ username: this.options.username ?? 'owner' }),
-    });
-    if (!res.ok) throw new Error(`token mint HTTP ${res.status}`);
-    return (await res.json()) as MintedToken;
-  }
-
   async fetchCredentials(): Promise<PowerSyncCredentials> {
-    const { token, endpoint } = await this.mintToken();
-    return { endpoint, token };
+    const token = await mintPowerSyncToken(
+      this.fetchImpl,
+      this.options.apiUrl,
+      this.options.getSessionCookie,
+    );
+    return { endpoint: this.options.powerSyncUrl, token };
   }
 
   async uploadData(database: CommonPowerSyncDatabase): Promise<void> {
@@ -76,7 +91,11 @@ export class KoiConnector implements PowerSyncBackendConnector {
       old: entry.previousValues,
     }));
 
-    const { token } = await this.mintToken();
+    const token = await mintPowerSyncToken(
+      this.fetchImpl,
+      this.options.apiUrl,
+      this.options.getSessionCookie,
+    );
     const res = await this.fetchImpl(`${this.options.apiUrl}/upload`, {
       method: 'POST',
       headers: { 'content-type': 'application/json', authorization: `Bearer ${token}` },
@@ -97,17 +116,11 @@ export class KoiConnector implements PowerSyncBackendConnector {
  * Test/dev only: nothing in the app's own flows calls it.
  */
 export async function uploadAsPeer(
-  options: KoiConnectorOptions,
+  options: Pick<KoiConnectorOptions, 'apiUrl' | 'deviceId' | 'getSessionCookie' | 'fetchImpl'>,
   batch: readonly Record<string, unknown>[],
 ): Promise<unknown> {
   const fetchImpl = options.fetchImpl ?? fetch;
-  const mint = await fetchImpl(`${options.apiUrl}/api/auth/token`, {
-    method: 'POST',
-    headers: { 'content-type': 'application/json' },
-    body: JSON.stringify({ username: options.username ?? 'owner' }),
-  });
-  if (!mint.ok) throw new Error(`token mint HTTP ${mint.status}`);
-  const { token } = (await mint.json()) as MintedToken;
+  const token = await mintPowerSyncToken(fetchImpl, options.apiUrl, options.getSessionCookie);
 
   const res = await fetchImpl(`${options.apiUrl}/upload`, {
     method: 'POST',

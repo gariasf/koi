@@ -3,10 +3,51 @@
 The bespoke write-path API (D-022): Fastify 5 + zod + Drizzle (pinned; exit =
 raw `pg`) against canonical Postgres, with `@koi/domain` running on every
 upload — accept with 2xx, flag atomically with the data, never reject, never
-silently skip. better-auth (passkey-primary + recovery codes, no email) is
-deferred; a jose/JWKS shim mints dev tokens for PowerSync until it lands.
-Server discipline (delta §4): no user content in logs, no analytics, no
-third-party processors.
+silently skip. Auth is better-auth, mounted in-process (D-025, Build Session
+6): passkey-primary, recovery codes as a standalone fallback, no email or
+password. The dev jose/JWKS shim (`KOI_DEV_AUTH`) that stood in for it is
+gone — its own header comment predicted this: "swapping it in later changes
+the issuer, not the contract" (D-038). Server discipline (delta §4): no user
+content in logs, no analytics, no third-party processors.
+
+## Auth in one paragraph (D-025, Build Session 6)
+
+better-auth is mounted in-process under `/api/auth/*` (`src/auth/instance.ts`
++ `src/app.ts`'s Fastify catch-all route), Drizzle-backed on the SAME
+Postgres connection and the SAME `db:generate`/`db:migrate` flow as the rest
+of the schema — `@better-auth/cli generate` emits its Drizzle table
+definitions (`src/db/auth-schema.ts`), drizzle-kit does the rest, no separate
+migration mechanism. This is a single-tenant server (D-023 settings-singleton
+pattern): one pre-seeded owner account (`DEFAULT_OWNER_USER_ID`,
+`db/client.ts`), not a real multi-user table — the simplest thing that
+doesn't foreclose a real S-14 sharing flow later. The passkey plugin's
+passwordless registration path (`requireSession: false` + a `resolveUser`
+callback) lets the FIRST-ever passkey attach to that owner account with no
+prior session; `resolveUser` refuses every registration after the first
+(`FORBIDDEN` — "sign in on an existing device to add another"), so the
+sessionless path is a one-time bootstrap, not a standing hole. `user.email`
+exists only because better-auth's core schema requires a non-null unique
+value there — it is never sent anywhere, matching D-025's "no email
+dependency, EUR 0". The JWT plugin serves PowerSync's two contract endpoints
+unchanged from the dev shim's contract: `GET /api/auth/jwks` (same default
+path, so `infra/powersync/config.yaml`'s `jwks_uri` needed no edit) and
+`GET /api/auth/token` (session-authenticated, `exp` 24h, `aud`/`iss` from
+env.ts). `/upload` verifies the bearer token via `auth.api.verifyJWT`
+in-process — the same check PowerSync itself performs against the same
+tokens, so "valid" has exactly one definition.
+
+Recovery codes are a standalone break-glass credential, not classic 2FA: they
+are deliberately NOT built on better-auth's own `two-factor` plugin, which
+bundles backup codes with a mandatory second-factor challenge on every
+sign-in (flips `user.twoFactorEnabled`; a hook then gates subsequent sign-ins
+behind a pending-cookie handshake) — the wrong shape when passkey sign-in is
+supposed to stay one tap. `src/auth/recovery.ts` is a small custom plugin
+instead: `POST /api/auth/recovery/generate` (session-required) mints 10 codes
+and stores them encrypted (`better-auth/crypto`'s `symmetricEncrypt`, keyed on
+the instance secret — the same public primitive `two-factor`'s own
+`enableTwoFactor` handler uses internally); `POST /api/auth/recovery/verify`
+(no session) redeems one, single-use, and establishes a real session exactly
+as a passkey sign-in would — proven in `sync-tests/11-recovery-codes.test.ts`.
 
 ## The sync protocol in one paragraph
 
@@ -81,22 +122,24 @@ is how the undo toast reverses a mis-tap), and resolution never touches
 
 ## Commands
 
-The credential-less dev token mint (`POST /api/auth/token`) only exists when
-`KOI_DEV_AUTH=1` — a server reaching a network without better-auth must not
-silently hand out tokens.
-
 ```sh
-KOI_DEV_AUTH=1 pnpm --filter @koi/server dev   # API on :4000 (stack up first — see infra/README.md)
-pnpm --filter @koi/server db:generate # regenerate Drizzle migration SQL after schema edits
-pnpm --filter @koi/server db:migrate  # apply migrations + ensure default household
-pnpm --filter @koi/server test        # unit tier (pure protocol core)
-pnpm --filter @koi/server test:sync   # torture tier — orchestrates docker compose itself
+pnpm --filter @koi/server dev             # API + better-auth on :4000 (stack up first — see infra/README.md)
+pnpm --filter @koi/server db:generate      # regenerate Drizzle migration SQL after schema edits
+pnpm --filter @koi/server db:generate:auth # regenerate src/db/auth-schema.ts after auth plugin changes (@better-auth/cli)
+pnpm --filter @koi/server db:migrate       # apply migrations + ensure default household + owner user
+pnpm --filter @koi/server test             # unit tier (pure protocol core)
+pnpm --filter @koi/server test:sync        # torture tier — orchestrates docker compose itself
 ```
 
 `test:sync` brings the infra stack up (and DOWN, volumes included, when done —
 set `KOI_SYNC_KEEP_STACK=1` to keep it) and runs real two-client scenarios:
 same-date append conflict (Spike ② graduate), ⑤ same-column PATCH conflict,
 disjoint-column merge (no flag), unknown-table dead-letters (DELETE is not
-blanket-handled), and the S-6 delete tier — tombstone propagation, edit-vs-delete
+blanket-handled), the S-6 delete tier — tombstone propagation, edit-vs-delete
 (both arrival orders), atomic cascade, late child, undo round-trip (same-device
-resurrection + foreign-device rejection), and DELETE replay idempotency.
+resurrection + foreign-device rejection), and DELETE replay idempotency — and,
+since Build Session 6, recovery-code generation and redemption
+(`11-recovery-codes.test.ts`). Its "devices" sign in through a test-only
+session bootstrap (`src/auth/test-bootstrap.ts`), not `KOI_DEV_AUTH` (gone) —
+see the Auth section above and decisions.md for why that is structurally
+safer than the flag it replaces.

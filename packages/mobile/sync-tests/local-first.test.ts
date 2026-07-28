@@ -34,10 +34,12 @@ import { insertReading, updateReading } from '../src/data/readings';
 import { KoiConnector } from '../src/sync/connector';
 import { crudQueueSettler } from '../src/sync/queue';
 import { koiSchema } from '../src/sync/schema';
+import { testSessionCookie } from './test-auth';
 
 import type { KoiDb } from '../src/data/db';
 
 const API = 'http://localhost:4000';
+const POWERSYNC = 'http://localhost:8080';
 const PG_URL = 'postgresql://postgres:postgres@localhost:5433/koi';
 
 let db: pg.Client;
@@ -109,7 +111,12 @@ it(
       expect(pendingBefore.count, 'writes queued locally before any connection').toBeGreaterThan(0);
 
       // The switch: turning sync on IS this one call. No migration step.
-      await local.connect(new KoiConnector({ apiUrl: API, deviceId }));
+      await local.connect(new KoiConnector({
+        apiUrl: API,
+        powerSyncUrl: POWERSYNC,
+        deviceId,
+        getSessionCookie: testSessionCookie,
+      }));
       await crudQueueSettler(local)();
 
       const car = await db.query(`SELECT record_version, deleted_at FROM cars WHERE id = $1`, [carId]);
@@ -182,8 +189,22 @@ it(
       // this is not new protocol territory, just two backlogs draining
       // concurrently instead of two live streams.
       await Promise.all([
-        x.connect(new KoiConnector({ apiUrl: API, deviceId: deviceX })),
-        y.connect(new KoiConnector({ apiUrl: API, deviceId: deviceY })),
+        x.connect(
+          new KoiConnector({
+            apiUrl: API,
+            powerSyncUrl: POWERSYNC,
+            deviceId: deviceX,
+            getSessionCookie: testSessionCookie,
+          }),
+        ),
+        y.connect(
+          new KoiConnector({
+            apiUrl: API,
+            powerSyncUrl: POWERSYNC,
+            deviceId: deviceY,
+            getSessionCookie: testSessionCookie,
+          }),
+        ),
       ]);
       await Promise.all([crudQueueSettler(x)(), crudQueueSettler(y)()]);
 
@@ -243,7 +264,12 @@ it(
       const childCount = await deleteCarWithReadings(local as unknown as KoiDb, carId);
       expect(childCount).toBe(1);
 
-      await local.connect(new KoiConnector({ apiUrl: API, deviceId }));
+      await local.connect(new KoiConnector({
+        apiUrl: API,
+        powerSyncUrl: POWERSYNC,
+        deviceId,
+        getSessionCookie: testSessionCookie,
+      }));
       await crudQueueSettler(local)();
 
       const car = await db.query(`SELECT deleted_at, deleted_via FROM cars WHERE id = $1`, [carId]);

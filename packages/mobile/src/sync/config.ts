@@ -18,6 +18,14 @@ const env = (key: string): string | undefined => {
 export const API_URL = env('EXPO_PUBLIC_KOI_API') ?? 'http://localhost:4000';
 
 /**
+ * The PowerSync sync service itself. Before Build Session 6 the dev token
+ * mint handed this back bundled with every token; better-auth's own
+ * `/api/auth/token` only knows about auth, not PowerSync, so the client now
+ * carries this independently, the same way it already carries API_URL.
+ */
+export const POWERSYNC_URL = env('EXPO_PUBLIC_KOI_POWERSYNC') ?? 'http://localhost:8080';
+
+/**
  * Runs the S-6 / S-4 scenario suite on launch and renders the results, instead
  * of the app's own screens. Dev switch: it writes and deletes real records.
  */

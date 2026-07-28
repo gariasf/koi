@@ -14,6 +14,31 @@ lives in §4 — this board tracks status, not prose.
 
 ## Now / Next
 
+- **Session 6 done — real auth end-to-end (D-053..D-056).** Opened on the owner's own Session 6
+  brief (the gate below — the owner typing the brief directly into the session was the sign-off).
+  better-auth mounted in-process, Drizzle-integrated (no separate migration mechanism), replacing
+  `KOI_DEV_AUTH` (deleted, `auth.ts` gone). Passkey-primary, single pre-seeded owner account
+  (simplest thing, doesn't foreclose S-14); passwordless bootstrap for the founding passkey only,
+  guarded server-side against a second silent claim. Recovery codes built as a standalone custom
+  plugin — NOT better-auth's `two-factor` (that plugin is real 2FA, wrong shape for a passkey-loss
+  fallback; also its raw crypto helpers turned out to be type-only exports, found the hard way) —
+  proven end-to-end in 4 new server scenarios. All three sync tiers re-proven green under real auth,
+  twice each (server 17, mobile 5 top-level covering 9+3 scenarios); both unit tiers unaffected.
+  **Native passkey on Expo/iOS (Ⓓ) — DISCHARGED, proven on device (D-055).** Real Face ID ceremony
+  on the simulator: passkey registered (`multiDevice`, `backed_up`), session created, 10 encrypted
+  recovery codes stored, and the resulting JWT **accepted by PowerSync itself** (`Sync stream
+  started user_id: user-owner` … `checkpoint_complete`, from `powersync-react-native ios/26.5`).
+  No password fallback needed. Four preconditions found the hard way, all now documented: Associated
+  Domains needs a PAID Apple account (and the team id that matters, `AB72ZGY444`, is NOT the one on
+  the keychain cert); the dev loop needs a resolvable domain serving an AASA over TLS (recipe:
+  `?mode=developer` + `swcutil developer-mode` + hosts override + simulator-trusted self-signed
+  cert); `@better-auth/expo`'s client and server plugins are a matched pair (RN sends no `Origin`,
+  so POSTs 403 `MISSING_OR_NULL_ORIGIN` until the SERVER `expo()` plugin reads the `expo-origin`
+  header); and registering a passkey does NOT sign you in (better-auth creates a session only on the
+  authentication path — first-time setup therefore shows two Face ID prompts). Taps were owner-driven
+  (bucket H still blocks scripted iOS UI), so every claim is backed by a DB/server-log check rather
+  than screen-reading. Sign-in surface: no separate screen — "Turn on sync" IS the sign-in step
+  (spec-delta.md). **Owner gate owed before bucket D (app surface) or S-7.**
 - **OWNER GATE OWED (2026-07-27): Session 5 done — ③ local-only → sync-on migration (D-052).** Bucket
   A's last ⛔ before auth. Verified from the PowerSync source (not assumed): every write already
   queues locally regardless of connection, so "local-only" is just never having called `connect()` —
@@ -84,12 +109,12 @@ lives in §4 — this board tracks status, not prose.
 | todo | ▲ | S-12 preference split (synced vs device-local) |
 | todo | ▲ | S-13 per-device notification scheduling (no push infra) |
 | todo | ▲ | engine-agnostic domain set: lineage swap, occurrence identity, dedup ordinal, settings singleton, "keep both", post-flag validation |
-| doing | ▲ | sync torture-test suite (Spike ② scenarios graduate into it) — Session 2 seeded 5; Session 3 grew it to 13 (S-6 tier) on two @powersync/node clients + CI job; Session 4 added a SECOND tier: 9 scenarios driving @koi/mobile's own schema/connector/write functions, run under Node in CI and on the iOS simulator from one module (D-049); Session 5 added a THIRD file (`local-first.test.ts`, 3 scenarios): single-device offline backlog drain, two independently-local-only devices joining one household, offline cascade delete (D-052); grows with passkey |
+| doing | ▲ | sync torture-test suite (Spike ② scenarios graduate into it) — Session 2 seeded 5; Session 3 grew it to 13 (S-6 tier) on two @powersync/node clients + CI job; Session 4 added a SECOND tier: 9 scenarios driving @koi/mobile's own schema/connector/write functions, run under Node in CI and on the iOS simulator from one module (D-049); Session 5 added a THIRD file (`local-first.test.ts`, 3 scenarios): single-device offline backlog drain, two independently-local-only devices joining one household, offline cascade delete (D-052); Session 6 added recovery-code generate/verify (`11-recovery-codes.test.ts`, 4 scenarios, D-054) — server tier now 17 |
 
 ### B · Backend / infra / auth
 | st | sev | item |
 |---|---|---|
-| todo | ⛔ | better-auth passkey-primary + recovery codes + no-email FULL round-trip |
+| done | ⛔ | better-auth passkey-primary + recovery codes + no-email FULL round-trip — Session 6, D-053..D-056: mounted in-process, Drizzle-integrated; single pre-seeded owner, passwordless-bootstrap-once guard; recovery codes as a standalone custom plugin (not two-factor); KOI_DEV_AUTH retired; all 3 sync tiers re-proven under real auth. **Ⓓ discharged: real Face ID round-trip on the simulator → passkey + session + recovery codes persisted, JWT accepted by PowerSync (`checkpoint_complete`, D-055)** |
 | todo | ▲ | Android-over-network initial-sync measurement |
 | todo | ▲ | self-hosting ops: WAL-slot alert, compaction cron, disk alert, ~6-mo SDK windows |
 | todo | ▽ | server discipline: no user content in logs, no analytics, no 3rd-party processors |
@@ -104,7 +129,8 @@ lives in §4 — this board tracks status, not prose.
 ### D · Clients (mobile + web)
 | st | sev | item |
 |---|---|---|
-| todo | ▲ | full Bundle A app build (capture + ledger + record + Insights) — Session 4 scaffolded @koi/mobile and built the sync surfaces only (garage · car page · review queue); §C's four-tab shell + capture sheets + dark palette are this item |
+| todo | ▲ | **wireframe pass FIRST** — ASCII/block screens translating §C (functional reqs) + §D (nav model, time-as-pages, color law, chart grammar) into concrete layouts for the four tabs + capture + record + reminders + vault/settings, sanity-checked against what @koi/mobile already has (garage/car/review) before writing more screen code. Queued for right after Session 6 (passkey) gates — prep for opening this bucket, not a parallel side-track. |
+| todo | ▲ | full Bundle A app build (capture + ledger + record + Insights) — Session 4 scaffolded @koi/mobile and built the sync surfaces only (garage · car page · review queue); §C's four-tab shell + capture sheets + dark palette are this item; **starts from the wireframe pass above** |
 | todo | ▲ | chart §D4 finish: ghost bars, on-canvas peak label; iOS large-title inset fix |
 | todo | ▲ | Recharts web charts (share selectors only) |
 | todo | ▲ | web companion scope: read+edit no capture, import console, export, WCAG 2.2 AA |
@@ -305,3 +331,55 @@ lives in §4 — this board tracks status, not prose.
   missing internal function) — accepted rather than forced, since the automated real-stack tier
   already exhaustively proves the identical code path. **Owner gate owed before better-auth/passkey
   (Session 6).**
+- **2026-07-28 · Session 6 — real auth end-to-end (D-053..D-056).** Opened directly on the owner's
+  own Session 6 brief (the sign-off for the Session 5 gate). better-auth mounted in-process
+  (`packages/server/src/auth/instance.ts`), Drizzle-backed on the same connection and the same
+  `db:generate`/`db:migrate` flow as everything else — `@better-auth/cli generate` emits its table
+  definitions (`src/db/auth-schema.ts`), drizzle-kit migrates them (`0002_gorgeous_mantis.sql`), no
+  separate mechanism. Single-tenant: one pre-seeded owner row (`DEFAULT_OWNER_USER_ID`,
+  `ensureDefaultOwnerUser` mirroring `ensureDefaultHousehold`) — simplest thing, doesn't foreclose
+  S-14. Passkey plugin's passwordless registration lets the founding passkey attach with no session;
+  `resolveUser` refuses every attempt after the first (queries for an existing `passkey` row) so the
+  sessionless path is one-time, not standing. JWT plugin unchanged contract from the dev shim
+  (`aud`/`iss`/`exp`/`jwks` path all the same) — `infra/powersync/config.yaml` needed no edit.
+  Recovery codes are a standalone custom plugin (`src/auth/recovery.ts`), NOT better-auth's
+  `two-factor` — that plugin turned out to be real 2FA (flips `user.twoFactorEnabled`, gates every
+  later sign-in behind a pending-cookie handshake), the wrong shape for a passkey-loss fallback; its
+  own raw crypto helpers are also type-only exports at the public entry point (a boot-time
+  `SyntaxError` found this, not inspection), so `recovery.ts` is self-contained on
+  `better-auth/crypto`'s public primitives instead. Proven in 4 new scenarios
+  (`sync-tests/11-recovery-codes.test.ts`): generate, redeem-with-no-session, single-use, reject
+  invalid. `KOI_DEV_AUTH`/`createAuthShim`/`auth.ts` deleted (D-038's own words); test harnesses
+  authenticate through a `testBootstrap`-gated plugin that structurally cannot exist in `main.ts`'s
+  call to `createAuth` (a source-code decision, not an env var — D-056), verified directly (the real
+  dev server 404s the test-bootstrap route). All three sync tiers re-proven green under real auth,
+  twice each for stability (server 17, mobile 5 top-level / 9+3 scenarios); unit tiers unaffected (42
+  server + 38 mobile). One integration bug found and fixed the hard way: the Fastify catch-all's
+  reconstructed `Request` needs `content-type: application/json` set unconditionally, not copied
+  from the original caller, or a bare bodyless POST 415s before better-auth's handler runs — first
+  symptom was a hung `test:sync` run, not a readable error. **Native passkey on Expo/iOS (Ⓓ) —
+  DISCHARGED, working end-to-end on the simulator (D-055).** A real Face ID ceremony registered a
+  passkey (`Koi (ios)`, `multiDevice`, `backed_up`, on `user-owner`), signed in, generated 10
+  encrypted recovery codes, and the session minted a JWT that **PowerSync accepted and synced with**
+  — its own log: `Sync stream started user_id: user-owner` → `New checkpoint: 0 | buckets: 1
+  ["1#household[]"]` → `checkpoint_complete`, from `powersync-react-native react-native/0.86
+  ios/26.5`. No password fallback needed; the kill criterion never fired. Four preconditions found
+  the hard way and now written down: (1) Associated Domains needs a PAID Apple account — and the
+  team id Apple matches (`AB72ZGY444`) is NOT the one printed on the keychain's dev certificate
+  (`TK6Z94M3S5`), which cost one wrong AASA file; (2) the dev loop needs a resolvable domain serving
+  `/.well-known/apple-app-site-association` over TLS — a placeholder domain builds fine and fails
+  only at ceremony time with an opaque `ASAuthorizationError 1004`; the working recipe is
+  `?mode=developer` + `sudo swcutil developer-mode -e true` + an `/etc/hosts` override + a
+  simulator-trusted self-signed cert (`simctl keychain add-root-cert`) + a local HTTPS AASA server,
+  no public DNS; (3) `@better-auth/expo`'s client and SERVER plugins are a matched pair — RN sends
+  no `Origin` header, so every state-changing POST 403s `MISSING_OR_NULL_ORIGIN` while GETs pass,
+  until the server-side `expo()` plugin reads the client's `expo-origin` header; (4) registering a
+  passkey does NOT sign you in — better-auth calls `createSession` only on the authentication path,
+  so `flow.ts` must always follow a registration with a sign-in (first-time setup therefore shows
+  two Face ID prompts; recorded as bucket-D UX roughness, not a correctness issue). Bridge:
+  `expo-better-auth-passkey` (kevcube, MIT, 33★), in the D-022 niche register with an exit plan.
+  Taps were owner-driven (bucket H still blocks scripted iOS UI), so every claim here is backed by a
+  database or server-log check rather than screen-reading — the precedent Session 5 set. Sign-in
+  surface decided and recorded (spec-delta.md): no separate screen, "Turn on sync" IS the sign-in
+  step; a one-time recovery-codes reveal card is the one new screen. **Owner gate owed before bucket
+  D (app surface) or S-7** — brief explicitly named both as out of scope this session.

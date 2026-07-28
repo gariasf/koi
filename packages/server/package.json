@@ -2,7 +2,7 @@
   "name": "@koi/server",
   "version": "0.1.0",
   "private": true,
-  "description": "Koi sync server: Fastify 5 + zod + Drizzle bespoke write-path API (D-022/D-025). Accept-with-2xx, per-column base_version protocol (S-5/D-023), exhaustive op-handling with dead-lettering. better-auth deferred; jose/JWKS shim mints dev tokens for PowerSync.",
+  "description": "Koi sync server: Fastify 5 + zod + Drizzle bespoke write-path API (D-022/D-025). Accept-with-2xx, per-column base_version protocol (S-5/D-023), exhaustive op-handling with dead-lettering. better-auth mounted in-process: passkey-primary, recovery codes, no email (D-025, Build Session 6).",
   "type": "module",
   "exports": {
     ".": {
@@ -23,17 +23,22 @@
     "test:sync": "vitest run --config vitest.sync.config.ts",
     "typecheck": "tsc -p tsconfig.json && tsc -p tsconfig.test.json",
     "db:generate": "drizzle-kit generate",
+    "db:generate:auth": "better-auth generate --config src/auth/cli-instance.ts --output src/db/auth-schema.ts -y",
     "db:migrate": "tsx scripts/migrate.ts"
   },
   "dependencies": {
+    "@better-auth/expo": "^1.6.25",
+    "@better-auth/passkey": "^1.6.25",
     "@koi/domain": "workspace:*",
-    "drizzle-orm": "^0.44.2",
+    "@simplewebauthn/server": "^13.3.2",
+    "better-auth": "^1.6.25",
+    "drizzle-orm": "^0.45.2",
     "fastify": "^5.4.0",
-    "jose": "^6.0.11",
     "pg": "^8.16.0",
     "zod": "^4.0.0"
   },
   "devDependencies": {
+    "@better-auth/cli": "^1.4.21",
     "@eslint/js": "^9.20.0",
     "@powersync/node": "0.20.0",
     "@types/node": "catalog:",

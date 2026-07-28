@@ -11,6 +11,10 @@ allowBuilds:
   esbuild: true
   better-sqlite3: true
   "@powersync/node": true
+  # Pulled in transitively by @better-auth/cli (Session 6): we use the
+  # Drizzle adapter exclusively, never Prisma, so its client-generation
+  # postinstall has nothing to generate against and stays unapproved.
+  "@prisma/client": false
 
 catalog:
   "@types/node": ^24.0.0

@@ -32,7 +32,16 @@ import { color, space, type } from '../src/ui/theme';
 import { SELFTEST } from '../src/sync/config';
 
 export default function GarageScreen(): React.JSX.Element {
-  const { db, deviceId, syncEnabled, connectError, enableSync, disableSync } = useKoi();
+  const {
+    db,
+    deviceId,
+    syncEnabled,
+    connectError,
+    enableSync,
+    disableSync,
+    recoveryCodes,
+    dismissRecoveryCodes,
+  } = useKoi();
   const router = useRouter();
   const status = useStatus();
   const { data: cars = [] } = useQuery<CarRow>(`SELECT * FROM cars ORDER BY make, model`);
@@ -209,6 +218,20 @@ export default function GarageScreen(): React.JSX.Element {
             </Link>
           )}
         </Card>
+
+        {recoveryCodes !== null && (
+          <Card>
+            <Text style={type.title}>Save your recovery codes</Text>
+            <Text style={type.soft}>
+              If you lose access to every device with your passkey, one of these codes gets you
+              back in. Each works once. Koi shows them only this one time.
+            </Text>
+            <Text style={[type.body, styles.codes]} selectable>
+              {recoveryCodes.join('\n')}
+            </Text>
+            <Button label="I've saved these" tone="accent" onPress={dismissRecoveryCodes} />
+          </Card>
+        )}
       </Screen>
       <Toast state={toast} onDismiss={() => setToast(null)} />
     </View>
@@ -218,5 +241,6 @@ export default function GarageScreen(): React.JSX.Element {
 const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: color.paper },
   actions: { flexDirection: 'row', justifyContent: 'flex-end', gap: space.sm },
+  codes: { fontFamily: 'Menlo', letterSpacing: 1 },
   link: { paddingVertical: space.sm },
 });

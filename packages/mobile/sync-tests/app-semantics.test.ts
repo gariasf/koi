@@ -26,10 +26,12 @@ import { runS6Scenarios, SCENARIO_COUNT, type ScenarioResult } from '../src/self
 import { KoiConnector } from '../src/sync/connector';
 import { crudQueueSettler } from '../src/sync/queue';
 import { koiSchema } from '../src/sync/schema';
+import { testSessionCookie } from './test-auth';
 
 import type { KoiDb } from '../src/data/db';
 
 const API = 'http://localhost:4000';
+const POWERSYNC = 'http://localhost:8080';
 const DEVICE = 'device-mobile-integration';
 
 let db: PowerSyncDatabase;
@@ -42,13 +44,21 @@ beforeAll(async () => {
     database: { dbFilename: join(dir, 'koi.db') },
   });
   await db.init();
-  await db.connect(new KoiConnector({ apiUrl: API, deviceId: DEVICE }));
+  await db.connect(
+    new KoiConnector({
+      apiUrl: API,
+      powerSyncUrl: POWERSYNC,
+      deviceId: DEVICE,
+      getSessionCookie: testSessionCookie,
+    }),
+  );
   await db.waitForFirstSync();
 
   results = await runS6Scenarios({
     db: db as unknown as KoiDb,
     deviceId: DEVICE,
     apiUrl: API,
+    getSessionCookie: testSessionCookie,
     timeoutMs: 60_000,
     settle: crudQueueSettler(db),
   });

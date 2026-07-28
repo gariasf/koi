@@ -14,6 +14,13 @@
  * sync on later just one `connect()` call: every write already sits in the
  * local upload queue (`mode.ts`), waiting.
  *
+ * **Turning sync on now means signing in** (Build Session 6): there is no
+ * separate auth step before the toggle — `enableSync` calls `ensureSignedIn`
+ * (auth/flow.ts) first, which registers the founding passkey or signs in
+ * with an existing one, and only connects once that succeeds. A relaunch
+ * with sync already on reuses whatever session `@better-auth/expo` already
+ * persisted in SecureStore — no re-prompt unless it actually expired.
+ *
  * A failure to connect (once sync IS on) is shown, not hidden: the app keeps
  * working (local-first; the database is fully usable offline and the queue
  * drains later), and the banner says what is wrong.
@@ -23,8 +30,10 @@ import { PowerSyncContext } from '@powersync/react';
 import { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 
+import { generateRecoveryCodes, ensureSignedIn } from '../auth/flow';
+import { getSessionCookie } from '../auth/client';
 import { color, space, type } from '../ui/theme';
-import { API_URL } from './config';
+import { API_URL, POWERSYNC_URL } from './config';
 import { KoiConnector } from './connector';
 import { getOrCreateDeviceId } from './device';
 import { isSyncEnabled, setSyncEnabled } from './mode';
@@ -42,6 +51,9 @@ interface KoiSync {
   readonly connectError: string | null;
   readonly enableSync: () => Promise<void>;
   readonly disableSync: () => Promise<void>;
+  /** Set once, right after a fresh passkey registration; cleared on dismiss. */
+  readonly recoveryCodes: readonly string[] | null;
+  readonly dismissRecoveryCodes: () => void;
 }
 
 const KoiSyncContext = createContext<KoiSync | null>(null);
@@ -58,14 +70,36 @@ export function KoiProvider({ children }: { children: React.ReactNode }): React.
   const [syncEnabled, setSyncEnabledState] = useState(false);
   const [connectError, setConnectError] = useState<string | null>(null);
   const [fatal, setFatal] = useState<string | null>(null);
+  const [recoveryCodes, setRecoveryCodes] = useState<readonly string[] | null>(null);
 
   const connector = useCallback(
-    (id: string) => new KoiConnector({ apiUrl: API_URL, deviceId: id }),
+    (id: string) =>
+      new KoiConnector({
+        apiUrl: API_URL,
+        powerSyncUrl: POWERSYNC_URL,
+        deviceId: id,
+        getSessionCookie,
+      }),
     [],
   );
 
   const enableSync = useCallback(async (): Promise<void> => {
     if (database === null || deviceId === null) return;
+    try {
+      const { registered } = await ensureSignedIn();
+      if (registered) {
+        // Best-effort: a failure here must not block sync itself — the codes
+        // can be regenerated later (Settings, when that surface exists).
+        try {
+          setRecoveryCodes(await generateRecoveryCodes());
+        } catch {
+          setRecoveryCodes(null);
+        }
+      }
+    } catch (e) {
+      setConnectError(e instanceof Error ? e.message : String(e));
+      return;
+    }
     await setSyncEnabled(database as unknown as KoiDb, true);
     setSyncEnabledState(true);
     try {
@@ -100,7 +134,15 @@ export function KoiProvider({ children }: { children: React.ReactNode }): React.
 
         if (alreadyOn) {
           try {
-            await connectKoi(db, new KoiConnector({ apiUrl: API_URL, deviceId: id }));
+            await connectKoi(
+              db,
+              new KoiConnector({
+                apiUrl: API_URL,
+                powerSyncUrl: POWERSYNC_URL,
+                deviceId: id,
+                getSessionCookie,
+              }),
+            );
           } catch (e) {
             if (!cancelled) setConnectError(e instanceof Error ? e.message : String(e));
           }
@@ -147,6 +189,8 @@ export function KoiProvider({ children }: { children: React.ReactNode }): React.
     connectError,
     enableSync,
     disableSync,
+    recoveryCodes,
+    dismissRecoveryCodes: () => setRecoveryCodes(null),
   };
 
   return (

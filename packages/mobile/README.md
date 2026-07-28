@@ -53,7 +53,7 @@ re-implementation that could be right while the app is wrong.
 # on the simulator — real Hermes, real op-sqlite, real PowerSync RN SDK
 cd infra && docker compose -p koi up -d --wait postgres
 pnpm --filter @koi/server db:migrate && docker compose -p koi up -d powersync
-KOI_DEV_AUTH=1 pnpm --filter @koi/server dev      # :4000
+pnpm --filter @koi/server dev      # :4000 — better-auth mounted, no KOI_DEV_AUTH (gone, D-038)
 
 EXPO_NO_TELEMETRY=1 pnpm --filter @koi/mobile exec expo prebuild --platform ios
 EXPO_NO_TELEMETRY=1 EXPO_PUBLIC_KOI_SELFTEST=1 \
@@ -62,11 +62,66 @@ EXPO_NO_TELEMETRY=1 EXPO_PUBLIC_KOI_SELFTEST=1 \
 
 `EXPO_PUBLIC_KOI_SELFTEST=1` sends the app straight to the scenarios on launch,
 so a screenshot of a launched app is the evidence. Without it that screen refuses
-to run: it writes and deletes real records.
+to run: it writes and deletes real records. **Since Build Session 6 the
+self-test screen also needs a real session**: `runS6Scenarios`'s peer writes
+(`ctx.peer`, `uploadAsPeer`) authenticate through whatever session the app
+itself is signed into (`src/auth/client.ts`'s `getSessionCookie`), so "Turn on
+sync" — which now registers or signs in with a passkey first (`src/auth/flow.ts`)
+— has to succeed once before the scenarios can run. `sync-tests/`'s own copy of
+these scenarios sidesteps this with a test-only session bootstrap
+(`test-auth.ts`, mirroring `@koi/server`'s `auth/test-bootstrap.ts`) instead of
+a real passkey ceremony — no WebAuthn authenticator exists in a headless test
+process.
 
 The second device in those races is a direct `POST /upload` with a different
 `deviceId` — not a shortcut around the protocol but the protocol itself,
 indistinguishable server-side from another phone.
+
+## Testing passkeys locally (Build Session 6, D-055)
+
+Native WebAuthn needs a **resolvable domain** with a real
+`/.well-known/apple-app-site-association` over TLS — a placeholder domain builds
+and signs fine, then fails at ceremony time with an opaque
+`ASAuthorizationError 1004`. Associated Domains also needs a **paid** Apple
+Developer account (a free Personal Team cannot add the capability at all).
+
+The local-override recipe that works, with no public DNS and no router changes:
+
+```sh
+# 1. entitlement already carries ?mode=developer (app.json ios.associatedDomains)
+sudo swcutil developer-mode -e true                       # trust dev-mode AASA
+echo "127.0.0.1 koi-dev.gariasf.com" | sudo tee -a /etc/hosts
+
+# 2. self-signed cert for that domain, trusted INSIDE the simulator
+openssl req -x509 -newkey ec -pkeyopt ec_paramgen_curve:prime256v1 \
+  -keyout key.pem -out cert.pem -days 365 -nodes \
+  -subj "/CN=koi-dev.gariasf.com" -addext "subjectAltName=DNS:koi-dev.gariasf.com"
+xcrun simctl keychain booted add-root-cert cert.pem
+
+# 3. serve the AASA on :443 (needs sudo for the privileged port).
+#    Body: {"applinks":{"apps":[],"details":[]},
+#           "webcredentials":{"apps":["<TEAMID>.tv.titanos.koi"]}}
+#    <TEAMID> is what the FAILURE LOG names, not necessarily the id on your
+#    keychain certificate — read it from:
+#      xcrun simctl spawn booted log show --last 5m \
+#        --predicate 'eventMessage CONTAINS "is not associated with domain"'
+
+# 4. server must use the same rpID
+AUTH_RP_ID=koi-dev.gariasf.com pnpm --filter @koi/server dev
+```
+
+`swcd` accepts the self-signed cert in developer mode (its log shows
+`TLS handshake complete` → `status 200`). A stale association is cached, so
+after changing the AASA, **reinstall the app** to force a re-fetch. To start
+from a truly clean slate (orphaned passkeys accumulate in the simulator
+keychain across failed attempts and make the sign-in picker ambiguous):
+`xcrun simctl keychain booted reset` — then re-add the root cert, and clear the
+server side with `DELETE FROM session; DELETE FROM passkey; DELETE FROM
+recovery_code;`.
+
+**First-time setup shows two Face ID prompts** (register, then authenticate):
+better-auth creates a session only on the authentication path, so registration
+alone leaves you with a passkey and no session. A returning device shows one.
 
 ## The RN-bundled Hermes vectors
 

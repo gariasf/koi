@@ -16,10 +16,11 @@ import { fileURLToPath } from 'node:url';
 
 import {
   buildApp,
-  createAuthShim,
+  createAuth,
   createDb,
   createPool,
   ensureDefaultHousehold,
+  ensureDefaultOwnerUser,
   loadEnv,
   migrateDb,
 } from '@koi/server';
@@ -61,15 +62,16 @@ export default async function setup(): Promise<() => Promise<void>> {
   try {
     compose('up -d --wait postgres');
 
-    const env = loadEnv({ KOI_DEV_AUTH: '1' });
+    const env = loadEnv();
     pool = createPool(env);
     const db = createDb(pool);
     await migrateDb(pool, db);
     await ensureDefaultHousehold(db);
+    await ensureDefaultOwnerUser(db);
 
     compose('up -d powersync');
 
-    app = buildApp({ env, db, auth: await createAuthShim(env) });
+    app = buildApp({ env, db, auth: createAuth(env, db, { testBootstrap: true }) });
     await app.listen({ port: env.PORT, host: env.HOST });
 
     await waitForHttp('http://localhost:8080/probes/liveness', 120_000);

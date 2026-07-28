@@ -14,6 +14,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 
+import { getSessionCookie } from '../src/auth/client';
 import { runS6Scenarios, SCENARIO_COUNT, type ScenarioResult } from '../src/selftest/scenarios';
 import { SELFTEST } from '../src/sync/config';
 import { useKoi } from '../src/sync/provider';
@@ -35,6 +36,7 @@ export default function SelfTestScreen(): React.JSX.Element {
         db,
         deviceId,
         apiUrl,
+        getSessionCookie,
         onProgress: setCurrent,
         settle: crudQueueSettler(powersync),
       });

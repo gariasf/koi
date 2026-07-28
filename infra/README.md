@@ -12,9 +12,9 @@ that only exist after `@koi/server`'s migrations run.
 
 ```sh
 docker compose up -d postgres                     # 1. wait for healthy
-pnpm --filter @koi/server db:migrate              # 2. create/upgrade application tables
+pnpm --filter @koi/server db:migrate              # 2. create/upgrade tables (app + better-auth) + seed owner/household
 docker compose up -d powersync                    # 3. replication + sync API on :8080
-KOI_DEV_AUTH=1 pnpm --filter @koi/server dev      # 4. write-path API + JWKS on :4000
+pnpm --filter @koi/server dev                     # 4. write-path API + better-auth (passkey, JWKS, JWT mint) on :4000
 ```
 
 `packages/server/sync-tests/` orchestrates this same sequence under its own
@@ -24,9 +24,14 @@ before running `test:sync`.
 
 Host ports (bound to loopback — dev credentials must never reach a LAN):
 Postgres `127.0.0.1:5433`, PowerSync `127.0.0.1:8080`; @koi/server listens on
-`:4000` (0.0.0.0 — PowerSync reaches its JWKS via host-gateway; the token
-mint is gated behind `KOI_DEV_AUTH=1`). On the VPS everything sits behind
-Caddy.
+`:4000` (0.0.0.0 — PowerSync reaches its JWKS via host-gateway). Auth is
+better-auth, mounted in-process (D-025, Build Session 6): passkey-primary,
+recovery codes as a standalone fallback, no email/password. The credential-
+less dev mint (`KOI_DEV_AUTH`) is gone (D-038) — the sync-torture harnesses
+authenticate through a test-only session bootstrap that exists only when
+their own setup code asks for it (`packages/server/src/auth/test-bootstrap.ts`),
+never as a runtime flag `main.ts` could accidentally leave on. On the VPS
+everything sits behind Caddy.
 
 ## Ops (D-025, ~½ day/mo)
 

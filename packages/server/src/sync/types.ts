@@ -47,8 +47,6 @@ export const uploadBodySchema = z.object({
 });
 export type UploadBody = z.infer<typeof uploadBodySchema>;
 
-export const tokenBodySchema = z.object({ username: z.string().min(1).default('owner') });
-
 /** koi-core-spec.md §B1 fuel types, lowercase canonical. */
 const fuelType = z.enum([
   'petrol',

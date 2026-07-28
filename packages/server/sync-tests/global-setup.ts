@@ -20,8 +20,14 @@ import { fileURLToPath } from 'node:url';
 import type { FastifyInstance } from 'fastify';
 
 import { buildApp } from '../src/app.js';
-import { createAuthShim } from '../src/auth.js';
-import { createDb, createPool, ensureDefaultHousehold, migrateDb } from '../src/db/client.js';
+import { createAuth } from '../src/auth/instance.js';
+import {
+  createDb,
+  createPool,
+  ensureDefaultHousehold,
+  ensureDefaultOwnerUser,
+  migrateDb,
+} from '../src/db/client.js';
 import { loadEnv } from '../src/env.js';
 
 const composeFile = fileURLToPath(new URL('../../../infra/docker-compose.yml', import.meta.url));
@@ -53,15 +59,16 @@ export default async function setup(): Promise<() => Promise<void>> {
   try {
     compose('up -d --wait postgres');
 
-    const env = loadEnv({ KOI_DEV_AUTH: '1' });
+    const env = loadEnv();
     pool = createPool(env);
     const db = createDb(pool);
     await migrateDb(pool, db);
     await ensureDefaultHousehold(db);
+    await ensureDefaultOwnerUser(db);
 
     compose('up -d powersync');
 
-    app = buildApp({ env, db, auth: await createAuthShim(env) });
+    app = buildApp({ env, db, auth: createAuth(env, db, { testBootstrap: true }) });
     await app.listen({ port: env.PORT, host: env.HOST });
 
     await waitForTcp('http://localhost:8080/probes/liveness', 120_000);

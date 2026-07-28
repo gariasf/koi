@@ -139,3 +139,54 @@ a bug (flag-never-fix), and dedup is S-9's import-remap territory, not this migr
   server-side (`deleted_by`, `column_versions.by`) and is retrofittable — no schema trap.
 - **Car restore** is a future S-4 signal (a distinguishable op), since cars never resurrect
   via PUT (inv.30). Cascade cohort scoping uses `deleted_via='cascade'` + `car_id`.
+
+## Real auth: passkey-primary, recovery codes (Build Session 6, D-053..D-056)
+
+### Where sign-in surfaces — DECIDED: inline with the sync toggle, no separate step
+§C8 has never described a login/account screen (D-006's "no account" default). Sync now
+requires a real identity, so this session had to decide where that identity gets established
+relative to the Session 5 sync toggle (`app/index.tsx`'s "Turn on sync") — a product-surface
+call, made explicitly rather than left implicit:
+
+**Tapping "Turn on sync" IS the sign-in step.** There is no separate "sign in" or "set up
+account" screen before it. `enableSync` (`src/sync/provider.tsx`) calls `ensureSignedIn`
+(`src/auth/flow.ts`) first: it tries registering a passkey (which only succeeds once — the
+founding passkey; every later attempt is refused server-side, D-053), and falls back to
+signing in with an existing one when the account already has a passkey (a second device, or
+the same device after being signed out). Only once that resolves does sync actually connect.
+The passkey ceremony itself is a native OS sheet (Face ID/Touch ID), so from the screen's
+point of view this reads as one tap with a system prompt in the middle — no new screen was
+needed for it. **One new screen WAS needed**: a one-time "save your recovery codes" reveal
+(`app/index.tsx`, shown right after a fresh registration succeeds — see D-054), since codes
+shown nowhere are useless. Reasoning for "inline, not a separate step": the product has never
+had an account concept before, and adding a standalone "Account" surface ahead of the one
+thing that needs it (sync) would be a bigger, earlier commitment to that concept than the
+brief asked for — this can always grow into a real Settings > Account surface once bucket D
+(the real app shell) exists; nothing here forecloses it.
+
+### What a device with no passkey and no recovery-code UI can do — a stated gap
+If passkey sign-in AND registration both fail (the account already has a passkey that lives
+somewhere this device's iCloud Keychain cannot reach), `ensureSignedIn` throws and the sync
+toggle shows the error in the existing `connectError` banner — there is no in-app path to
+recovery-code entry (D-054: proven server-side only this session, no client screen). This is
+recorded here as a real, current limitation, not silently absorbed into "just tap again."
+
+### First-time setup shows two Face ID prompts — known roughness for bucket D
+Registering a passkey does not sign you in (better-auth creates a session only on the
+authentication path), so `ensureSignedIn` always follows a successful registration with a
+sign-in — two consecutive system prompts the very first time a device turns sync on. A
+returning device shows one. Functionally correct and honest, but it reads as a stutter; the
+real Settings/onboarding surface (bucket D) should either explain the second prompt or find a
+way to avoid needing it. Recorded rather than papered over.
+
+### Two Fastify/better-auth integration findings, useful beyond this session
+- The reconstructed `Request` in the Fastify catch-all route must always declare
+  `content-type: application/json` for non-GET/HEAD calls, regardless of what the original
+  caller sent — omitting it 415s any no-body POST (e.g. a bare bootstrap/ping call) before
+  better-auth's own endpoint logic ever runs. Cost real time to find (a hung `test:sync` run,
+  not a readable error) — worth remembering if `app.ts`'s catch-all route is ever touched again.
+- `betterAuth()`'s return type must NOT be given an explicit `ReturnType<typeof betterAuth>`
+  annotation (or any other widened `Auth<BetterAuthOptions>` shape) — it erases the specific
+  plugin endpoints (`auth.api.verifyJWT`, `.getToken`, the custom recovery/test-bootstrap
+  endpoints) that calling code needs typed. Let `createAuth`'s return type infer naturally from
+  the literal `betterAuth({...})` call instead.

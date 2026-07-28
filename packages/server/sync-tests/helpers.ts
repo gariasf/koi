@@ -19,6 +19,14 @@ import pg from 'pg';
 
 export const API = 'http://localhost:4000';
 export const PG_URL = 'postgresql://postgres:postgres@localhost:5433/koi';
+/**
+ * better-auth's own `/api/auth/token` mints the PowerSync JWT but — unlike
+ * the old dev-mint route — has no idea PowerSync exists, so it no longer
+ * hands the endpoint back bundled with the token. Every caller of
+ * `fetchCredentials` needs to know this independently; it is the same fixed
+ * value `infra/docker-compose.yml` publishes PowerSync on.
+ */
+export const POWERSYNC_URL = 'http://localhost:8080';
 
 export const CAR_ID = 'car-golf';
 export const HOUSEHOLD_ID = 'household-default';
@@ -81,17 +89,42 @@ export function makeSchema(extraTables: Record<string, Table> = {}): Schema {
   });
 }
 
+/**
+ * Real auth, headless (Build Session 6): there is no WebAuthn authenticator
+ * in a Node test process, so a torture-tier "device" signs in via the
+ * test-only bootstrap plugin (`auth/test-bootstrap.ts`, mounted only because
+ * `global-setup.ts` passes `testBootstrap: true`) rather than a passkey —
+ * then mints the same PowerSync JWT any real sign-in method would, through
+ * the same `GET /api/auth/token` a passkey or recovery-code sign-in uses.
+ * Cookie handling is manual (plain `fetch` keeps no cookie jar): capture
+ * `set-cookie` from the bootstrap response, echo it back as `cookie` on the
+ * token request.
+ */
+export async function establishTestSession(): Promise<string> {
+  const res = await fetch(`${API}/api/auth/test/bootstrap-session`, { method: 'POST' });
+  if (!res.ok) throw new Error(`test bootstrap HTTP ${res.status}`);
+  const cookie = res.headers.get('set-cookie');
+  if (cookie === null) throw new Error('test bootstrap returned no session cookie');
+  return cookie.split(';')[0] ?? cookie;
+}
+
 export class TestConnector {
+  private sessionCookie: string | null = null;
+
   constructor(private readonly deviceId: string) {}
 
+  // Established once and reused, exactly like a real client: signing in is a
+  // one-time event, and only the short-lived PowerSync JWT gets re-minted per
+  // upload. Re-bootstrapping a fresh session on every call was strictly
+  // extra latency, not extra correctness — and on a slow run it stretched
+  // `waitForQueueDrained`'s polling window enough to make timing-sensitive
+  // scenarios flaky.
   private async mintToken(): Promise<{ token: string; endpoint: string }> {
-    const res = await fetch(`${API}/api/auth/token`, {
-      method: 'POST',
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ username: 'owner' }),
-    });
+    this.sessionCookie ??= await establishTestSession();
+    const res = await fetch(`${API}/api/auth/token`, { headers: { cookie: this.sessionCookie } });
     if (!res.ok) throw new Error(`token mint HTTP ${res.status}`);
-    return (await res.json()) as { token: string; endpoint: string };
+    const { token } = (await res.json()) as { token: string };
+    return { token, endpoint: POWERSYNC_URL };
   }
 
   async fetchCredentials(): Promise<{ endpoint: string; token: string }> {

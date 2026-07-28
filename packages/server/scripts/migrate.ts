@@ -1,4 +1,10 @@
-import { createDb, createPool, ensureDefaultHousehold, migrateDb } from '../src/db/client.js';
+import {
+  createDb,
+  createPool,
+  ensureDefaultHousehold,
+  ensureDefaultOwnerUser,
+  migrateDb,
+} from '../src/db/client.js';
 import { loadEnv } from '../src/env.js';
 
 const env = loadEnv();
@@ -7,5 +13,6 @@ const db = createDb(pool);
 
 await migrateDb(pool, db);
 await ensureDefaultHousehold(db);
+await ensureDefaultOwnerUser(db);
 await pool.end();
 console.log('migrations applied');

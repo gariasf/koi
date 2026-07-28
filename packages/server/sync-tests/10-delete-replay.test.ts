@@ -11,6 +11,7 @@ import { afterAll, beforeAll, expect, it } from 'vitest';
 import {
   API,
   CAR_ID,
+  establishTestSession,
   HOUSEHOLD_ID,
   pgConnect,
   resetData,
@@ -30,11 +31,8 @@ afterAll(async () => {
 });
 
 async function mintToken(): Promise<string> {
-  const res = await fetch(`${API}/api/auth/token`, {
-    method: 'POST',
-    headers: { 'content-type': 'application/json' },
-    body: JSON.stringify({ username: 'owner' }),
-  });
+  const cookie = await establishTestSession();
+  const res = await fetch(`${API}/api/auth/token`, { headers: { cookie } });
   if (!res.ok) throw new Error(`token mint HTTP ${res.status}`);
   return ((await res.json()) as { token: string }).token;
 }

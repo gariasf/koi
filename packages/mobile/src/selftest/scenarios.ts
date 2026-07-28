@@ -34,6 +34,8 @@ export interface ScenarioContext {
   readonly db: KoiDb;
   readonly deviceId: string;
   readonly apiUrl: string;
+  /** The session cookie the peer's own token mint authenticates with. */
+  readonly getSessionCookie: () => string | Promise<string>;
   readonly fetchImpl?: typeof fetch;
   /** Milliseconds a probe may keep failing before the scenario is a failure. */
   readonly timeoutMs?: number;
@@ -90,6 +92,7 @@ class Ctx {
       {
         apiUrl: this.ctx.apiUrl,
         deviceId: PEER,
+        getSessionCookie: this.ctx.getSessionCookie,
         fetchImpl: this.ctx.fetchImpl,
       },
       batch,

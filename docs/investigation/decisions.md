@@ -354,3 +354,163 @@ Format: `D-NNN · <date> · <status> — <one-line decision>. <why, one or two s
   reactive like any query), and copy that is honest in both states without touching the
   release-gated privacy-page rewrite (exact strings in spec-delta.md). No confirmation dialog either
   direction: enabling costs nothing undoable, disabling cannot lose data.
+- D-053 · 2026-07-28 · LOCKED — **better-auth mounted for real, replacing the dev mint** (⛔ blocker of
+  D-033, Build Session 6). `betterAuth()` runs in-process (`packages/server/src/auth/instance.ts`),
+  Drizzle-backed on the SAME Postgres connection and the SAME `db:generate`/`db:migrate` flow as the
+  rest of the schema: `@better-auth/cli generate` emits its table definitions
+  (`src/db/auth-schema.ts` — `user`/`session`/`account`/`verification`/`jwks`/`passkey`/
+  `recovery_code`), drizzle-kit does the actual migration (`0002_gorgeous_mantis.sql`) — no separate
+  migration mechanism, answering the brief's open question directly. Single-tenant (D-023
+  settings-singleton pattern, not a real multi-user table): one pre-seeded owner row
+  (`DEFAULT_OWNER_USER_ID = 'user-owner'`, `db/client.ts`'s `ensureDefaultOwnerUser`, mirroring
+  `ensureDefaultHousehold`'s existing pattern) — the simplest thing that doesn't foreclose a real
+  S-14 sharing flow (`resolveUser`'s callback is exactly where a future invite flow would branch).
+  `user.email` exists only because better-auth's core schema requires a non-null unique value there;
+  it is never sent anywhere (`owner@koi.invalid`) — D-025's "no email dependency, EUR 0" is about not
+  depending on an email *service*, not the column being absent. Passkey plugin: passwordless
+  registration (`requireSession: false` + `resolveUser`) lets the FIRST-ever passkey attach to the
+  owner account with no prior session; `resolveUser` throws `FORBIDDEN` on every registration
+  attempt after the first (checked by querying for an existing `passkey` row, not a separate flag),
+  so the sessionless bootstrap path is one-time, not a standing hole — every later device must sign
+  in on an already-registered device first, matching how passkeys are meant to multiply (this guard
+  is the load-bearing security property of the whole passwordless-bootstrap design). JWT plugin:
+  EdDSA (default), `aud`/`iss` from env.ts's existing `JWT_AUDIENCE`/`JWT_ISSUER` (unchanged names,
+  unchanged PowerSync contract), `exp` 24h. `GET /api/auth/jwks` lands at the SAME default path the
+  dev shim used — `infra/powersync/config.yaml`'s `jwks_uri` needed no edit. Mounted in Fastify via
+  a catch-all `/api/auth/*` route (`app.ts`) that rebuilds a Web-standard `Request` from the raw
+  Node request (the documented better-auth Fastify pattern) — bypasses Fastify's own plugin
+  lifecycle (no `@fastify/cors` would fire here), moot today since the client is React Native, not a
+  browser. One non-obvious fix needed: the reconstructed `Request` must carry
+  `content-type: application/json` unconditionally on every non-GET/HEAD call, regardless of what
+  the ORIGINAL caller declared — a bare `POST` with no body and no content-type (any no-input
+  endpoint, e.g. the test bootstrap) otherwise reconstructs into a request better-auth 415s before
+  the handler ever runs; found via a genuinely hung `test:sync` run, not by inspection. `/upload`'s
+  bearer check calls `auth.api.verifyJWT` in-process — the exact same check PowerSync itself
+  performs against the exact same tokens, so "valid" has one definition across both consumers, never
+  two implementations to drift apart. `KOI_DEV_AUTH` and `createAuthShim` are deleted (`auth.ts`
+  itself is gone) per D-038's own words ("dies with better-auth"); `tokenBodySchema` (its zod body
+  schema) removed as dead code; `jose` dropped from `@koi/server`'s own dependencies now that
+  nothing there imports it directly (still present transitively, inside better-auth). All three sync
+  tiers re-proven green against the real stack under this real auth, run twice each for stability:
+  server torture (13 protocol scenarios + 4 new recovery-code scenarios, D-054, = 17), mobile
+  app-semantics (9) + local-first (3) — both unit tiers (42 + 38) unaffected. See D-055 for the
+  client passkey ceremony itself and D-056 for how the test tiers authenticate now that the dev mint
+  is gone.
+- D-054 · 2026-07-28 · LOCKED — **Recovery codes built as a standalone break-glass credential, NOT
+  better-auth's `two-factor` plugin** (Build Session 6, D-025's "passkey-primary + recovery codes").
+  Investigated first, built second: better-auth ships backup codes only inside `two-factor`, and that
+  plugin's shape is genuine 2FA, not a passkey-loss fallback — enabling it flips
+  `user.twoFactorEnabled`, and a hook then challenges EVERY subsequent sign-in via a signed
+  pending-cookie handshake set by a prior FIRST-factor attempt (`verify-two-factor.ts` — read from
+  the installed package source, since the docs don't state this plainly). There is no supported path
+  in that plugin to verify a backup code from nothing, which is exactly what a device with no
+  reachable passkey has. That is the wrong shape here: passkey sign-in has to stay one tap, not gain
+  a mandatory second step on every sign-in. A second, purely mechanical finding closed off reusing
+  the plugin's internals even as a shortcut: `generateBackupCodes`/`verifyBackupCode`/
+  `encodeBackupCodes` are exported as TYPES ONLY from the public `better-auth/plugins/two-factor`
+  entry point (confirmed by a boot-time `SyntaxError` — better-auth's own `.d.mts` re-exports them
+  as `type` without a matching runtime export at that path; the real functions exist one module
+  level deeper, at a path nothing in the package's `exports` map exposes). So `src/auth/recovery.ts`
+  is fully self-contained instead, built on the same PUBLIC primitives `two-factor`'s own
+  `enableTwoFactor` handler uses internally (`better-auth/crypto`'s `generateRandomString` +
+  `symmetricEncrypt`/`symmetricDecrypt`, keyed on the instance secret) against a small table of its
+  own (`recoveryCode`, declared via the plugin's own `schema` field — not `two-factor`'s table, no
+  dependency on that plugin being installed at all). Two endpoints, both bypassing
+  `user.twoFactorEnabled` and the pending-cookie machinery entirely: `POST /api/auth/recovery/
+  generate` (session-required, rotates — old codes invalidated on every regenerate, matching
+  better-auth's own semantics) and `POST /api/auth/recovery/verify` (no session — single-owner
+  lookup by the fixed bootstrap id, an S-14 sharing flow would need a real claimant-identification
+  step before this could serve more than one account) which redeems a code single-use and
+  establishes a real session via `internalAdapter.createSession` + `setSessionCookie`, the same
+  primitives better-auth's own first-party `anonymous` plugin uses for its sessionless sign-in —
+  not a hack, the documented pattern for a custom credential. Proven end-to-end, not just reasoned:
+  `sync-tests/11-recovery-codes.test.ts` (4 scenarios) — 10 distinct codes generated; a valid code
+  signs in with no session and no prior identification, and the resulting session mints a real
+  PowerSync token exactly as a passkey sign-in would; a redeemed code cannot be redeemed twice; an
+  invalid code is rejected outright. **Client-side, built vs stubbed (Goal 5's own allowance):** code
+  GENERATION and the one-time reveal ARE built (`app/index.tsx`'s post-registration card, `auth/
+  flow.ts`'s `generateRecoveryCodes`); a client screen for ENTERING a recovery code to sign in is
+  NOT — the server-side proof stands in for it this session. A device that can produce no passkey at
+  all (lost device, no iCloud Keychain reach) therefore has no in-app way back in yet; this is a
+  stated gap, not a hidden one.
+- D-055 · 2026-07-28 · LOCKED (**Ⓓ discharged — the full native passkey round-trip WORKS on device**)
+  — **Native passkey on Expo/iOS proven end-to-end, plus four real preconditions nothing had
+  priced.** Ⓓ's kill criterion ("native passkey dead-ends AND password flow also fights the SDK")
+  did NOT fire; no password fallback was needed. **Proven on the iOS simulator, owner-driven taps,
+  verified server-side rather than from the screen:** a real Face ID ceremony registered a passkey
+  (`passkey` row: `Koi (ios)`, `multiDevice`, `backed_up=t`, attached to `user-owner`), signed in
+  (a live `session` row), generated 10 encrypted recovery codes (`recovery_code`, 342-byte blob),
+  and the resulting session minted a PowerSync JWT that **PowerSync itself accepted and synced
+  with** — its own log: `Sync stream started user_id: user-owner`, `New checkpoint: 0 | buckets: 1
+  | ["1#household[]"]`, `checkpoint_complete`, `user_agent: powersync-react-native react-native/0.86
+  ios/26.5`. That last line is the whole point of the session: the passkey→session→JWT→PowerSync
+  chain closed with real components at every link. Getting there surfaced four findings, each of
+  which cost a real debugging round-trip and none of which is in any doc:
+  **(1) Associated Domains requires a PAID Apple Developer Program membership** — free "Personal
+  Team" signing (D-048's baseline until now) cannot add the capability at all, independent of
+  anything Koi-specific. The owner's team (`AB72ZGY444`) is enrolled; the build signs clean with the
+  entitlement present. Note the team id is NOT the `TK6Z94M3S5` visible on the keychain's
+  "Apple Development: accounts@gariasf.com" certificate — the identifier Apple actually matches
+  against came from the failure log itself (`Application with identifier AB72ZGY444.tv.titanos.koi
+  is not associated with domain ...`); trusting the certificate string cost one wrong AASA file.
+  **(2) The dev loop needs a resolvable domain serving `/.well-known/apple-app-site-association`
+  over TLS** — a placeholder (`koi.example`) builds fine and fails only at ceremony time with an
+  opaque `ASAuthorizationError 1004`. What worked, and is the reusable recipe: `?mode=developer` on
+  the entitlement + `sudo swcutil developer-mode -e true` + an `/etc/hosts` override pointing a real
+  domain (`koi-dev.gariasf.com`) at 127.0.0.1 + a self-signed cert trusted via
+  `xcrun simctl keychain booted add-root-cert` + a local HTTPS server serving the AASA. swcd accepts
+  a self-signed cert in developer mode — confirmed in its own log (`TLS handshake complete`,
+  `status 200`, `finished successfully`). No public DNS, no router changes. Production needs the
+  real thing, which Caddy + real TLS already covers (D-025).
+  **(3) `@better-auth/expo`'s client and SERVER plugins are a matched pair, and the failure mode of
+  installing only the client is invisible until the first POST.** A React Native request carries no
+  `Origin` header at all; better-auth rejects every state-changing POST without one (403
+  `MISSING_OR_NULL_ORIGIN`) while GET option-fetches sail through, so registration appeared to
+  "almost work" for several attempts. The Expo client stamps the app scheme into a custom
+  `expo-origin` header, and ONLY the server-side `expo()` plugin reads it back and rewrites the
+  request origin. Adding `expo()` to the server plugin list fixed it outright.
+  **(4) Registering a passkey does NOT sign you in.** better-auth's passkey plugin calls
+  `createSession` in exactly one place — the AUTHENTICATION path; `verify-registration` only stores
+  the credential (verified by reading the plugin source: one `createSession` occurrence, in
+  `verify-authentication`). The first implementation returned success straight after registration,
+  so the passkey row existed while every later token mint 401'd against a session that was never
+  created. `auth/flow.ts` now always follows a registration with a sign-in — which means first-time
+  setup shows TWO Face ID prompts (register, then authenticate); a returning device shows one.
+  Recorded as known UX roughness for the bucket-D app surface to smooth, not a correctness issue.
+  Niche-tool register (D-022): the native bridge is `expo-better-auth-passkey` (kevcube, MIT, 33★,
+  pinned `1.4.3`) — a drop-in `expoPasskeyClient()` wrapping
+  `ASAuthorizationPlatformPublicKeyCredentialProvider` (iOS) / Credential Manager (Android) behind
+  better-auth's own `passkeyClient` API surface; its declared peer range (`expo: ^55.0.0`) is stale
+  against our pinned SDK 57 but pnpm's peer check is advisory-only and the real build/run works —
+  known metadata lag, not a functional gap. Exit plan: the primitive underneath
+  (`react-native-passkeys`, peer range `expo: >=53.0.0`, no conflict) is the real dependency
+  surface; if the wrapper stops working, a thin `expoPasskeyClient`-shaped adapter directly over it
+  is a contained rewrite. **Owner-driven, not scripted:** the taps and Face ID approvals were the
+  owner's — scripted iOS UI is still blocked (bucket H: no Accessibility grant, no `idb`, no
+  Maestro), so every claim above is backed by a server-side or database check rather than by
+  screen-reading, matching the precedent Session 5 set (D-052).
+- D-056 · 2026-07-28 · LOCKED — **How the sync-torture tiers authenticate now that `KOI_DEV_AUTH` is
+  gone, chosen to structurally exclude the exact hole it was gated against (D-038: "a server that
+  reaches a network without better-auth must not silently hand out tokens").** No WebAuthn
+  authenticator exists in a headless Node test process, so a torture-tier "device" cannot complete a
+  real passkey ceremony, and a fresh stack's first boot has no recovery codes either (they need a
+  passkey registration to exist first). Chosen: a dedicated `testBootstrapAuth` better-auth plugin
+  (`packages/server/src/auth/test-bootstrap.ts`) mounted ONLY when a caller passes `testBootstrap:
+  true` to `createAuth` — a source-code decision at the call site, not a runtime one. `main.ts`
+  (the real server) calls `createAuth(env, db)`, two arguments, structurally never passing the flag;
+  only `sync-tests/global-setup.ts` (server) and `packages/mobile/sync-tests/global-setup.ts` do.
+  Unlike `KOI_DEV_AUTH`, there is no environment variable that could be left set by an ops mistake —
+  enabling the hole requires editing `main.ts` itself, a reviewable diff, not a misconfigured
+  deploy. Defense in depth on top of that structural exclusion: `createAuth` throws at construction
+  if `testBootstrap: true` is ever combined with `NODE_ENV=production`. Verified directly, not just
+  reasoned: `curl -X POST http://localhost:4000/api/auth/test/bootstrap-session` against the REAL
+  dev server (`main.ts`, no flag passed) returns 404 — the endpoint is structurally absent, not
+  merely unauthorized. The endpoint itself mints a session for the pre-seeded owner row only (no
+  user creation — a test stack that forgot to seed `ensureDefaultOwnerUser` fails loudly instead of
+  minting a session for nothing). Test harnesses (`TestConnector` in `packages/server/sync-tests/
+  helpers.ts`, `KoiConnector`'s test callers via `packages/mobile/sync-tests/test-auth.ts`) cache the
+  resulting session cookie rather than re-bootstrapping per upload call — first written to
+  re-bootstrap every time, which surfaced as a genuine intermittent failure (`04-dead-letter.test.ts`
+  flaked once under the added latency) before the cache fix; caching is both faster and more honest,
+  since a real client signs in once and only re-mints the short-lived PowerSync JWT per upload, never
+  re-establishes a whole session.
