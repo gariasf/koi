@@ -23,3 +23,20 @@ catalog:
   typescript: ^5.6.0
   typescript-eslint: ^8.20.0
   vitest: ^4.0.0
+
+# One version of better-auth's own transitive pins, repo-wide.
+#
+# better-auth@1.6.25 pins `better-call: 1.3.7` and `@better-fetch/fetch: 1.3.1`
+# EXACTLY in its own dependencies, while the older `@better-auth/cli` (a
+# devDependency, used to generate the auth schema) drags in 1.1.8 / 1.1.21. With
+# both copies present, which one lands in @koi/server's peer graph is decided by
+# resolution order — and when it lands on the CLI's older copy, `tsc` cannot name
+# the inferred type of `createAuth` through a resolvable specifier and the build
+# fails with TS2742. Adding any unrelated dependency can flip it, which is how
+# this surfaced (Build Session 8).
+#
+# Pinned to the versions better-auth itself asks for, so the graph stops being
+# order-dependent. Remove when @better-auth/cli catches up.
+overrides:
+  better-call: 1.3.7
+  '@better-fetch/fetch': 1.3.1
