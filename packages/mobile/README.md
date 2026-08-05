@@ -6,9 +6,19 @@ D-024/D-029), with `@koi/domain` running unmodified on the device. Pinned to
 companion versions come from Expo's own `bundledNativeModules.json`, not
 npm-latest, so `expo-doctor` stays at 20/20.
 
-This is not the app surface yet. §C's four-tab shell, the capture sheets and the
-Insights charts are BOARD bucket D. What exists is the sync client and the
-surfaces that prove it: a garage, a car page, and the S-4 review queue.
+The app surface is built to the visual design (`docs/build/design/`) for
+everything the schema supports (Session 8, D-060..D-064): the token layer and both
+authored palettes behind `useKoiTheme()`, the control language, the four-tab shell
+with per-tab stacks and an app-level toast host, Garage · car page · car form,
+Home's state machine, Settings + Sync, and capture → Odometer. What is **not**
+here is gated on tables rather than on architecture: History, Insights' four
+lenses, record pages, reminders, the vault, onboarding and the other five capture
+sheets all need the §B1 record kinds, which do not exist yet.
+
+Where the schema cannot support a figure, the surface **withholds** it rather than
+printing a zero — Home's month pulse shows distance and neither money nor €/km,
+because a `0,00 €` would claim a real sum of records Koi cannot yet be told about.
+`docs/build/spec-delta.md` lists every such departure with the rule it follows.
 
 ## What is load-bearing here
 
@@ -27,15 +37,25 @@ enforces these and its conflict analysis depends on the client keeping them:
   with 2xx and flags what it cannot apply, so a non-2xx is infra, and swallowing
   it would discard a real write.
 
-**The S-4 review queue** (`src/review/`, `app/review/`) renders every flag kind
+**The S-4 review queue** (`src/review/`, `src/screens/review-*.tsx`) renders every flag kind
 the write-path can raise and lets the user resolve each one — nothing is repaired
 automatically, and no action is offered that the architecture cannot deliver
 (D-047). `resolved_at` is the one field a client writes on a flag.
 
 **`@koi/domain` is wired in unchanged.** The car page derives the current
 odometer through `deriveCurrentOdometerKm` (S-3: no stored `current_odo`
-anywhere) and validates a new reading with `checkOdometerReading` — the same pure
-function the server runs on upload.
+anywhere) and the odometer sheet validates a new reading with
+`checkOdometerReading` — the same pure function the server runs on upload. Numbers
+reach the screen only through `@koi/i18n` (`useFormat()`), never through
+`toLocaleString`: `Intl` drops the separator on four-digit values (D-064).
+
+**The UI layer** is `src/ui/`: `tokens.ts` (every hex from the design, nothing
+invented) · `theme.tsx` (`useKoiTheme()` — scheme, reduce-motion, font scale) ·
+`controls.tsx` (the control language) · `icons.tsx` (the eight wells) ·
+`toast.tsx` (app-level, with the undo-closure queue) · `sheet.tsx` (sheet chrome +
+the dirty guard) · `keypad.tsx` · `swipe.tsx`. Screen bodies live in
+`src/screens/` and the files under `app/` are one-line re-exports, which is what
+lets one destination be registered in more than one tab's stack.
 
 ## Proving it
 

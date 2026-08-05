@@ -21,9 +21,20 @@
  * with sync already on reuses whatever session `@better-auth/expo` already
  * persisted in SecureStore — no re-prompt unless it actually expired.
  *
- * A failure to connect (once sync IS on) is shown, not hidden: the app keeps
- * working (local-first; the database is fully usable offline and the queue
- * drains later), and the banner says what is wrong.
+ * A failure to connect (once sync IS on) is shown, not hidden — but **not as a badge
+ * in the shell** (D-058, §16 #17 accepted). It is carried here as `connectError` and
+ * rendered as a sentence on the Sync page, and as a toast at the moment an action
+ * fails. The recorded consequence: a user whose sync has been broken for days finds
+ * out on a visit to Settings. A dot on four roots would nag from everywhere about
+ * something the car does not need from them, and the app keeps working regardless —
+ * local-first, the queue drains later.
+ *
+ * **`everSynced`** is the discriminator the whole Settings sheet runs on: not "is
+ * sync on" but *has this device ever synced*. Turning sync off is a pause — nothing
+ * already sent is clawed back, the founding passkey outlives it, the account still
+ * exists — so a privacy card keyed on the toggle would print a false promise to a
+ * device that has an account. Latched once, never cleared, and it deliberately
+ * survives an erase.
  */
 
 import { PowerSyncContext } from '@powersync/react';
@@ -32,7 +43,8 @@ import { Text, View, StyleSheet } from 'react-native';
 
 import { generateRecoveryCodes, ensureSignedIn } from '../auth/flow';
 import { getSessionCookie } from '../auth/client';
-import { color, space, type } from '../ui/theme';
+import { hasEverSynced, latchEverSynced } from '../ui/settings-store';
+import { buildTheme, useOsScheme } from '../ui/theme';
 import { API_URL, POWERSYNC_URL } from './config';
 import { KoiConnector } from './connector';
 import { getOrCreateDeviceId } from './device';
@@ -48,9 +60,20 @@ interface KoiSync {
   readonly deviceId: string;
   readonly apiUrl: string;
   readonly syncEnabled: boolean;
+  /** Has this device ever synced? Latched once — see the module doc. */
+  readonly everSynced: boolean;
   readonly connectError: string | null;
   readonly enableSync: () => Promise<void>;
   readonly disableSync: () => Promise<void>;
+  /**
+   * Wipes every record on this device. **`clearLocal: false` is load-bearing:** it
+   * preserves the local-only `app_meta`, and with it the `has_ever_synced` latch —
+   * a wiped device that has an account must not go back to claiming it never had
+   * one, which is the exact §H1 violation the three-state privacy card exists to
+   * prevent. It also keeps this device's id, so it stays the same device to the
+   * attribution ledger.
+   */
+  readonly eraseThisDevice: () => Promise<void>;
   /** Set once, right after a fresh passkey registration; cleared on dismiss. */
   readonly recoveryCodes: readonly string[] | null;
   readonly dismissRecoveryCodes: () => void;
@@ -68,6 +91,7 @@ export function KoiProvider({ children }: { children: React.ReactNode }): React.
   const [database, setDatabase] = useState<CommonPowerSyncDatabase | null>(null);
   const [deviceId, setDeviceId] = useState<string | null>(null);
   const [syncEnabled, setSyncEnabledState] = useState(false);
+  const [everSynced, setEverSynced] = useState(false);
   const [connectError, setConnectError] = useState<string | null>(null);
   const [fatal, setFatal] = useState<string | null>(null);
   const [recoveryCodes, setRecoveryCodes] = useState<readonly string[] | null>(null);
@@ -97,16 +121,24 @@ export function KoiProvider({ children }: { children: React.ReactNode }): React.
         }
       }
     } catch (e) {
+      // Rethrown so the caller can say so in a sentence at the moment it happened.
+      // Sync stays off: a device that could not sign in has no account here.
       setConnectError(e instanceof Error ? e.message : String(e));
-      return;
+      throw e;
     }
     await setSyncEnabled(database as unknown as KoiDb, true);
     setSyncEnabledState(true);
+    // Latched at the point an account exists on this device, not at the point a
+    // connection succeeds: the passkey outlives a failed connect, so the honest
+    // sentences on the privacy card have to change from here on either way.
+    await latchEverSynced(database as unknown as KoiDb);
+    setEverSynced(true);
     try {
       await connectKoi(database, connector(deviceId));
       setConnectError(null);
     } catch (e) {
       setConnectError(e instanceof Error ? e.message : String(e));
+      throw e;
     }
   }, [database, deviceId, connector]);
 
@@ -117,6 +149,16 @@ export function KoiProvider({ children }: { children: React.ReactNode }): React.
     setSyncEnabledState(false);
     setConnectError(null);
   }, [database]);
+
+  const eraseThisDevice = useCallback(async (): Promise<void> => {
+    if (database === null) return;
+    // Sync off FIRST, and the dialog says so: with sync on, a local wipe
+    // re-bootstraps from the checkpoint and the records come straight back
+    // (S-7 erase-everywhere is explicitly not built). Order matters more than
+    // tidiness here — it is the difference between an erase and a flicker.
+    if (syncEnabled) await disableSync();
+    await database.disconnectAndClear({ clearLocal: false });
+  }, [database, syncEnabled, disableSync]);
 
   useEffect(() => {
     let db: CommonPowerSyncDatabase | null = null;
@@ -131,6 +173,7 @@ export function KoiProvider({ children }: { children: React.ReactNode }): React.
         // network reachability check, no implicit opt-in — only what THIS
         // device already agreed to (default false).
         const alreadyOn = await isSyncEnabled(db as unknown as KoiDb);
+        const enrolled = await hasEverSynced(db as unknown as KoiDb);
 
         if (alreadyOn) {
           try {
@@ -152,6 +195,7 @@ export function KoiProvider({ children }: { children: React.ReactNode }): React.
         setDatabase(db);
         setDeviceId(id);
         setSyncEnabledState(alreadyOn);
+        setEverSynced(enrolled);
       } catch (e) {
         if (!cancelled) setFatal(e instanceof Error ? e.message : String(e));
       }
@@ -163,21 +207,15 @@ export function KoiProvider({ children }: { children: React.ReactNode }): React.
     };
   }, []);
 
+  // These two render BEFORE the theme provider exists (it needs the database the
+  // provider is still opening), so they read the OS scheme directly. A dark phone
+  // must not flash a paper-white screen on launch.
   if (fatal !== null) {
-    return (
-      <View style={styles.centre}>
-        <Text style={type.title}>Koi could not open its database</Text>
-        <Text style={[type.soft, styles.detail]}>{fatal}</Text>
-      </View>
-    );
+    return <Boot title="Koi could not open its database" detail={fatal} />;
   }
 
   if (database === null || deviceId === null) {
-    return (
-      <View style={styles.centre}>
-        <Text style={type.soft}>Opening…</Text>
-      </View>
-    );
+    return <Boot detail="Opening…" />;
   }
 
   const sync: KoiSync = {
@@ -186,26 +224,34 @@ export function KoiProvider({ children }: { children: React.ReactNode }): React.
     deviceId,
     apiUrl: API_URL,
     syncEnabled,
+    everSynced,
     connectError,
     enableSync,
     disableSync,
+    eraseThisDevice,
     recoveryCodes,
     dismissRecoveryCodes: () => setRecoveryCodes(null),
   };
 
   return (
     <KoiSyncContext.Provider value={sync}>
-      <PowerSyncContext.Provider value={database}>
-        {syncEnabled && connectError !== null && (
-          <View style={styles.banner}>
-            <Text style={type.faint}>
-              Not syncing: {connectError}. Your records are safe on this device.
-            </Text>
-          </View>
-        )}
-        {children}
-      </PowerSyncContext.Provider>
+      <PowerSyncContext.Provider value={database}>{children}</PowerSyncContext.Provider>
     </KoiSyncContext.Provider>
+  );
+}
+
+function Boot({ title, detail }: { title?: string; detail: string }): React.JSX.Element {
+  const t = buildTheme(useOsScheme(), {
+    appearance: 'system',
+    setAppearance: () => undefined,
+    reduceMotion: true,
+    fontScale: 1,
+  });
+  return (
+    <View style={[styles.centre, { backgroundColor: t.c.paper }]}>
+      {title !== undefined && <Text style={t.type.title}>{title}</Text>}
+      <Text style={[t.type.soft, styles.detail]}>{detail}</Text>
+    </View>
   );
 }
 
@@ -214,14 +260,8 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: color.paper,
-    padding: space.xl,
-    gap: space.sm,
+    padding: 24,
+    gap: 8,
   },
   detail: { textAlign: 'center' },
-  banner: {
-    backgroundColor: '#F6EFE3',
-    paddingHorizontal: space.lg,
-    paddingVertical: space.sm,
-  },
 });

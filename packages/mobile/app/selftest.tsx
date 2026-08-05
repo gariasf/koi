@@ -8,7 +8,9 @@
  * scenario module). Auto-running when `EXPO_PUBLIC_KOI_SELFTEST=1` also means a
  * screenshot of a launched app is the evidence.
  *
- * It writes real records (and deletes them). Dev only.
+ * It writes real records (and deletes them). Dev only — which is also why the pass
+ * dot is allowed to spend `positive`, the one hue the product surface holds in
+ * reserve: this screen is a tool, not the app.
  */
 
 import { useCallback, useEffect, useState } from 'react';
@@ -19,10 +21,11 @@ import { runS6Scenarios, SCENARIO_COUNT, type ScenarioResult } from '../src/self
 import { SELFTEST } from '../src/sync/config';
 import { useKoi } from '../src/sync/provider';
 import { crudQueueSettler } from '../src/sync/queue';
-import { Button, Card, Screen, SectionLabel } from '../src/ui/components';
-import { color, space, type } from '../src/ui/theme';
+import { Button, Card, Gutter, Root, SectionLabel } from '../src/ui/controls';
+import { useKoiTheme } from '../src/ui/theme';
 
 export default function SelfTestScreen(): React.JSX.Element {
+  const t = useKoiTheme();
   const { db, powersync, deviceId, apiUrl, connectError } = useKoi();
   const [running, setRunning] = useState(false);
   const [current, setCurrent] = useState<string | null>(null);
@@ -59,22 +62,25 @@ export default function SelfTestScreen(): React.JSX.Element {
   // (koi://selftest) must not be able to reach that in a shipped build.
   if (!SELFTEST) {
     return (
-      <Screen>
-        <Card>
-          <Text style={type.title}>Not available</Text>
-          <Text style={type.soft}>
+      <Root>
+        <Gutter style={{ paddingTop: t.space.xl }}>
+          <Card>
+          <Text style={t.type.title}>Not available</Text>
+          <Text style={t.type.soft}>
             The sync self-test only runs in development builds started with
             EXPO_PUBLIC_KOI_SELFTEST=1.
           </Text>
-        </Card>
-      </Screen>
+          </Card>
+        </Gutter>
+      </Root>
     );
   }
 
   return (
-    <Screen>
-      <Card>
-        <Text style={type.title}>
+    <Root>
+      <Gutter style={{ paddingTop: t.space.xl, gap: t.space.md }}>
+        <Card>
+        <Text style={t.type.title}>
           {results === null
             ? running
               ? `Running ${String(SCENARIO_COUNT)} scenarios…`
@@ -83,16 +89,16 @@ export default function SelfTestScreen(): React.JSX.Element {
               ? `All ${String(passed)} scenarios pass`
               : `${String(passed)} of ${String(results.length)} pass`}
         </Text>
-        <Text style={type.faint}>{apiUrl}</Text>
-        <Text style={type.faint} selectable>
+        <Text style={t.type.faint}>{apiUrl}</Text>
+        <Text style={t.type.faint} selectable>
           {deviceId}
         </Text>
         {connectError !== null && (
-          <Text style={[type.soft, { color: color.critical }]}>
+          <Text style={[t.type.soft, { color: t.c.critical }]}>
             Not connected: {connectError}. The scenarios need the stack up.
           </Text>
         )}
-        {current !== null && <Text style={type.soft}>{current}</Text>}
+        {current !== null && <Text style={t.type.soft}>{current}</Text>}
         {!running && <Button label="Run again" onPress={() => void run()} />}
       </Card>
 
@@ -105,24 +111,25 @@ export default function SelfTestScreen(): React.JSX.Element {
                 <View
                   style={[
                     styles.dot,
-                    { backgroundColor: result.passed ? color.positive : color.critical },
+                    { backgroundColor: result.passed ? t.c.positive : t.c.critical },
                   ]}
                 />
-                <Text style={[type.body, styles.name]}>{result.name}</Text>
+                <Text style={[t.type.body, styles.name]}>{result.name}</Text>
               </View>
-              <Text style={result.passed ? type.faint : [type.soft, { color: color.critical }]}>
+              <Text style={result.passed ? t.type.faint : [t.type.soft, { color: t.c.critical }]}>
                 {result.detail}
               </Text>
             </Card>
           ))}
         </>
-      )}
-    </Screen>
+        )}
+      </Gutter>
+    </Root>
   );
 }
 
 const styles = StyleSheet.create({
-  head: { flexDirection: 'row', alignItems: 'center', gap: space.sm },
+  head: { flexDirection: 'row', alignItems: 'center', gap: 8 },
   dot: { width: 10, height: 10, borderRadius: 5 },
   name: { flex: 1 },
 });
