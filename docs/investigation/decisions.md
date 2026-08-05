@@ -673,3 +673,29 @@ Format: `D-NNN · <date> · <status> — <one-line decision>. <why, one or two s
   back to a proportional face on Android, which breaks the one promise the voice exists to keep on a
   co-equal target. Micro-labels are authored in sentence case and uppercased in the style layer, so a
   screen reader has something to strip. i18next and the shared catalogs stay a separate, later item.
+- D-065 · 2026-08-05 · LOCKED — **The faint ink step moves one notch: `#6E675C` light /
+  `#9E9587` dark** (Build Session 8, owner review). The only hex pair in `tokens.ts` that is not
+  the design's, and it exists because two things were true at once. **One measured failure:**
+  `inkFaint` on the **dark `sheet`** surface scored **4,34:1** — below AA. Dark `sheet`
+  (`#282420`) is deliberately *lighter* than dark `card` (`#211E19`), because a sheet over a
+  card-bearing parent has to stay visible, and sheet 01's validation matrix measures the ink ramp
+  against **paper and card only**. The surface the design added last was never checked against the
+  ramp, so this is a gap in the validation rather than a mistake in either the palette or the
+  build — but it lands on every micro-label in every task sheet (the car form alone has eight).
+  **One judgement call, the owner's:** at `#787166` the light ramp sat at **4,59:1**, the AA floor
+  with about 2% to spare, and that step carries every 11 pt tracked micro-label, every row date
+  and every placeholder in the app. The owner read the light screens as thin before any number was
+  quoted; the number agrees that there was nothing in reserve. Now **5,31:1** light on paper and
+  **5,21:1** dark on the sheet, with the three ink steps still visibly distinct (the gap to
+  `inkSoft` is 1,30× light and 1,38× dark, against 1,51×/1,65× before) and the warm hue kept.
+  **Why the ramp moved instead of the surface:** the alternative was to remap the faint role to
+  `inkSoft` on sheet surfaces only, which needs either a scheme-conditional role or a second faint
+  token, makes sheet labels heavier than page labels for no reason a reader could infer, and fixes
+  nothing about the light floor. Moving the ramp fixes both with two hexes and no plumbing. It also
+  means D-060's own `inkFaint` story now has two chapters: the design took `#8C857A` (3,47:1,
+  failing) to `#787166` (4,59:1, passing), and this takes it to a step with headroom. **All 24
+  pairs the app actually renders were computed, not sampled** — including the ones this session
+  introduced — and the three that pass with no headroom are recorded so nobody nudges a hex without
+  knowing: `attention` on `attentionWash` is **4,52** in light, `inkFaint` on `card` is **4,68** in
+  dark, and `critical` on a dark `sheet` is **4,69**. Every affected screen was re-shot in both
+  schemes.

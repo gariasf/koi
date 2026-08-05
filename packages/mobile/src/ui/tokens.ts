@@ -20,12 +20,29 @@
  *    literally one pixel, which §D3 forbids. It is now held for a future income
  *    surface and must not be spent elsewhere.
  *
- * `inkFaint` also moved: `#8C857A` scored 3,47:1 on paper and failed AA in the
- * exact role §H4 names as worst (dimmed archived rows over faint metas). `#787166`
- * is 4,59:1. Sheet 01 computes every ratio live from these hexes and is the source
- * of truth if they ever disagree.
+ * `inkFaint` has now moved twice, and the second move is the one hex pair this file
+ * does not take from a sheet. The design took `#8C857A` (3,47:1 on paper — failing
+ * AA in the exact role §H4 names as worst: dimmed archived rows over faint metas) to
+ * `#787166`, which clears it at 4,59:1. Session 8 took it one step further, to
+ * `#6E675C` / `#9E9587`, for two measured reasons:
  *
- * No hex is chosen here. Anything that looks like a decision was made on a sheet.
+ *  - **4,59:1 is the AA floor**, and this is the step that carries every 11 pt
+ *    tracked micro-label, every row date and every placeholder in the app. Passing is
+ *    not the same as comfortable.
+ *  - **`inkFaint` on the dark `sheet` surface actually failed**, at 4,34:1. Dark
+ *    `sheet` (`#282420`) is deliberately *lighter* than dark `card`, and sheet 01's
+ *    matrix measures `inkFaint` against paper and card only — the surface the design
+ *    added last was never validated against the ink ramp. Moving the ramp step fixes
+ *    it without a scheme-conditional role or a second faint token, which is why it
+ *    was preferred to plumbing around the surface.
+ *
+ * Now: light 5,31:1 on paper · dark 5,21:1 on the sheet, and the three ink steps stay
+ * visibly distinct (the gap to `inkSoft` is 1,30× light, 1,38× dark). Sheet 01
+ * computes every other ratio live from these hexes and stays the source of truth for
+ * them; this pairing is the one it never computed.
+ *
+ * Every other hex here is the design's. Anything else that looks like a decision was
+ * made on a sheet.
  */
 
 export const palette = {
@@ -36,7 +53,7 @@ export const palette = {
     hairline: '#E6E1D8',
     ink: '#1C1A17',
     inkSoft: '#5B564E',
-    inkFaint: '#787166',
+    inkFaint: '#6E675C',
     domain: { fuel: '#43823B', service: '#9C731A', expense: '#337FB8', contract: '#8A4879' },
     domainWash: {
       fuel: '#E7F0E5',
@@ -67,7 +84,7 @@ export const palette = {
     hairline: '#2E2A24',
     ink: '#F4F0E8',
     inkSoft: '#B8B0A4',
-    inkFaint: '#8F877A',
+    inkFaint: '#9E9587',
     domain: { fuel: '#4E9139', service: '#BB8826', expense: '#4E92CE', contract: '#A05C96' },
     domainWash: {
       fuel: '#1E2A1B',

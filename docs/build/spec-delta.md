@@ -377,3 +377,11 @@ sheet 08, which was drawn before §B's correction 7 re-authored July. **1,18 is 
 - **The car page's `Full history ›` renders only when there is history it cannot show** (more than the
   three recent rows). The design shows it unconditionally; until History exists, an always-present door
   to a placeholder is a dead end rather than a door.
+- **§D3's ink ramp gains headroom, and the `sheet` surface gets validated.** `inkFaint` is
+  `#6E675C` / `#9E9587`, not the design's `#787166` / `#8F877A` (D-065). Two reasons: faint ink on
+  the **dark `sheet`** surface failed AA outright at 4,34:1 — sheet 01's matrix only ever measured
+  the ink ramp against paper and card, so the surface added last was never checked — and the light
+  step sat exactly on the AA floor at 4,59:1 while carrying every micro-label, row date and
+  placeholder in the app. This is the one hex pair in `tokens.ts` that is not the design's; if the
+  sheets are ever regenerated, this pairing has to be recomputed rather than reverted. Three pairs
+  now pass with no headroom and are listed in D-065.

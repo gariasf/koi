@@ -14,6 +14,20 @@ lives in §4 — this board tracks status, not prose.
 
 ## Now / Next
 
+- **Session 8 follow-up (2026-08-05, in owner review): the faint ink step moved (D-065).** The
+  owner read the light screens as thin. Computing all **24 contrast pairs the app actually renders**
+  — not sampling them — agreed: `inkFaint` sat at **4,59:1**, the AA floor with ~2% spare, on the
+  step that carries every 11 pt tracked micro-label, every row date and every placeholder. It also
+  turned up a genuine failure nobody had measured: faint ink on the **dark `sheet`** surface at
+  **4,34:1**. Dark `sheet` is deliberately lighter than dark `card`, and sheet 01's matrix only ever
+  measured the ink ramp against paper and card — the surface the design added last was never checked
+  against it. Moving the ramp to `#6E675C` / `#9E9587` fixes both with two hexes (5,31:1 light,
+  5,21:1 on the dark sheet) and no plumbing; the alternative — remapping the faint role to `inkSoft`
+  on sheets only — needed a scheme-conditional role and would have made sheet labels heavier than
+  page labels for no reason a reader could infer. Three pairs now pass with **no headroom** and are
+  recorded in D-065 so nobody nudges a hex blind: `attention` on its wash 4,52 light, `inkFaint` on
+  card 4,68 dark, `critical` on a dark sheet 4,69. Every affected screen re-shot in both schemes.
+  This is the one hex pair in `tokens.ts` that is not the design's.
 - **OWNER REVIEW OWED (2026-08-05): Session 8 done — the app surface, built to the design
   (D-060..D-064).** The visual-design phase's handoff is vendored at `docs/build/design/` (18 sheets,
   the authoritative `spec-amendments.md`, the reconciled fixture ledger) and **precedence changed**:
