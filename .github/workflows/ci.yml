@@ -71,7 +71,12 @@ jobs:
           npx jsvu --os=linux64 --engines=hermes
           echo "HERMES_BIN=$HOME/.jsvu/bin/hermes" >> "$GITHUB_ENV"
       - name: Log which Hermes this actually is (it is NOT the RN one)
-        run: "$HERMES_BIN" -version
+        # Block scalar, not an inline one: `run: "$HERMES_BIN" -version` is a quoted
+        # YAML scalar followed by stray text, so the whole workflow file fails to
+        # parse and GitHub rejects the run before any job starts. It did exactly
+        # that from Session 6 (2026-07-28) until Session 8 noticed.
+        run: |
+          "$HERMES_BIN" -version
       - run: pnpm --filter @koi/domain conformance:ci
 
   conformance-rn-hermes:
