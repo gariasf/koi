@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="stylesheet" href="_ds/industry-502e7e7f-a454-4e0f-a758-32b893d6b801/styles.css">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<script src="_ds/industry-502e7e7f-a454-4e0f-a758-32b893d6b801/_ds_bundle.js"></script>
+<style>
+  body { margin: 0; background: var(--color-bg); }
+  a { color: var(--color-accent-700); text-decoration: none; border-bottom: 1px solid var(--color-accent-300); }
+  a:hover { color: var(--color-accent-900); border-bottom-color: var(--color-accent-700); }
+</style>
+</helmet>
+
+<div style="background: var(--color-bg); color: var(--color-text); font-family: var(--font-body); padding: 56px 48px 96px; min-height: 100vh">
+<div style="max-width: 1880px; margin: 0 auto; display: flex; flex-direction: column; gap: 68px">
+
+  <header style="display: grid; grid-template-columns: 1fr auto; gap: 40px; align-items: end; border-bottom: 1px solid var(--color-text); padding-bottom: 20px">
+    <div>
+      <div style="font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--color-neutral-700); margin-bottom: 10px">Koi · car-cost ledger · design batch 2 · sheet 10</div>
+      <h1 style="font-size: 68px; line-height: 0.95; margin: 0 0 6px; letter-spacing: -0.02em">Insights</h1>
+      <div style="font-family: var(--font-heading); font-size: 25px; color: var(--color-neutral-700)">Time is pages, not windows — so every quantity has exactly one period and one answer</div>
+    </div>
+    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; line-height: 1.9; color: var(--color-neutral-700); text-align: right; white-space: nowrap">
+      <div>DRAWS&nbsp;&nbsp;&nbsp;&nbsp;wireframes §4.1 – §5.4</div>
+      <div>READS&nbsp;&nbsp;&nbsp;&nbsp;spec §C3 · §D2 · §D4 · inv. 2 – 5 · 21 – 26</div>
+      <div>LEDGER&nbsp;&nbsp;decisions.md §B7 · July 2026</div>
+      <div>DATE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2026-08-03</div>
+    </div>
+  </header>
+
+  <section class="blueprint" style="padding: 26px 30px; background: #fff">
+    <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 40px">
+      <div>
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; letter-spacing: 0.12em; color: var(--color-neutral-700); margin-bottom: 10px">THE BUG CLASS THIS SCREEN EXISTS TO KILL</div>
+        <h3 style="margin: 0 0 12px; font-size: 24px">Seven overlapping windows, four answers</h3>
+        <p style="font-size: 15.5px; line-height: 1.55; margin: 0 0 10px; text-wrap: pretty">Trailing windows all ending "now" made one question yield several answers, and made <em>This month</em> identical to <em>3 months</em>. Pages are calendar-aligned and never overlap, so a number belongs to exactly one period.</p>
+        <p style="font-size: 15px; line-height: 1.5; margin: 0; color: var(--color-neutral-800); text-wrap: pretty">The consequence that shapes every frame here: <strong>the headline, every card and the record list ride the same page and move together.</strong> The pager cannot be a control that re-filters cards in place — that would put two periods on one screen again.</p>
+      </div>
+      <div>
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; letter-spacing: 0.12em; color: var(--color-accent-700); margin-bottom: 10px">DRAWN AS STAT TABLES FIRST — YOUR CALL, AND §D4'S OWN ESCAPE HATCH</div>
+        <h3 style="margin: 0 0 12px; font-size: 24px">Charts are not installed, and these pages do not wait for them</h3>
+        <p style="font-size: 15.5px; line-height: 1.55; margin: 0 0 10px; text-wrap: pretty">"A chart that cannot earn a headline and a sentence is a stat table instead." Every card below carries its headline, its sentence and its period receipt — so Insights ships its information architecture, its pager and its honesty rules before a single canvas exists.</p>
+        <p style="font-size: 15px; line-height: 1.5; margin: 0; color: var(--color-neutral-800); text-wrap: pretty">Marks arrive later <strong>without an IA change</strong>. Sheet 02 §08 holds the target grammar for each card.</p>
+      </div>
+      <div>
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; letter-spacing: 0.12em; color: var(--color-neutral-700); margin-bottom: 10px">FOUR OPEN QUESTIONS THIS SHEET TOUCHES · ALL TAKEN AT THEIR RECOMMENDATION</div>
+        <div style="border: 1px solid var(--color-divider)">
+          <div style="padding: 9px 12px; border-bottom: 1px solid var(--color-divider); font-size: 13.5px; line-height: 1.45"><strong>#2 Fuel headline period</strong> — page-scoped mean, keeping inv.4's ≤5 window as "your usual". <em>Both are drawn, and on this page they differ.</em></div>
+          <div style="padding: 9px 12px; border-bottom: 1px solid var(--color-divider); font-size: 13.5px; line-height: 1.45"><strong>#3 By-week bucketing</strong> — day-of-month blocks, so buckets telescope exactly to the month total.</div>
+          <div style="padding: 9px 12px; border-bottom: 1px solid var(--color-divider); font-size: 13.5px; line-height: 1.45"><strong>#11 The lens-picker title</strong> — drawn with <strong>no title</strong>. Four rows say what they are, and "lens" never becomes user-facing vocabulary.</div>
+          <div style="padding: 9px 12px; font-size: 13.5px; line-height: 1.45"><strong>Default page size</strong> — <strong>Month</strong>, landing on today's partial page. Sometimes sparse, and July is drawn sparse rather than flattered.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div style="display: grid; grid-template-columns: auto minmax(280px, 1fr); gap: 20px; align-items: baseline; margin-bottom: 28px">
+      <h2 style="margin: 0; font-size: 34px">01 · Cost and Fuel</h2>
+      <div style="border-bottom: 1px solid var(--color-divider); padding-bottom: 6px; font-size: 14px; color: var(--color-neutral-700)">One control row, then the pager. The lens <em>is</em> the title; car scope rides trailing and vanishes entirely on a one-car garage.</div>
+    </div>
+
+    <div style="display: flex; gap: 34px; flex-wrap: wrap; align-items: start">
+
+      <div style="width: 414px">
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; letter-spacing: 0.08em; color: var(--color-neutral-700); margin-bottom: 11px">§5.1 · COST · JULY TO DATE · BOTH CARS</div>
+        <div style="width: 414px; padding: 11px; background: #24211D; border-radius: 48px; box-shadow: 0 16px 44px rgba(28,26,23,0.2)">
+          <div style="width: 392px; height: 1270px; background: #FBF9F5; border-radius: 38px; overflow: hidden; position: relative; font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif">
+            <div style="height: 46px; display: flex; align-items: center; justify-content: space-between; padding: 0 26px; position: relative">
+              <span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; color: #1C1A17">9:41</span>
+              <div style="position: absolute; left: 50%; transform: translateX(-50%); top: 8px; width: 92px; height: 26px; background: #24211D; border-radius: 999px"></div>
+              <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #1C1A17; letter-spacing: 0.06em">▮▮▮ ⌾ ▊</span>
+            </div>
+            <div style="padding: 8px 20px 0; display: flex; justify-content: space-between; align-items: flex-start">
+              <div style="font-size: 30px; font-weight: 700; color: #1C1A17; letter-spacing: -0.02em">Insights</div>
+              <div style="width: 36px; height: 36px; border-radius: 999px; background: #FFFFFF; border: 1px solid #E6E1D8; display: grid; place-items: center; box-shadow: 0 2px 6px rgba(28,26,23,0.06)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="color: #5B564E"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"></path><circle cx="12" cy="12" r="3"></circle></svg></div>
+            </div>
+            <div style="padding: 12px 20px 0; display: flex; justify-content: space-between; align-items: center">
+              <div style="font-size: 21px; font-weight: 600; color: #1C1A17">Cost <span style="color: #5B564E; font-weight: 400">▾</span></div>
+              <div style="border: 1px solid #E6E1D8; border-radius: 999px; padding: 5px 13px; font-size: 13.5px; color: #1C1A17">Both ▾</div>
+            </div>
+            <div style="padding: 10px 20px 0; display: flex; justify-content: space-between; align-items: center">
+              <span style="font-size: 18px; color: #35692F">‹</span>
+              <span style="font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 14px; color: #1C1A17">July 2026 · to date <span style="color: #5B564E">▾</span></span>
+              <span style="font-size: 18px; color: #35692F">›</span>
+            </div>
+            <div style="height: 1px; background: #E6E1D8; margin-top: 13px"></div>
+
+            <div style="padding: 18px 20px 0">
+              <div style="font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 30px; color: #1C1A17">487,90 €</div>
+              <div style="font-size: 15px; color: #1C1A17; margin-top: 3px">Your plan is your biggest cost.</div>
+            </div>
+
+            <div style="padding: 24px 20px 0">
+              <div style="display: flex; justify-content: space-between; margin-bottom: 12px">
+                <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; font-weight: 600; letter-spacing: 0.09em; color: #787166">WHERE IT WENT</span>
+                <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; font-weight: 600; letter-spacing: 0.09em; color: #787166">JULY</span>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 10px">
+                <div style="display: grid; grid-template-columns: 64px 1fr 66px; gap: 10px; align-items: center">
+                  <span style="font-size: 14px; color: #1C1A17">Plan</span>
+                  <span style="display: block"><span style="display: block; height: 13px; background: #8A4879; width: 100%"></span></span>
+                  <span style="font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 13px; color: #1C1A17; text-align: right">289,00 €</span>
+                </div>
+                <div style="display: grid; grid-template-columns: 64px 1fr 66px; gap: 10px; align-items: center">
+                  <span style="font-size: 14px; color: #1C1A17">Fuel</span>
+                  <span style="display: block"><span style="display: block; height: 13px; background: #43823B; width: 34%"></span></span>
+                  <span style="font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 13px; color: #1C1A17; text-align: right">98,20 €</span>
+                </div>
+                <div style="display: grid; grid-template-columns: 64px 1fr 66px; gap: 10px; align-items: center">
+                  <span style="font-size: 14px; color: #1C1A17">Services</span>
+                  <span style="display: block"><span style="display: block; height: 13px; background: #9C731A; width: 33.4%"></span></span>
+                  <span style="font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 13px; color: #1C1A17; text-align: right">96,50 €</span>
+                </div>
+                <div style="display: grid; grid-template-columns: 64px 1fr 66px; gap: 10px; align-items: center">
+                  <span style="font-size: 14px; color: #1C1A17">Expenses</span>
+                  <span style="display: block"><span style="display: block; height: 13px; background: #337FB8; width: 1.5%; min-width: 3px"></span></span>
+                  <span style="font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 13px; color: #1C1A17; text-align: right">4,20 €</span>
+                </div>
+              </div>
+              <div style="font-size: 14.5px; color: #1C1A17; margin-top: 14px; line-height: 1.4">Your plan was nearly six euros in every ten this month.</div>
+            </div>
+
+            <div style="padding: 22px 20px 0">
+              <div style="display: flex; justify-content: space-between; margin-bottom: 10px">
+                <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; font-weight: 600; letter-spacing: 0.09em; color: #787166">BY BLOCK</span>
+                <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; font-weight: 600; letter-spacing: 0.09em; color: #787166">JULY</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #E6E1D8"><span style="font-size: 14px; color: #5B564E">1 – 7 Jul</span><span style="font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 14px; color: #1C1A17">38,45 €</span></div>
+              <div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #E6E1D8"><span style="font-size: 14px; color: #5B564E">8 – 14 Jul</span><span style="font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 14px; color: #1C1A17">132,25 €</span></div>
+              <div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #E6E1D8"><span style="font-size: 14px; color: #5B564E">15 – 21 Jul</span><span style="font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 14px; color: #787166">—</span></div>
+              <div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #E6E1D8"><span style="font-size: 14px; color: #5B564E">22 – 28 Jul</span><span style="font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 14px; color: #1C1A17">317,20 €</span></div>
+              <div style="display: flex; justify-content: space-between; padding: 6px 0"><span style="font-size: 14px; color: #5B564E">29 – 31 Jul</span><span style="font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 14px; color: #787166">not yet</span></div>
+              <div style="font-size: 13.5px; color: #5B564E; margin-top: 9px; line-height: 1.45">Day-of-month blocks, so they add up to the month exactly.</div>
+            </div>
+
+            <div style="padding: 20px 20px 0">
+              <div style="display: flex; justify-content: space-between; margin-bottom: 8px">
+                <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; font-weight: 600; letter-spacing: 0.09em; color: #787166">THE RECORDS BEHIND THE NUMBERS</span>
+                <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; font-weight: 600; letter-spacing: 0.09em; color: #787166">JULY</span>
+              </div>
+              <sc-for list="{{ costRecords }}" as="r" hint-placeholder-count="6">
+                <div style="display: grid; grid-template-columns: 30px 1fr auto; gap: 10px; align-items: center; padding: 6px 0">
+                  <span style="width: 30px; height: 30px; border-radius: 8px; display: grid; place-items: center; background: {{ r.well }}">{{ r.icon }}</span>
+                  <span style="min-width: 0"><span style="display: block; font-size: 13.5px; color: #1C1A17">{{ r.title }}</span><span style="display: block; font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #5B564E">{{ r.meta }}</span></span>
+                  <span style="text-align: right"><span style="display: block; font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 13px; color: #1C1A17">{{ r.amount }}</span><span style="display: block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: #787166">{{ r.date }}</span></span>
+                </div>
+              </sc-for>
+            </div>
+
+            <div style="position: absolute; right: 20px; bottom: 84px; width: 52px; height: 52px; border-radius: 16px; background: #1C1A17; display: grid; place-items: center; box-shadow: 0 6px 18px rgba(28,26,23,0.18)"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="color: #FBF9F5"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg></div>
+            <div style="position: absolute; left: 0; right: 0; bottom: 0; border-top: 1px solid #E6E1D8; background: rgba(251,249,245,0.94); backdrop-filter: blur(12px); padding: 8px 8px 22px; display: flex; justify-content: space-around">
+              <div style="text-align: center; color: #787166"><div style="line-height: 1.2"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg></div><div style="font-size: 10.5px">Home</div></div>
+              <div style="text-align: center; color: #787166"><div style="line-height: 1.2"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M15 12h-5"></path><path d="M15 8h-5"></path><path d="M19 17V5a2 2 0 0 0-2-2H4"></path><path d="M8 21h12a2 2 0 0 0 2-2v-1a1 1 0 0 0-1-1H11a1 1 0 0 0-1 1v1a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v2a1 1 0 0 0 1 1h3"></path></svg></div><div style="font-size: 10.5px">History</div></div>
+              <div style="text-align: center; color: #35692F"><div style="line-height: 1.2"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v16a2 2 0 0 0 2 2h16"></path><path d="M18 17V9"></path><path d="M13 17V5"></path><path d="M8 17v-3"></path></svg></div><div style="font-size: 10.5px; font-weight: 600">Insights</div></div>
+              <div style="text-align: center; color: #787166"><div style="line-height: 1.2"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M18 21V10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1v11"></path><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8a2 2 0 0 1 1.132-1.803l7.95-3.974a2 2 0 0 1 1.837 0l7.948 3.974A2 2 0 0 1 22 8z"></path><path d="M6 13h12"></path><path d="M6 17h12"></path></svg></div><div style="font-size: 10.5px">Garage</div></div>
+            </div>
+          </div>
+        </div>
+        <p style="font-size: 13.5px; line-height: 1.5; margin: 12px 0 0; color: var(--color-neutral-800); text-wrap: pretty">Four bars, four domain hues, <strong>summing to the headline exactly</strong> — 289,00 + 98,20 + 96,50 + 4,20 = 487,90 €. Rows name the plan <em>type</em>, never the brand. Records are amount-descending because this card is evidence for <em>where it went</em>; recency would duplicate History's ordering. Six is the cap and July has six, so no <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12.5px">N more</span> link appears.</p>
+        <p style="font-size: 13.5px; line-height: 1.5; margin: 9px 0 0; color: var(--color-neutral-800); text-wrap: pretty"><strong>Two honest gaps in one card.</strong> 15–21 July reads <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12.5px">—</span> because nothing was spent; 29–31 July reads <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12.5px">not yet</span> because today is the 28th. A block that has not happened and a block that cost nothing are different facts, and a single <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12.5px">0,00 €</span> would flatten both.</p>
+      </div>
+
+      <div style="width: 414px">
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; letter-spacing: 0.08em; color: var(--color-neutral-700); margin-bottom: 11px">§5.2 · FUEL · JULY TO DATE · GOLF GTI · SPARSE</div>
+        <div style="width: 414px; padding: 11px; background: #24211D; border-radius: 48px; box-shadow: 0 16px 44px rgba(28,26,23,0.2)">
+          <div style="width: 392px; height: 1010px; background: #14120F; border-radius: 38px; overflow: hidden; position: relative; font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif">
+            <div style="height: 46px; display: flex; align-items: center; justify-content: space-between; padding: 0 26px; position: relative">
+              <span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; color: #F4F0E8">9:41</span>
+              <div style="position: absolute; left: 50%; transform: translateX(-50%); top: 8px; width: 92px; height: 26px; background: #000; border-radius: 999px"></div>
+              <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #F4F0E8; letter-spacing: 0.06em">▮▮▮ ⌾ ▊</span>
+            </div>
+            <div style="padding: 8px 20px 0; display: flex; justify-content: space-between; align-items: flex-start">
+              <div style="font-size: 30px; font-weight: 700; color: #F4F0E8; letter-spacing: -0.02em">Insights</div>
+              <div style="width: 36px; height: 36px; border-radius: 999px; background: #211E19; border: 1px solid #2E2A24; display: grid; place-items: center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="color: #B8B0A4"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"></path><circle cx="12" cy="12" r="3"></circle></svg></div>
+            </div>
+            <div style="padding: 12px 20px 0; display: flex; justify-content: space-between; align-items: center">
+              <div style="font-size: 21px; font-weight: 600; color: #F4F0E8">Fuel <span style="color: #B8B0A4; font-weight: 400">▾</span></div>
+              <div style="border: 1px solid #2E2A24; border-radius: 999px; padding: 5px 13px; font-size: 13.5px; color: #F4F0E8">Golf GTI ▾</div>
+            </div>
+            <div style="padding: 10px 20px 0; display: flex; justify-content: space-between; align-items: center">
+              <span style="font-size: 18px; color: #62A64C">‹</span>
+              <span style="font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 14px; color: #F4F0E8">July 2026 · to date <span style="color: #B8B0A4">▾</span></span>
+              <span style="font-size: 18px; color: #62A64C">›</span>
+            </div>
+            <div style="height: 1px; background: #2E2A24; margin-top: 13px"></div>
+
+            <div style="padding: 18px 20px 0">
+              <div style="font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 30px; color: #F4F0E8">7,1 L/100km</div>
+              <div style="font-size: 15px; color: #F4F0E8; margin-top: 3px">Steady, over 2 measured fills in July.</div>
+              <div style="font-size: 13.5px; color: #B8B0A4; margin-top: 5px; line-height: 1.45">Your usual, over the last 5 measured fills, is 6,85.</div>
+            </div>
+
+            <div style="padding: 22px 20px 0">
+              <div style="background: #211E19; border: 1px solid #2E2A24; border-radius: 15px; padding: 15px 16px">
+                <div style="font-size: 14.5px; color: #F4F0E8; line-height: 1.45">Two measured fills isn't a trend yet.</div>
+                <div style="font-size: 13.5px; color: #B8B0A4; line-height: 1.45; margin-top: 6px">One more full tank with an odometer and the per-fill chart appears here.</div>
+                <div style="display: flex; gap: 8px; margin-top: 14px; align-items: center">
+                  <span style="width: 9px; height: 9px; border-radius: 999px; background: #4E9139"></span>
+                  <span style="width: 9px; height: 9px; border-radius: 999px; background: #4E9139"></span>
+                  <span style="width: 9px; height: 9px; border-radius: 999px; border: 1.5px solid #4A443A"></span>
+                </div>
+              </div>
+            </div>
+
+            <div style="padding: 22px 20px 0">
+              <div style="display: flex; justify-content: space-between; margin-bottom: 10px">
+                <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; font-weight: 600; letter-spacing: 0.09em; color: #8F877A">THE NUMBERS</span>
+                <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; font-weight: 600; letter-spacing: 0.09em; color: #8F877A">JULY</span>
+              </div>
+              <sc-for list="{{ fuelStats }}" as="s" hint-placeholder-count="5">
+                <div style="display: flex; justify-content: space-between; padding: 7px 0; border-bottom: 1px solid #2E2A24">
+                  <span style="font-size: 14.5px; color: #B8B0A4">{{ s.label }}</span>
+                  <span style="font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 14.5px; color: #F4F0E8">{{ s.value }}</span>
+                </div>
+              </sc-for>
+            </div>
+
+            <div style="padding: 22px 20px 0">
+              <div style="display: flex; justify-content: space-between; margin-bottom: 10px">
+                <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; font-weight: 600; letter-spacing: 0.09em; color: #8F877A">PRICE PAID</span>
+                <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; font-weight: 600; letter-spacing: 0.09em; color: #8F877A">JULY</span>
+              </div>
+              <div style="font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 19px; color: #F4F0E8">1,354 €/L average</div>
+              <div style="font-size: 13.5px; color: #B8B0A4; margin-top: 5px">Cheapest: Repsol Reus · 1,329 €/L</div>
+              <div style="font-size: 13px; color: #8F877A; margin-top: 7px; line-height: 1.45">Averaged over all 3 fills · 98,20 € ÷ 72,54 L.</div>
+            </div>
+
+            <div style="padding: 22px 20px 0">
+              <div style="border-top: 1px solid #2E2A24; padding-top: 14px">
+                <div style="font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 14px; color: #F4F0E8">July · 3 fills · 72,54 L · 98,20 €</div>
+                <div style="font-size: 14px; color: #F4F0E8; margin-top: 6px; line-height: 1.45">2 of 3 measured. The 24 July fill had no odometer, so it has no measured interval; its litres carry into the next one.</div>
+              </div>
+            </div>
+
+            <div style="position: absolute; right: 20px; bottom: 84px; width: 52px; height: 52px; border-radius: 16px; background: #F4F0E8; display: grid; place-items: center; box-shadow: 0 6px 18px rgba(0,0,0,0.34)"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="color: #14120F"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg></div>
+            <div style="position: absolute; left: 0; right: 0; bottom: 0; border-top: 1px solid #2E2A24; background: rgba(20,18,15,0.94); backdrop-filter: blur(12px); padding: 8px 8px 22px; display: flex; justify-content: space-around">
+              <div style="text-align: center; color: #8F877A"><div style="line-height: 1.2"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg></div><div style="font-size: 10.5px">Home</div></div>
+              <div style="text-align: center; color: #8F877A"><div style="line-height: 1.2"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M15 12h-5"></path><path d="M15 8h-5"></path><path d="M19 17V5a2 2 0 0 0-2-2H4"></path><path d="M8 21h12a2 2 0 0 0 2-2v-1a1 1 0 0 0-1-1H11a1 1 0 0 0-1 1v1a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v2a1 1 0 0 0 1 1h3"></path></svg></div><div style="font-size: 10.5px">History</div></div>
+              <div style="text-align: center; color: #62A64C"><div style="line-height: 1.2"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v16a2 2 0 0 0 2 2h16"></path><path d="M18 17V9"></path><path d="M13 17V5"></path><path d="M8 17v-3"></path></svg></div><div style="font-size: 10.5px; font-weight: 600">Insights</div></div>
+              <div style="text-align: center; color: #8F877A"><div style="line-height: 1.2"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M18 21V10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1v11"></path><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8a2 2 0 0 1 1.132-1.803l7.95-3.974a2 2 0 0 1 1.837 0l7.948 3.974A2 2 0 0 1 22 8z"></path><path d="M6 13h12"></path><path d="M6 17h12"></path></svg></div><div style="font-size: 10.5px">Garage</div></div>
+            </div>
+          </div>
+        </div>
+        <p style="font-size: 13.5px; line-height: 1.5; margin: 12px 0 0; color: var(--color-neutral-800); text-wrap: pretty"><strong>This is §16 #2 drawn, not described.</strong> The headline is the <em>page-scoped</em> mean — 7,1 over July's two measured fills — while <em>your usual</em> is inv.4's ≤5-value window at 6,85. They differ, so the page shows both and labels which is which. A page that quietly borrowed the trailing figure would be answering a question the pager did not ask.</p>
+        <p style="font-size: 13.5px; line-height: 1.5; margin: 9px 0 0; color: var(--color-neutral-800); text-wrap: pretty">Below three measured fills the <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12.5px">PER FILL</span> chart is <strong>refused, not faked</strong> — a two-point trend is not a trend. The dots teach what would fix it, and they are the one place progress dots are allowed: they instruct, they do not reward.</p>
+      </div>
+
+      <div style="flex: 1; min-width: 320px; display: flex; flex-direction: column; gap: 18px">
+        <div class="blueprint" style="padding: 18px 22px; background: var(--color-accent-100)">
+          <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+          <h4 style="margin: 0 0 7px; font-size: 20px">The litres total is the honesty test</h4>
+          <p style="font-size: 14.5px; line-height: 1.5; margin: 0; text-wrap: pretty">July's three fills carry <strong>72,54 L</strong> — all three recorded litres, so all three are in the total. What the 24 July fill lacks is an <em>odometer</em>, and that is a different loss: it costs the <em>economy interval</em>, not the litres. Litres bought in July belong to July. Only if a fill had recorded no litres at all would the total <em>disappear</em> — a sum that would lie is withheld, never shown as zero and never as ≈.</p>
+        </div>
+        <div class="blueprint" style="padding: 18px 22px; background: #fff">
+          <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+          <h4 style="margin: 0 0 7px; font-size: 20px">All-cars fuel shows tiles, never a blend</h4>
+          <p style="font-size: 14.5px; line-height: 1.5; margin: 0 0 12px; text-wrap: pretty">Blending economy across cars is physically meaningless, so it is a constitutional refusal — not a display preference. Scope set to <em>Both</em> replaces the whole lens body with one tile per car.</p>
+          <div style="display: flex; gap: 10px">
+            <div style="flex: 1; background: #FBF9F5; border: 1px solid #E6E1D8; border-radius: 12px; padding: 12px 13px; font-family: -apple-system, system-ui, sans-serif">
+              <div style="font-size: 14px; font-weight: 600; color: #1C1A17">Golf GTI</div>
+              <div style="font-family: 'IBM Plex Mono', monospace; font-size: 16px; color: #1C1A17; margin-top: 5px">7,1 L/100km</div>
+              <div style="font-size: 12px; color: #5B564E; margin-top: 3px">steady · 3 fills</div>
+            </div>
+            <div style="flex: 1; background: #FBF9F5; border: 1px solid #E6E1D8; border-radius: 12px; padding: 12px 13px; font-family: -apple-system, system-ui, sans-serif">
+              <div style="font-size: 14px; font-weight: 600; color: #1C1A17">Ibiza</div>
+              <div style="font-family: 'IBM Plex Mono', monospace; font-size: 16px; color: #1C1A17; margin-top: 5px">≈5,4 L/100km</div>
+              <div style="font-size: 12px; color: #5B564E; margin-top: 3px">2 of 4 full</div>
+            </div>
+          </div>
+          <p style="font-size: 13.5px; line-height: 1.5; margin: 11px 0 0; color: var(--color-neutral-800); text-wrap: pretty">The Ibiza's ≈ is doing real work: only half its fills were full, so its figure is an estimate and says so on the tile itself.</p>
+        </div>
+        <div class="blueprint" style="padding: 18px 22px; background: #fff">
+          <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+          <h4 style="margin: 0 0 7px; font-size: 20px">A page with no records refuses its own headline</h4>
+          <p style="font-size: 14.5px; line-height: 1.5; margin: 0; text-wrap: pretty">An empty Cost page does <strong>not</strong> read <span style="font-family: 'IBM Plex Mono', monospace; font-size: 13.5px">0,00 €</span> — that is a lie by omission, since the user cannot tell "spent nothing" from "logged nothing". It reads <em>"Nothing logged in June."</em> plus one sentence, and renders no cards at all.</p>
+        </div>
+        <div class="blueprint" style="padding: 18px 22px; background: #fff">
+          <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+          <h4 style="margin: 0 0 7px; font-size: 20px">What never enters a Cost total</h4>
+          <div style="font-size: 14.5px; line-height: 1.55; color: var(--color-neutral-800)">A <strong>note</strong> (not money). A <strong>trip</strong> (its ≈costs are a share of money already counted, and it belongs to Distance). A <strong>purchase price</strong> — a fact, not a charge, so never a bar and never in the total; it lives on Ownership. And a plan's <strong>deposit</strong> never appears as a monthly charge.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div style="display: grid; grid-template-columns: auto minmax(280px, 1fr); gap: 20px; align-items: baseline; margin-bottom: 28px">
+      <h2 style="margin: 0; font-size: 34px">02 · Distance and Ownership</h2>
+      <div style="border-bottom: 1px solid var(--color-divider); padding-bottom: 6px; font-size: 14px; color: var(--color-neutral-700)">Two lenses that each break the pager on purpose — one pins a card above it, the other folds it away entirely.</div>
+    </div>
+
+    <div style="display: flex; gap: 34px; flex-wrap: wrap; align-items: start">
+
+      <div style="width: 414px">
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; letter-spacing: 0.08em; color: var(--color-neutral-700); margin-bottom: 11px">§5.3 · DISTANCE · JULY TO DATE · GOLF GTI</div>
+        <div style="width: 414px; padding: 11px; background: #24211D; border-radius: 48px; box-shadow: 0 16px 44px rgba(28,26,23,0.2)">
+          <div style="width: 392px; height: 1130px; background: #FBF9F5; border-radius: 38px; overflow: hidden; position: relative; font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif">
+            <div style="height: 46px; display: flex; align-items: center; justify-content: space-between; padding: 0 26px; position: relative">
+              <span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; color: #1C1A17">9:41</span>
+              <div style="position: absolute; left: 50%; transform: translateX(-50%); top: 8px; width: 92px; height: 26px; background: #24211D; border-radius: 999px"></div>
+              <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #1C1A17; letter-spacing: 0.06em">▮▮▮ ⌾ ▊</span>
+            </div>
+            <div style="padding: 8px 20px 0; display: flex; justify-content: space-between; align-items: flex-start">
+              <div style="font-size: 30px; font-weight: 700; color: #1C1A17; letter-spacing: -0.02em">Insights</div>
+              <div style="width: 36px; height: 36px; border-radius: 999px; background: #FFFFFF; border: 1px solid #E6E1D8; display: grid; place-items: center; box-shadow: 0 2px 6px rgba(28,26,23,0.06)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="color: #5B564E"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"></path><circle cx="12" cy="12" r="3"></circle></svg></div>
+            </div>
+            <div style="padding: 12px 20px 0; display: flex; justify-content: space-between; align-items: center">
+              <div style="font-size: 21px; font-weight: 600; color: #1C1A17">Distance <span style="color: #5B564E; font-weight: 400">▾</span></div>
+              <div style="border: 1px solid #E6E1D8; border-radius: 999px; padding: 5px 13px; font-size: 13.5px; color: #1C1A17">Golf GTI ▾</div>
+            </div>
+            <div style="padding: 10px 20px 0; display: flex; justify-content: space-between; align-items: center">
+              <span style="font-size: 18px; color: #35692F">‹</span>
+              <span style="font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 14px; color: #1C1A17">July 2026 · to date <span style="color: #5B564E">▾</span></span>
+              <span style="font-size: 18px; color: #35692F">›</span>
+            </div>
+
+            <div style="margin: 13px 0 0; padding: 15px 20px; background: #FFFFFF; border-top: 1px solid #E6E1D8; border-bottom: 1px solid #E6E1D8">
+              <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; font-weight: 600; letter-spacing: 0.09em; color: #787166; margin-bottom: 8px">CAP CYCLE · 23 JUL – 22 AUG</div>
+              <div style="font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 21px; color: #1C1A17; margin-bottom: 9px">268 / 1.760 km</div>
+              <div style="height: 10px; background: #E6E1D8; border-radius: 5px; overflow: hidden"><div style="height: 10px; width: 15.2%; background: #1C1A17"></div></div>
+              <div style="font-size: 13.5px; color: #5B564E; margin-top: 9px; line-height: 1.45">1.500 cap + 260 carried over from June.<br>At your pace, ≈1.385 km by 22 August.<br><span style="color: #1C1A17">Under the cap.</span></div>
+            </div>
+
+            <div style="padding: 18px 20px 0">
+              <div style="font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 30px; color: #1C1A17">412 km</div>
+              <div style="font-size: 15px; color: #1C1A17; margin-top: 3px">14,7 km/day over 28 tracked days.</div>
+            </div>
+
+            <div style="padding: 22px 20px 0">
+              <div style="display: flex; justify-content: space-between; margin-bottom: 10px">
+                <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; font-weight: 600; letter-spacing: 0.09em; color: #787166">BY BLOCK</span>
+                <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; font-weight: 600; letter-spacing: 0.09em; color: #787166">JULY</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #E6E1D8"><span style="font-size: 14px; color: #5B564E">1 – 7 Jul</span><span style="font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 14px; color: #1C1A17">266 km</span></div>
+              <div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #E6E1D8"><span style="font-size: 14px; color: #5B564E">8 – 14 Jul</span><span style="font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 14px; color: #1C1A17">146 km</span></div>
+              <div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #E6E1D8"><span style="font-size: 14px; color: #5B564E">15 – 21 Jul</span><span style="font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 14px; color: #787166">—</span></div>
+              <div style="display: flex; justify-content: space-between; padding: 6px 0"><span style="font-size: 14px; color: #5B564E">22 – 28 Jul</span><span style="font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 14px; color: #787166">—</span></div>
+              <div style="font-size: 13px; color: #5B564E; margin-top: 9px; line-height: 1.45">No readings since 12 July, so the last two blocks are not measured — not zero.</div>
+            </div>
+
+            <div style="padding: 20px 20px 0">
+              <div style="display: flex; justify-content: space-between; margin-bottom: 10px">
+                <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; font-weight: 600; letter-spacing: 0.09em; color: #787166">TRIPS</span>
+                <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; font-weight: 600; letter-spacing: 0.09em; color: #787166">JULY</span>
+              </div>
+              <div style="display: grid; grid-template-columns: 30px 1fr auto; gap: 10px; align-items: center; padding: 6px 0">
+                <span style="width: 30px; height: 30px; border-radius: 8px; display: grid; place-items: center; background: #EFEDE7"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="color: #5B564E"><circle cx="6" cy="19" r="3"></circle><path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15"></path><circle cx="18" cy="5" r="3"></circle></svg></span>
+                <span style="font-size: 13.5px; color: #1C1A17">Salou</span>
+                <span style="font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 13.5px; color: #1C1A17">232 km</span>
+              </div>
+              <div style="font-size: 13.5px; color: #1C1A17; margin-top: 8px; line-height: 1.45">1 trip · 232 km · ≈20,40 €</div>
+            </div>
+
+            <div style="padding: 20px 20px 0">
+              <div style="display: flex; justify-content: space-between; margin-bottom: 10px">
+                <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; font-weight: 600; letter-spacing: 0.09em; color: #787166">ODOMETER</span>
+                <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; font-weight: 600; letter-spacing: 0.09em; color: #787166">JULY</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #E6E1D8"><span style="font-size: 14px; color: #5B564E">Anchor reading</span><span style="font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 14px; color: #1C1A17">90.828 km · 28 Jun</span></div>
+              <div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #E6E1D8"><span style="font-size: 14px; color: #5B564E">Last reading</span><span style="font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 14px; color: #1C1A17">91.240 km · 12 Jul</span></div>
+              <div style="display: flex; justify-content: space-between; padding: 6px 0"><span style="font-size: 14px; color: #5B564E">Projected</span><span style="font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 14px; color: #1C1A17">≈92.388 km · 28 Sep</span></div>
+              <div style="font-size: 13px; color: #5B564E; margin-top: 8px; line-height: 1.45">≈ projected two months past today, at 14,7 km/day.</div>
+            </div>
+
+            <div style="position: absolute; right: 20px; bottom: 84px; width: 52px; height: 52px; border-radius: 16px; background: #1C1A17; display: grid; place-items: center; box-shadow: 0 6px 18px rgba(28,26,23,0.18)"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="color: #FBF9F5"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg></div>
+            <div style="position: absolute; left: 0; right: 0; bottom: 0; border-top: 1px solid #E6E1D8; background: rgba(251,249,245,0.94); backdrop-filter: blur(12px); padding: 8px 8px 22px; display: flex; justify-content: space-around">
+              <div style="text-align: center; color: #787166"><div style="line-height: 1.2"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg></div><div style="font-size: 10.5px">Home</div></div>
+              <div style="text-align: center; color: #787166"><div style="line-height: 1.2"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M15 12h-5"></path><path d="M15 8h-5"></path><path d="M19 17V5a2 2 0 0 0-2-2H4"></path><path d="M8 21h12a2 2 0 0 0 2-2v-1a1 1 0 0 0-1-1H11a1 1 0 0 0-1 1v1a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v2a1 1 0 0 0 1 1h3"></path></svg></div><div style="font-size: 10.5px">History</div></div>
+              <div style="text-align: center; color: #35692F"><div style="line-height: 1.2"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v16a2 2 0 0 0 2 2h16"></path><path d="M18 17V9"></path><path d="M13 17V5"></path><path d="M8 17v-3"></path></svg></div><div style="font-size: 10.5px; font-weight: 600">Insights</div></div>
+              <div style="text-align: center; color: #787166"><div style="line-height: 1.2"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M18 21V10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1v11"></path><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8a2 2 0 0 1 1.132-1.803l7.95-3.974a2 2 0 0 1 1.837 0l7.948 3.974A2 2 0 0 1 22 8z"></path><path d="M6 13h12"></path><path d="M6 17h12"></path></svg></div><div style="font-size: 10.5px">Garage</div></div>
+            </div>
+          </div>
+        </div>
+        <p style="font-size: 13.5px; line-height: 1.5; margin: 12px 0 0; color: var(--color-neutral-800); text-wrap: pretty"><strong>The gauge is pinned, and it sits above the divider on purpose.</strong> A lease cycle anchors to the plan's start day-of-month, so it is not a calendar page and must not pretend to be one — it carries its own dates and does not move when the pager does. Its denominator is the <strong>pooled</strong> budget: a car with 260 km banked is not over until it passes 1.760.</p>
+        <p style="font-size: 13.5px; line-height: 1.5; margin: 9px 0 0; color: var(--color-neutral-800); text-wrap: pretty"><strong>Arithmetic, checked:</strong> the two measured blocks sum to 412 km (266 + 146), matching the headline; 412 ÷ 28 = 14,71 km/day; the projection runs 78 days past the 12 July reading at that pace — 91.240 + 1.148 ≈ 92.388 by 28 September. The 232 km trip is a <em>subset</em> of the 412, never added to it.</p>
+      </div>
+
+      <div style="width: 414px">
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; letter-spacing: 0.08em; color: var(--color-neutral-700); margin-bottom: 11px">§5.4 · OWNERSHIP · IBIZA · NO PAGER AT ALL</div>
+        <div style="width: 414px; padding: 11px; background: #24211D; border-radius: 48px; box-shadow: 0 16px 44px rgba(28,26,23,0.2)">
+          <div style="width: 392px; height: 1010px; background: #FBF9F5; border-radius: 38px; overflow: hidden; position: relative; font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif">
+            <div style="height: 46px; display: flex; align-items: center; justify-content: space-between; padding: 0 26px; position: relative">
+              <span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; color: #1C1A17">9:41</span>
+              <div style="position: absolute; left: 50%; transform: translateX(-50%); top: 8px; width: 92px; height: 26px; background: #24211D; border-radius: 999px"></div>
+              <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #1C1A17; letter-spacing: 0.06em">▮▮▮ ⌾ ▊</span>
+            </div>
+            <div style="padding: 8px 20px 0; display: flex; justify-content: space-between; align-items: flex-start">
+              <div style="font-size: 30px; font-weight: 700; color: #1C1A17; letter-spacing: -0.02em">Insights</div>
+              <div style="width: 36px; height: 36px; border-radius: 999px; background: #FFFFFF; border: 1px solid #E6E1D8; display: grid; place-items: center; box-shadow: 0 2px 6px rgba(28,26,23,0.06)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="color: #5B564E"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"></path><circle cx="12" cy="12" r="3"></circle></svg></div>
+            </div>
+            <div style="padding: 12px 20px 0; display: flex; justify-content: space-between; align-items: center">
+              <div style="font-size: 21px; font-weight: 600; color: #1C1A17">Ownership <span style="color: #5B564E; font-weight: 400">▾</span></div>
+              <div style="border: 1px solid #E6E1D8; border-radius: 999px; padding: 5px 13px; font-size: 13.5px; color: #1C1A17">Ibiza ▾</div>
+            </div>
+            <div style="height: 1px; background: #E6E1D8; margin-top: 13px"></div>
+
+            <div style="padding: 20px 20px 0">
+              <div style="font-size: 28px; font-weight: 600; color: #1C1A17; letter-spacing: -0.012em">Since 2014</div>
+              <div style="font-size: 15px; color: #5B564E; margin-top: 4px">Ibiza · owned outright</div>
+            </div>
+
+            <div style="padding: 26px 20px 0">
+              <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; font-weight: 600; letter-spacing: 0.09em; color: #787166; margin-bottom: 10px">FACTS</div>
+              <div style="display: flex; justify-content: space-between; padding: 7px 0; border-bottom: 1px solid #E6E1D8"><span style="font-size: 14.5px; color: #5B564E">Purchase price</span><span style="font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 14.5px; color: #1C1A17">9.200,00 €</span></div>
+              <div style="display: flex; justify-content: space-between; padding: 7px 0"><span style="font-size: 14.5px; color: #5B564E">Tracking began</span><span style="font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 14.5px; color: #1C1A17">March 2022</span></div>
+              <div style="font-size: 13px; color: #5B564E; margin-top: 8px; line-height: 1.45">A purchase price is a fact, not a charge. It never enters a running rate.</div>
+            </div>
+
+            <div style="padding: 26px 20px 0">
+              <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; font-weight: 600; letter-spacing: 0.09em; color: #787166">WHAT THIS CAR COSTS</div>
+              <div style="font-size: 13px; color: #787166; margin: 3px 0 12px">since tracking began</div>
+              <div style="display: grid; grid-template-columns: 30px 1fr auto; gap: 10px; align-items: center; padding: 6px 0">
+                <span style="width: 30px; height: 30px; border-radius: 8px; display: grid; place-items: center; background: #E7F0E5"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="color: #35692F"><path d="M14 13h2a2 2 0 0 1 2 2v2a2 2 0 0 0 4 0v-6.998a2 2 0 0 0-.59-1.42L18 5"></path><path d="M14 21V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v16"></path><path d="M2 21h13"></path><path d="M3 9h11"></path></svg></span>
+                <span style="font-size: 14.5px; color: #1C1A17">Fuel</span>
+                <span style="font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 14.5px; color: #1C1A17">2.145,80 €</span>
+              </div>
+              <div style="display: grid; grid-template-columns: 30px 1fr auto; gap: 10px; align-items: center; padding: 6px 0">
+                <span style="width: 30px; height: 30px; border-radius: 8px; display: grid; place-items: center; background: #F5EBD8"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="color: #7E5C12"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.106-3.105c.32-.322.863-.22.983.218a6 6 0 0 1-8.259 7.057l-7.91 7.91a1 1 0 0 1-2.999-3l7.91-7.91a6 6 0 0 1 7.057-8.259c.438.12.54.662.219.984z"></path></svg></span>
+                <span style="font-size: 14.5px; color: #1C1A17">Services</span>
+                <span style="font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 14.5px; color: #1C1A17">890,30 €</span>
+              </div>
+              <div style="display: grid; grid-template-columns: 30px 1fr auto; gap: 10px; align-items: center; padding: 6px 0">
+                <span style="width: 30px; height: 30px; border-radius: 8px; display: grid; place-items: center; background: #E3EDF6"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="color: #24608F"><path d="M12 17V7"></path><path d="M16 8h-6a2 2 0 0 0 0 4h4a2 2 0 0 1 0 4H8"></path><path d="M4 3a1 1 0 0 1 1-1 1.3 1.3 0 0 1 .7.2l.933.6a1.3 1.3 0 0 0 1.4 0l.934-.6a1.3 1.3 0 0 1 1.4 0l.933.6a1.3 1.3 0 0 0 1.4 0l.933-.6a1.3 1.3 0 0 1 1.4 0l.934.6a1.3 1.3 0 0 0 1.4 0l.933-.6A1.3 1.3 0 0 1 19 2a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1 1.3 1.3 0 0 1-.7-.2l-.933-.6a1.3 1.3 0 0 0-1.4 0l-.934.6a1.3 1.3 0 0 1-1.4 0l-.933-.6a1.3 1.3 0 0 0-1.4 0l-.933.6a1.3 1.3 0 0 1-1.4 0l-.934-.6a1.3 1.3 0 0 0-1.4 0l-.933.6a1.3 1.3 0 0 1-.7.2 1 1 0 0 1-1-1z"></path></svg></span>
+                <span style="font-size: 14.5px; color: #1C1A17">Expenses</span>
+                <span style="font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 14.5px; color: #1C1A17">156,40 €</span>
+              </div>
+              <div style="display: grid; grid-template-columns: 30px 1fr auto; gap: 10px; align-items: center; padding: 6px 0">
+                <span style="width: 30px; height: 30px; border-radius: 8px; display: grid; place-items: center; background: #EFEDE7"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="color: #5B564E"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"></path><path d="M14 2v5a1 1 0 0 0 1 1h5"></path><path d="M16 13H8"></path><path d="M16 17H8"></path></svg></span>
+                <span style="font-size: 14.5px; color: #787166">Plan charges</span>
+                <span style="font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 14.5px; color: #787166">—</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; padding: 11px 0 0; margin-top: 6px; border-top: 1px solid #1C1A17">
+                <span style="font-size: 15.5px; font-weight: 600; color: #1C1A17">All-in so far</span>
+                <span style="font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 15.5px; font-weight: 600; color: #1C1A17">3.192,50 €</span>
+              </div>
+            </div>
+
+            <div style="padding: 24px 20px 0">
+              <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; font-weight: 600; letter-spacing: 0.09em; color: #787166; margin-bottom: 10px">THE RATES</div>
+              <div style="display: flex; justify-content: space-between; padding: 7px 0; border-bottom: 1px solid #E6E1D8"><span style="font-size: 14.5px; color: #5B564E">Per month</span><span style="font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 14.5px; color: #1C1A17">60,24 €</span></div>
+              <div style="display: flex; justify-content: space-between; padding: 7px 0"><span style="font-size: 14.5px; color: #5B564E">Per km</span><span style="font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 14.5px; color: #1C1A17">0,21 €</span></div>
+              <div style="font-size: 13px; color: #5B564E; margin-top: 8px; line-height: 1.45">Over 53 months and 15.180 km of tracked history.</div>
+            </div>
+
+            <div style="position: absolute; right: 20px; bottom: 84px; width: 52px; height: 52px; border-radius: 16px; background: #1C1A17; display: grid; place-items: center; box-shadow: 0 6px 18px rgba(28,26,23,0.18)"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="color: #FBF9F5"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg></div>
+            <div style="position: absolute; left: 0; right: 0; bottom: 0; border-top: 1px solid #E6E1D8; background: rgba(251,249,245,0.94); backdrop-filter: blur(12px); padding: 8px 8px 22px; display: flex; justify-content: space-around">
+              <div style="text-align: center; color: #787166"><div style="line-height: 1.2"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg></div><div style="font-size: 10.5px">Home</div></div>
+              <div style="text-align: center; color: #787166"><div style="line-height: 1.2"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M15 12h-5"></path><path d="M15 8h-5"></path><path d="M19 17V5a2 2 0 0 0-2-2H4"></path><path d="M8 21h12a2 2 0 0 0 2-2v-1a1 1 0 0 0-1-1H11a1 1 0 0 0-1 1v1a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v2a1 1 0 0 0 1 1h3"></path></svg></div><div style="font-size: 10.5px">History</div></div>
+              <div style="text-align: center; color: #35692F"><div style="line-height: 1.2"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v16a2 2 0 0 0 2 2h16"></path><path d="M18 17V9"></path><path d="M13 17V5"></path><path d="M8 17v-3"></path></svg></div><div style="font-size: 10.5px; font-weight: 600">Insights</div></div>
+              <div style="text-align: center; color: #787166"><div style="line-height: 1.2"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M18 21V10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1v11"></path><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8a2 2 0 0 1 1.132-1.803l7.95-3.974a2 2 0 0 1 1.837 0l7.948 3.974A2 2 0 0 1 22 8z"></path><path d="M6 13h12"></path><path d="M6 17h12"></path></svg></div><div style="font-size: 10.5px">Garage</div></div>
+            </div>
+          </div>
+        </div>
+        <p style="font-size: 13.5px; line-height: 1.5; margin: 12px 0 0; color: var(--color-neutral-800); text-wrap: pretty"><strong>The pager is gone — not disabled, gone.</strong> Ownership is timeless; "since 2014" is not a page, so there is no period label, no chevrons and no <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12.5px">TODAY</span>. This is also the lens that needs no canvas at all: a ledger card and a rate table lose nothing, which makes it the cheapest real lens to build first.</p>
+        <p style="font-size: 13.5px; line-height: 1.5; margin: 9px 0 0; color: var(--color-neutral-800); text-wrap: pretty"><strong>The purchase price sits above the ledger line, not in it.</strong> 2.145,80 + 890,30 + 156,40 = <strong>3.192,50 €</strong> — the 9.200,00 € is deliberately <em>not</em> added, because a fact is not a charge. An owned car has no plan charges, so that row is a dash rather than a hidden row: showing the empty category is what proves the total is complete.</p>
+      </div>
+
+      <div style="flex: 1; min-width: 320px; display: flex; flex-direction: column; gap: 18px">
+        <div class="blueprint" style="padding: 0; background: #fff">
+          <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+          <div style="padding: 16px 20px 12px">
+            <h4 style="margin: 0 0 4px; font-size: 20px">The two fitted pickers</h4>
+            <div style="font-size: 13.5px; color: var(--color-neutral-700)">Parent visible, tap applies and closes, no Save button.</div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0; border-top: 1px solid var(--color-divider)">
+            <div style="border-right: 1px solid var(--color-divider); padding: 14px 16px; font-family: -apple-system, system-ui, sans-serif">
+              <div style="font-family: 'IBM Plex Mono', monospace; font-size: 9.5px; letter-spacing: 0.1em; color: var(--color-neutral-700); margin-bottom: 10px">TAP THE TITLE</div>
+              <div style="background: #FBF9F5; border: 1px solid #E6E1D8; border-radius: 12px; overflow: hidden">
+                <div style="padding: 10px 13px; display: flex; justify-content: space-between; font-size: 14px; color: #1C1A17; border-bottom: 1px solid #E6E1D8">Cost <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color: #35692F"><path d="M20 6 9 17l-5-5"></path></svg></div>
+                <div style="padding: 10px 13px; font-size: 14px; color: #1C1A17; border-bottom: 1px solid #E6E1D8">Fuel</div>
+                <div style="padding: 10px 13px; font-size: 14px; color: #1C1A17; border-bottom: 1px solid #E6E1D8">Distance</div>
+                <div style="padding: 10px 13px; font-size: 14px; color: #1C1A17">Ownership</div>
+              </div>
+              <p style="font-size: 12.5px; line-height: 1.45; margin: 9px 0 0; color: var(--color-neutral-800)"><strong>No title</strong> — §16 #11's recommendation. Four rows say what they are, and "lens" never reaches the user.</p>
+            </div>
+            <div style="padding: 14px 16px; font-family: -apple-system, system-ui, sans-serif">
+              <div style="font-family: 'IBM Plex Mono', monospace; font-size: 9.5px; letter-spacing: 0.1em; color: var(--color-neutral-700); margin-bottom: 10px">TAP THE PERIOD</div>
+              <div style="background: #FBF9F5; border: 1px solid #E6E1D8; border-radius: 12px; overflow: hidden">
+                <div style="padding: 10px 13px; display: flex; justify-content: space-between; font-size: 14px; color: #1C1A17; border-bottom: 1px solid #E6E1D8">Month · by week <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color: #35692F"><path d="M20 6 9 17l-5-5"></path></svg></div>
+                <div style="padding: 10px 13px; font-size: 14px; color: #1C1A17; border-bottom: 1px solid #E6E1D8">Year · by month</div>
+                <div style="padding: 10px 13px; font-size: 14px; color: #1C1A17">All time · by year</div>
+              </div>
+              <p style="font-size: 12.5px; line-height: 1.45; margin: 9px 0 0; color: var(--color-neutral-800)">Sizes are <strong>named with their resolution</strong>, so you know what the bars will be before committing. That is why grain is not a separate control.</p>
+            </div>
+          </div>
+        </div>
+        <div class="blueprint" style="padding: 18px 22px; background: var(--color-accent-100)">
+          <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+          <h4 style="margin: 0 0 7px; font-size: 20px">Over-cap says the same thing the garage chip says</h4>
+          <div style="background: #FBF9F5; border: 1px solid #E6E1D8; border-radius: 12px; padding: 14px 15px; margin-bottom: 11px; font-family: -apple-system, system-ui, sans-serif">
+            <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 0.09em; color: #787166; margin-bottom: 7px">CAP CYCLE · 23 JUL – 22 AUG</div>
+            <div style="font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 19px; color: #1C1A17; margin-bottom: 8px">1.840 / 1.760 km</div>
+            <div style="height: 10px; background: #E6E1D8; border-radius: 5px; overflow: hidden"><div style="height: 10px; width: 100%; background: #9C5A16"></div></div>
+            <div style="font-size: 13px; color: #5B564E; margin-top: 8px; line-height: 1.45">1.500 cap + 260 carried over from June.<br><span style="color: #9C5A16">80 km over your pooled budget.</span><br>At your pace, ≈2.035 km by 22 August.</div>
+          </div>
+          <p style="font-size: 14px; line-height: 1.5; margin: 0; text-wrap: pretty">Fills <strong>attention</strong>, counts the overage in text, keeps the pace line present tense. Never hidden, never red, nothing flashes — being over a mileage cap is a fact about a contract, not an error the user made.</p>
+        </div>
+        <div class="blueprint" style="padding: 18px 22px; background: #fff">
+          <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+          <h4 style="margin: 0 0 7px; font-size: 20px">Interpolation, and why sparse trails draw low even bars</h4>
+          <p style="font-size: 14.5px; line-height: 1.5; margin: 0; text-wrap: pretty">Buckets interpolate the trail linearly between readings, so a year-wide gap <strong>spreads across the months it covers</strong> instead of spiking in the month the next reading lands. Two readings a year apart draw twelve small bars, not one tall one — that is correct, and it needs no caption. Buckets still telescope exactly to <span style="font-family: 'IBM Plex Mono', monospace; font-size: 13.5px">last − first</span>.</p>
+        </div>
+        <div class="blueprint" style="padding: 18px 22px; background: #fff">
+          <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+          <h4 style="margin: 0 0 7px; font-size: 20px">Page size keeps your place</h4>
+          <p style="font-size: 14.5px; line-height: 1.5; margin: 0; text-wrap: pretty">July (month) → 2026 (year) → back to Month lands on <em>July</em> again. Year → Month drills into <em>that</em> year, never into today. A year page also drops the record list entirely — wider pages hand the list to History, because a year of rows is History's job.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer style="border-top: 1px solid var(--color-text); padding-top: 18px; display: grid; grid-template-columns: 1fr auto; gap: 30px; align-items: start">
+    <div style="font-size: 14px; color: var(--color-neutral-700); max-width: 900px; line-height: 1.55; text-wrap: pretty">Sheet 10 of batch 2. Next: <strong>11</strong> the record pages · <strong>12</strong> reminders and the vault · <strong>13</strong> onboarding. The carousel itself is an implementation note, not a design one — three interval-keyed pages, re-keyed on settle, with the horizontal pan owning the page and the vertical pan owning the scroll.</div>
+    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; line-height: 1.9; color: var(--color-neutral-700); text-align: right; white-space: nowrap">
+      <div>4 LENSES · 2 PAGER EXCEPTIONS</div>
+      <div>JULY RECONCILES · 487,90 € · 412 KM</div>
+      <div>4 OPEN QUESTIONS TAKEN</div>
+    </div>
+  </footer>
+
+</div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{
+  &quot;$preview&quot;: { &quot;width&quot;: 1976, &quot;height&quot;: 1100 }
+}">
+class Component extends DCLogic {
+  renderVals() {
+    const WASH = { fuel: '#E7F0E5', service: '#F5EBD8', expense: '#E3EDF6', contract: '#F3E9F1', ink: '#EFEDE7' };
+    const TEXT = { fuel: '#35692F', service: '#7E5C12', expense: '#24608F', contract: '#6E3960', ink: '#5B564E' };
+
+    // Data-driven SVG glyphs cannot be template markup — the paths are chosen by the
+    // record's kind. Narrow leaf elements only; every bit of layout is in the template.
+    const PATHS = {
+      fuel: [['path', { d: 'M14 13h2a2 2 0 0 1 2 2v2a2 2 0 0 0 4 0v-6.998a2 2 0 0 0-.59-1.42L18 5' }], ['path', { d: 'M14 21V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v16' }], ['path', { d: 'M2 21h13' }], ['path', { d: 'M3 9h11' }]],
+      wrench: [['path', { d: 'M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.106-3.105c.32-.322.863-.22.983.218a6 6 0 0 1-8.259 7.057l-7.91 7.91a1 1 0 0 1-2.999-3l7.91-7.91a6 6 0 0 1 7.057-8.259c.438.12.54.662.219.984z' }]],
+      receipt: [['path', { d: 'M12 17V7' }], ['path', { d: 'M16 8h-6a2 2 0 0 0 0 4h4a2 2 0 0 1 0 4H8' }], ['path', { d: 'M4 3a1 1 0 0 1 1-1 1.3 1.3 0 0 1 .7.2l.933.6a1.3 1.3 0 0 0 1.4 0l.934-.6a1.3 1.3 0 0 1 1.4 0l.933.6a1.3 1.3 0 0 0 1.4 0l.933-.6a1.3 1.3 0 0 1 1.4 0l.934.6a1.3 1.3 0 0 0 1.4 0l.933-.6A1.3 1.3 0 0 1 19 2a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1 1.3 1.3 0 0 1-.7-.2l-.933-.6a1.3 1.3 0 0 0-1.4 0l-.934.6a1.3 1.3 0 0 1-1.4 0l-.933-.6a1.3 1.3 0 0 0-1.4 0l-.933.6a1.3 1.3 0 0 1-1.4 0l-.934-.6a1.3 1.3 0 0 0-1.4 0l-.933.6a1.3 1.3 0 0 1-.7.2 1 1 0 0 1-1-1z' }]],
+      file: [['path', { d: 'M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z' }], ['path', { d: 'M14 2v5a1 1 0 0 0 1 1h5' }], ['path', { d: 'M16 13H8' }], ['path', { d: 'M16 17H8' }]],
+    };
+    const glyph = (icon, colour) => React.createElement('svg', {
+      width: 16, height: 16, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor',
+      strokeWidth: 1.75, strokeLinecap: 'round', strokeLinejoin: 'round',
+      style: { color: colour }, 'aria-hidden': true,
+    }, (PATHS[icon] || []).map(([tag, a], i) => React.createElement(tag, Object.assign({ key: i }, a))));
+
+    const rec = (icon, domain, title, meta, amount, date) => ({
+      title, meta, amount, date,
+      well: WASH[domain], icon: glyph(icon, TEXT[domain]),
+    });
+
+    return {
+      // amount-descending — this card is evidence for "where it went"
+      costRecords: [
+        rec('file', 'contract', 'Plan charge', 'Golf GTI · monthly', '289,00 €', '23 Jul'),
+        rec('wrench', 'service', 'Oil & filter', 'Golf GTI · 91.108 km', '96,50 €', '8 Jul'),
+        rec('fuel', 'fuel', 'Repsol Reus', '7,2 L/100km · 402 km', '38,45 €', '2 Jul'),
+        rec('fuel', 'fuel', 'Repsol Tarragona', '6,9 L/100km · 378 km', '35,75 €', '12 Jul'),
+        rec('fuel', 'fuel', 'Cepsa Salou', '17,50 L · no odometer', '24,00 €', '24 Jul'),
+        rec('receipt', 'expense', 'Parking', 'Interparking Tarragona', '4,20 €', '26 Jul'),
+      ],
+      fuelStats: [
+        { label: 'Average', value: '7,1 L/100km' },
+        { label: 'Best · worst', value: '6,9 · 7,2' },
+        { label: 'Last measured', value: '6,9 · 12 Jul' },
+        { label: 'Measured fills', value: '2 of 3' },
+        { label: 'Per fill', value: '24,18 L · 32,73 €' },
+      ],
+    };
+  }
+}
+</script>
+</body>
+</html>

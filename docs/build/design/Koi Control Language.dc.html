@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="stylesheet" href="_ds/industry-502e7e7f-a454-4e0f-a758-32b893d6b801/styles.css">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<script src="_ds/industry-502e7e7f-a454-4e0f-a758-32b893d6b801/_ds_bundle.js"></script>
+<style>
+  body { margin: 0; background: var(--color-bg); }
+  a { color: var(--color-accent-700); text-decoration: none; border-bottom: 1px solid var(--color-accent-300); }
+  a:hover { color: var(--color-accent-900); border-bottom-color: var(--color-accent-700); }
+  @keyframes koi-drain { from { transform: scaleX(1) } to { transform: scaleX(0) } }
+</style>
+</helmet>
+
+
+<div style="background: var(--color-bg); color: var(--color-text); font-family: var(--font-body); padding: 56px 48px 96px; min-height: 100vh">
+<div style="max-width: 1360px; margin: 0 auto; display: flex; flex-direction: column; gap: 68px">
+
+  <header style="display: grid; grid-template-columns: 1fr auto; gap: 40px; align-items: end; border-bottom: 1px solid var(--color-text); padding-bottom: 20px">
+    <div>
+      <div style="font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--color-neutral-700); margin-bottom: 10px">Koi · car-cost ledger · design batch 1 · sheet 02 of 08 · + 2 annexes</div>
+      <h1 style="font-size: 68px; line-height: 0.95; margin: 0 0 6px; letter-spacing: -0.02em">The control language</h1>
+      <div style="font-family: var(--font-heading); font-size: 25px; color: var(--color-neutral-700)">One list, because a second implementation of any row is how two surfaces start disagreeing</div>
+    </div>
+    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; line-height: 1.9; color: var(--color-neutral-700); text-align: right; white-space: nowrap">
+      <div>DRAWS&nbsp;&nbsp;&nbsp;&nbsp;wireframes §13 · §3.2</div>
+      <div>READS&nbsp;&nbsp;&nbsp;&nbsp;spec §D4 · §D7</div>
+      <div>PALETTE&nbsp;&nbsp;sheet 01</div>
+      <div>DATE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2026-07-29</div>
+    </div>
+  </header>
+
+  <section>
+    <div style="display: grid; grid-template-columns: auto minmax(280px, 1fr); gap: 20px; align-items: baseline; margin-bottom: 24px">
+      <h2 style="margin: 0; font-size: 34px">01 · Three type voices</h2>
+      <div style="border-bottom: 1px solid var(--color-divider); padding-bottom: 6px; font-size: 14px; color: var(--color-neutral-700)">Display for large titles and verdicts, text for the UI, and data — monospaced and tabular — for <em>every</em> number, date, amount and micro-label. Numbers never jitter.</div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1.55fr 1fr; gap: 40px">
+      <div style="background: #FBF9F5; border: 1px solid #E6E1D8; padding: 32px 34px; display: flex; flex-direction: column; gap: 26px">
+        <div style="display: grid; grid-template-columns: 92px 1fr; gap: 22px; align-items: baseline">
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.1em; color: #787166; padding-top: 10px">DISPLAY<br>28 / 600</div>
+          <div>
+            <div style="font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif; font-size: 28px; font-weight: 600; color: #1C1A17; letter-spacing: -0.012em; line-height: 1.15">Everything OK</div>
+            <div style="font-size: 12.5px; color: #787166; margin-top: 5px">the state headline, a lens headline, a saved-moment number</div>
+          </div>
+        </div>
+        <div style="display: grid; grid-template-columns: 92px 1fr; gap: 22px; align-items: baseline">
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.1em; color: #787166; padding-top: 6px">TITLE<br>19 / 600</div>
+          <div>
+            <div style="font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif; font-size: 19px; font-weight: 600; color: #1C1A17; line-height: 1.25">Insurance &amp; papers</div>
+            <div style="font-size: 12.5px; color: #787166; margin-top: 5px">a page title, a card title, a sheet title</div>
+          </div>
+        </div>
+        <div style="display: grid; grid-template-columns: 92px 1fr; gap: 22px; align-items: baseline">
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.1em; color: #787166; padding-top: 4px">BODY<br>15 / 400</div>
+          <div>
+            <div style="font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif; font-size: 15px; color: #1C1A17; line-height: 1.45">Enter any two. The third is computed.</div>
+            <div style="font-size: 12.5px; color: #787166; margin-top: 5px">every sentence the app says out loud</div>
+          </div>
+        </div>
+        <div style="display: grid; grid-template-columns: 92px 1fr; gap: 22px; align-items: baseline">
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.1em; color: #787166; padding-top: 3px">SOFT<br>14 / 400</div>
+          <div>
+            <div style="font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif; font-size: 14px; color: #5B564E; line-height: 1.45">Insurance and maintenance included.</div>
+            <div style="font-size: 12.5px; color: #787166; margin-top: 5px">a quiet fact under something louder</div>
+          </div>
+        </div>
+        <div style="display: grid; grid-template-columns: 92px 1fr; gap: 22px; align-items: baseline">
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.1em; color: #787166; padding-top: 3px">FAINT<br>13 / 400</div>
+          <div>
+            <div style="font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif; font-size: 13px; color: #787166; line-height: 1.45">Archived 2020 · records kept</div>
+            <div style="font-size: 12.5px; color: #787166; margin-top: 5px">at sheet 01's corrected value — the old one failed AA</div>
+          </div>
+        </div>
+        <div style="border-top: 1px solid #E6E1D8; padding-top: 24px; display: grid; grid-template-columns: 92px 1fr; gap: 22px; align-items: baseline">
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.1em; color: #35692F; padding-top: 4px">DATA<br>15 / tabular</div>
+          <div>
+            <div style="font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 15px; color: #1C1A17; line-height: 1.5">1.234,56 €&nbsp;&nbsp; 43.465 km&nbsp;&nbsp; 6,9 L/100km<br>1,625 €/L&nbsp;&nbsp; ≈1.410 km&nbsp;&nbsp; 12 Jul</div>
+            <div style="font-size: 12.5px; color: #787166; margin-top: 5px">every number, amount, date and unit — es-ES formats, always</div>
+          </div>
+        </div>
+        <div style="display: grid; grid-template-columns: 92px 1fr; gap: 22px; align-items: baseline">
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.1em; color: #35692F; padding-top: 2px">MICRO<br>11 / 600</div>
+          <div>
+            <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; letter-spacing: 0.09em; color: #787166">WHERE IT WENT &nbsp;·&nbsp; NEEDS YOU &nbsp;·&nbsp; CAP CYCLE</div>
+            <div style="font-size: 12.5px; color: #787166; margin-top: 5px">section labels, tracked uppercase — <strong>styled, never typed</strong> as uppercase</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 26px">
+        <div class="blueprint" style="padding: 20px 24px; background: var(--color-accent-100)">
+          <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+          <h6 style="margin: 0 0 6px">The data face needs naming, and Menlo is the wrong answer</h6>
+          <p style="font-size: 14.5px; line-height: 1.5; margin: 0 0 10px; text-wrap: pretty">Menlo is Apple-only. On Android it falls back to the proportional default, and the one promise this voice exists to keep — <em>numbers never jitter</em> — breaks silently on the platform the project calls co-equal.</p>
+          <p style="font-size: 14.5px; line-height: 1.5; margin: 0; text-wrap: pretty"><strong>Recommendation: IBM Plex Mono</strong>, bundled. Genuinely tabular, open-licensed, ships on both platforms, and its warmth sits with the paper rather than against it. This sheet is set in it, so you are reading the proposal, not a description of it.</p>
+        </div>
+        <div class="blueprint" style="padding: 20px 24px; background: #fff">
+          <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+          <h6 style="margin: 0 0 6px">Uppercase is a style, not a string</h6>
+          <p style="font-size: 14.5px; line-height: 1.5; margin: 0; text-wrap: pretty">The build currently uppercases the string itself in two places, which leaves nothing for a screen reader to strip. Micro-labels are authored in sentence case and transformed in the style layer — the accessibility label reads "Where it went", not "WHERE IT WENT".</p>
+        </div>
+        <div class="blueprint" style="padding: 20px 24px; background: #fff">
+          <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+          <h6 style="margin: 0 0 6px">Dynamic type</h6>
+          <p style="font-size: 14.5px; line-height: 1.5; margin: 0; text-wrap: pretty">Every two-column construct on the sheets that follow reflows to one column at the largest sizes. The fact-row label column is <strong>not</strong> a fixed width — the build's 118 pt cap truncates where §H4 requires reflow.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div style="display: grid; grid-template-columns: auto minmax(280px, 1fr); gap: 20px; align-items: baseline; margin-bottom: 24px">
+      <h2 style="margin: 0; font-size: 34px">02 · The Row</h2>
+      <div style="border-bottom: 1px solid var(--color-divider); padding-bottom: 6px; font-size: 14px; color: var(--color-neutral-700)">Icon well · title · one-line meta · trailing mono amount · date. One design, used in History, the car page's three recent, every Insights record list, and Home's Last fill.</div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-bottom: 34px">
+      <div>
+        <h6 style="margin: 0 0 12px; color: var(--color-neutral-700)">Anatomy</h6>
+        <div style="background: #FBF9F5; border: 1px solid #E6E1D8; padding: 22px 20px">
+          <div style="display: grid; grid-template-columns: 44px 1fr auto; gap: 14px; align-items: center; position: relative; min-height: 60px">
+            <div style="width: 44px; height: 44px; border-radius: 10px; background: #E7F0E5; display: grid; place-items: center; font-size: 19px; color: #35692F; outline: 1px dashed var(--color-accent); outline-offset: 3px"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="color: #35692F"><path d="M14 13h2a2 2 0 0 1 2 2v2a2 2 0 0 0 4 0v-6.998a2 2 0 0 0-.59-1.42L18 5"></path><path d="M14 21V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v16"></path><path d="M2 21h13"></path><path d="M3 9h11"></path></svg></div>
+            <div style="min-width: 0; outline: 1px dashed var(--color-accent); outline-offset: 3px">
+              <div style="font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif; font-size: 15.5px; color: #1C1A17">Repsol Tarragona</div>
+              <div style="font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 13px; color: #5B564E">6,9 L/100km · 378 km</div>
+            </div>
+            <div style="text-align: right; outline: 1px dashed var(--color-accent); outline-offset: 3px">
+              <div style="font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 15px; color: #1C1A17">35,75 €</div>
+              <div style="font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 12px; color: #787166">12 Jul</div>
+            </div>
+          </div>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-top: 14px; font-size: 13px; line-height: 1.45; color: var(--color-neutral-800)">
+          <div><strong>Well</strong> — the domain hue. This is the whole colour job on a row.</div>
+          <div><strong>Meta</strong> — leads with the derived value and <em>its interval</em>, never a bare number.</div>
+          <div><strong>Amount</strong> — always ink. The well already said what kind of money it is.</div>
+        </div>
+      </div>
+      <div>
+        <h6 style="margin: 0 0 12px; color: var(--color-neutral-700)">Three laws the anatomy encodes</h6>
+        <div style="display: flex; flex-direction: column; gap: 12px">
+          <div class="blueprint" style="padding: 14px 18px; background: #fff">
+            <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+            <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; letter-spacing: 0.09em; color: var(--color-accent-700); margin-bottom: 3px">INV. 7 · THE FOLD RULE</div>
+            <div style="font-size: 14.5px; line-height: 1.45">A reading logged <em>with</em> a fill or a trip lives inside that record and never gets its own row — it still joins the trail. A deliberate manual reading always keeps its row. The single most common History bug class, and it is an invariant, not a preference.</div>
+          </div>
+          <div class="blueprint" style="padding: 14px 18px; background: #fff">
+            <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+            <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; letter-spacing: 0.09em; color: var(--color-accent-700); margin-bottom: 3px">INV. 17 · A TRIP IS DISTANCE</div>
+            <div style="font-size: 14.5px; line-height: 1.45">A trip's trailing figure is <span style="font-family: 'IBM Plex Mono', monospace; font-size: 13.5px">232 km</span>, never a euro amount. Its ≈costs are a share of money already counted, so they ride in the meta and on its record page — never in the money column.</div>
+          </div>
+          <div class="blueprint" style="padding: 14px 18px; background: #fff">
+            <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+            <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; letter-spacing: 0.09em; color: var(--color-accent-700); margin-bottom: 3px">INV. 16 · A NOTE IS NOT MONEY</div>
+            <div style="font-size: 14.5px; line-height: 1.45">No amount, ever, and it never joins a month whisper. On its record page the absence is <em>stated</em> where a reader would look for the number: "Note · not counted in totals."</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h6 style="margin: 0 0 12px; color: var(--color-neutral-700)">Every kind, drawn — §3.2's table as pixels</h6>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0; border: 1px solid var(--color-divider)">
+      <div style="background: #FBF9F5; padding: 6px 0">
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.12em; color: #787166; padding: 10px 18px 8px">LIGHT</div>
+        <sc-for list="{{ rows }}" as="row" hint-placeholder-count="11">
+          <div style="display: grid; grid-template-columns: 40px 1fr auto; gap: 13px; align-items: center; padding: 9px 18px; min-height: 58px">
+            <div style="width: 40px; height: 40px; border-radius: 10px; display: grid; place-items: center; background: {{ row.wellLight }}">{{ row.iconLight }}</div>
+            <div style="min-width: 0">
+              <div style="font-family: {{ row.titleFontLight }}; font-size: 15px; color: #1C1A17">{{ row.title }}</div>
+              <div style="font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 12.5px; color: #5B564E">{{ row.meta }}</div>
+            </div>
+            <div style="text-align: right">
+              <div style="font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 14.5px; color: #1C1A17">{{ row.amount }}</div>
+              <div style="font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 11.5px; color: #787166">{{ row.date }}</div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="background: #14120F; padding: 6px 0; border-left: 1px solid var(--color-divider)">
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.12em; color: #8F877A; padding: 10px 18px 8px">DARK</div>
+        <sc-for list="{{ rows }}" as="row" hint-placeholder-count="11">
+          <div style="display: grid; grid-template-columns: 40px 1fr auto; gap: 13px; align-items: center; padding: 9px 18px; min-height: 58px">
+            <div style="width: 40px; height: 40px; border-radius: 10px; display: grid; place-items: center; background: {{ row.wellDark }}">{{ row.iconDark }}</div>
+            <div style="min-width: 0">
+              <div style="font-family: {{ row.titleFontDark }}; font-size: 15px; color: #F4F0E8">{{ row.title }}</div>
+              <div style="font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 12.5px; color: #B8B0A4">{{ row.meta }}</div>
+            </div>
+            <div style="text-align: right">
+              <div style="font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 14.5px; color: #F4F0E8">{{ row.amount }}</div>
+              <div style="font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 11.5px; color: #8F877A">{{ row.date }}</div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+    <p style="font-size: 14.5px; line-height: 1.5; margin: 16px 0 0; color: var(--color-neutral-800); max-width: 1080px; text-wrap: pretty">The five fuel variants are one row design reading five different data situations — measured, partial, no odometer, missed-previous, money-only. <strong>None of them is styled as an error</strong>, and none apologises. That is the whole reason to draw them together: the degraded row must look like a row, not like a problem.</p>
+  </section>
+
+  <section>
+    <div style="display: grid; grid-template-columns: auto minmax(280px, 1fr); gap: 20px; align-items: baseline; margin-bottom: 24px">
+      <h2 style="margin: 0; font-size: 34px">03 · Icon wells</h2>
+      <div style="border-bottom: 1px solid var(--color-divider); padding-bottom: 6px; font-size: 14px; color: var(--color-neutral-700)">One glyph per record type, used identically everywhere. An <em>icon</em> well — not a coloured bar, which is what the build ships today.</div>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(8, 1fr); gap: 16px">
+      <sc-for list="{{ wells }}" as="w" hint-placeholder-count="8">
+        <div style="text-align: center">
+          <div style="background: #FBF9F5; border: 1px solid #E6E1D8; padding: 18px 0; display: grid; place-items: center">
+            <div style="width: 46px; height: 46px; border-radius: 11px; display: grid; place-items: center; background: {{ w.light }}">{{ w.iconLight }}</div>
+          </div>
+          <div style="background: #14120F; border: 1px solid #2E2A24; border-top: 0; padding: 18px 0; display: grid; place-items: center">
+            <div style="width: 46px; height: 46px; border-radius: 11px; display: grid; place-items: center; background: {{ w.dark }}">{{ w.iconDark }}</div>
+          </div>
+          <div style="font-family: var(--font-heading); font-size: 17px; margin-top: 8px">{{ w.name }}</div>
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.07em; color: var(--color-neutral-700)">{{ w.role }}</div>
+        </div>
+      </sc-for>
+    </div>
+    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 28px; margin-top: 24px">
+      <div>
+        <h6 style="margin: 0 0 6px; color: var(--color-neutral-700)">Glyphs here are placeholders</h6>
+        <p style="font-size: 14.5px; line-height: 1.5; margin: 0; text-wrap: pretty">Standing in for the real thin-stroke set. What is <em>not</em> a placeholder is the count — eight glyphs, fixed — and which hue each wears. Both are decided; the drawing is not.</p>
+      </div>
+      <div>
+        <h6 style="margin: 0 0 6px; color: var(--color-neutral-700)">Three wells are ink, on purpose</h6>
+        <p style="font-size: 14.5px; line-height: 1.5; margin: 0; text-wrap: pretty">Odometer, trip and note are not money, so their wells take the hairline surface and let the glyph identify them. This is what stops the ledger from reading as seven palettes.</p>
+      </div>
+      <div>
+        <h6 style="margin: 0 0 6px; color: var(--color-neutral-700)">The chooser reuses them exactly</h6>
+        <p style="font-size: 14.5px; line-height: 1.5; margin: 0; text-wrap: pretty">Capture's six tiles wear the same eight glyphs at the same hues — money tiles coloured, the rest ink. A user who has seen a row already knows the tile.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div style="display: grid; grid-template-columns: auto minmax(280px, 1fr); gap: 20px; align-items: baseline; margin-bottom: 24px">
+      <h2 style="margin: 0; font-size: 34px">04 · Chips and buttons</h2>
+      <div style="border-bottom: 1px solid var(--color-divider); padding-bottom: 6px; font-size: 14px; color: var(--color-neutral-700)">Three chip species that must never be confused: a filter fills with ink, an option washes with accent, a status chip is not tappable at all.</div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px">
+      <div style="background: #FBF9F5; border: 1px solid #E6E1D8; padding: 26px 28px; display: flex; flex-direction: column; gap: 24px">
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.12em; color: #787166">LIGHT</div>
+
+        <div>
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; font-weight: 600; letter-spacing: 0.09em; color: #787166; margin-bottom: 9px">FILTER · SELECTED = INK-FILLED</div>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap">
+            <span style="background: #1C1A17; color: #FBF9F5; font-size: 14px; padding: 7px 15px; border-radius: 999px; font-family: -apple-system, system-ui, sans-serif">All</span>
+            <span style="border: 1px solid #E6E1D8; color: #1C1A17; font-size: 14px; padding: 6px 14px; border-radius: 999px; font-family: -apple-system, system-ui, sans-serif">Fuel</span>
+            <span style="border: 1px solid #E6E1D8; color: #1C1A17; font-size: 14px; padding: 6px 14px; border-radius: 999px; font-family: -apple-system, system-ui, sans-serif">Service</span>
+            <span style="border: 1px solid #E6E1D8; color: #1C1A17; font-size: 14px; padding: 6px 14px; border-radius: 999px; font-family: -apple-system, system-ui, sans-serif">Expense</span>
+          </div>
+          <div style="font-size: 13px; color: #787166; margin-top: 8px"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 12.5px">All</span> is a chip, not a clear button — mutually exclusive with the rest, which are additive.</div>
+        </div>
+
+        <div>
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; font-weight: 600; letter-spacing: 0.09em; color: #787166; margin-bottom: 9px">OPTION · SELECTED = ACCENT-WASHED</div>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap">
+            <span style="background: #F2EFE8; border: 1px solid #1C1A17; color: #1C1A17; font-size: 14px; padding: 6px 14px; border-radius: 999px; font-family: -apple-system, system-ui, sans-serif">Petrol</span>
+            <span style="border: 1px solid #E6E1D8; color: #1C1A17; font-size: 14px; padding: 6px 14px; border-radius: 999px; font-family: -apple-system, system-ui, sans-serif">Diesel</span>
+            <span style="border: 1px solid #E6E1D8; color: #1C1A17; font-size: 14px; padding: 6px 14px; border-radius: 999px; font-family: -apple-system, system-ui, sans-serif">Electric</span>
+            <span style="border: 1px solid #E6E1D8; color: #1C1A17; font-size: 14px; padding: 6px 14px; border-radius: 999px; font-family: -apple-system, system-ui, sans-serif">Hybrid</span>
+          </div>
+          <div style="font-size: 13px; color: #787166; margin-top: 8px">The accent is the fuel hue — which is exactly right here, and a coincidence worth noticing rather than generalising.</div>
+        </div>
+
+        <div>
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; font-weight: 600; letter-spacing: 0.09em; color: #787166; margin-bottom: 9px">STATUS · NOT TAPPABLE, LABELS ONLY</div>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap">
+            <span style="background: #F3E9F1; color: #6E3960; font-size: 13.5px; padding: 5px 13px; border-radius: 999px; font-family: -apple-system, system-ui, sans-serif">Mapfre</span>
+            <span style="background: #EFEDE7; color: #1C1A17; font-size: 13.5px; padding: 5px 13px; border-radius: 999px; font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums">1.240/1.500 km</span>
+            <span style="background: #EFEDE7; color: #1C1A17; font-size: 13.5px; padding: 5px 13px; border-radius: 999px; font-family: -apple-system, system-ui, sans-serif">Insurance in 16 days</span>
+          </div>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px">
+            <span style="background: #F6E9DA; color: #9C5A16; font-size: 13.5px; padding: 5px 13px; border-radius: 999px; font-family: -apple-system, system-ui, sans-serif">180 km over</span>
+            <span style="background: #EFEDE7; color: #1C1A17; font-size: 13.5px; padding: 5px 13px; border-radius: 999px; font-family: -apple-system, system-ui, sans-serif">Owned</span>
+          </div>
+          <div style="font-size: 13px; color: #787166; margin-top: 8px">A tappable status chip is hidden navigation with no back story. Facts, not warnings — and over-cap wears attention, never red.</div>
+        </div>
+
+        <div style="border-top: 1px solid #E6E1D8; padding-top: 22px">
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; font-weight: 600; letter-spacing: 0.09em; color: #787166; margin-bottom: 11px">BUTTONS · ONE PRIMARY PER SURFACE</div>
+          <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center">
+            <span style="background: #1C1A17; color: #FBF9F5; font-size: 15px; font-weight: 500; padding: 12px 22px; border-radius: 8px; font-family: -apple-system, system-ui, sans-serif">Review</span>
+            <span style="border: 1px solid #E6E1D8; background: #FFFFFF; color: #1C1A17; font-size: 15px; padding: 11px 20px; border-radius: 8px; font-family: -apple-system, system-ui, sans-serif">Mark done</span>
+            <span style="color: #35692F; font-size: 15px; padding: 11px 12px; font-family: -apple-system, system-ui, sans-serif">Snooze +7</span>
+            <span style="color: #A32D22; font-size: 15px; padding: 11px 12px; font-family: -apple-system, system-ui, sans-serif">Delete this fill</span>
+          </div>
+          <div style="font-size: 13px; color: #787166; margin-top: 10px">Primary · secondary · ghost · destructive. Destructive is <strong>critical text on the ordinary surface</strong> — never a red fill. Minimum target 44 pt in every variant, including the ghost.</div>
+        </div>
+      </div>
+
+      <div style="background: #14120F; border: 1px solid #2E2A24; padding: 26px 28px; display: flex; flex-direction: column; gap: 24px">
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.12em; color: #8F877A">DARK</div>
+        <div>
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; font-weight: 600; letter-spacing: 0.09em; color: #8F877A; margin-bottom: 9px">FILTER · SELECTED = INK-FILLED</div>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap">
+            <span style="background: #F4F0E8; color: #14120F; font-size: 14px; padding: 7px 15px; border-radius: 999px; font-family: -apple-system, system-ui, sans-serif">All</span>
+            <span style="border: 1px solid #2E2A24; color: #F4F0E8; font-size: 14px; padding: 6px 14px; border-radius: 999px; font-family: -apple-system, system-ui, sans-serif">Fuel</span>
+            <span style="border: 1px solid #2E2A24; color: #F4F0E8; font-size: 14px; padding: 6px 14px; border-radius: 999px; font-family: -apple-system, system-ui, sans-serif">Service</span>
+            <span style="border: 1px solid #2E2A24; color: #F4F0E8; font-size: 14px; padding: 6px 14px; border-radius: 999px; font-family: -apple-system, system-ui, sans-serif">Expense</span>
+          </div>
+          <div style="font-size: 13px; color: #8F877A; margin-top: 8px">"Ink-filled" inverts with the theme — in dark, ink <em>is</em> the near-white, so the selected chip is the lightest object in the row.</div>
+        </div>
+        <div>
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; font-weight: 600; letter-spacing: 0.09em; color: #8F877A; margin-bottom: 9px">OPTION · SELECTED = ACCENT-WASHED</div>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap">
+            <span style="background: #2B2721; border: 1px solid #F4F0E8; color: #F4F0E8; font-size: 14px; padding: 6px 14px; border-radius: 999px; font-family: -apple-system, system-ui, sans-serif">Petrol</span>
+            <span style="border: 1px solid #2E2A24; color: #F4F0E8; font-size: 14px; padding: 6px 14px; border-radius: 999px; font-family: -apple-system, system-ui, sans-serif">Diesel</span>
+            <span style="border: 1px solid #2E2A24; color: #F4F0E8; font-size: 14px; padding: 6px 14px; border-radius: 999px; font-family: -apple-system, system-ui, sans-serif">Electric</span>
+            <span style="border: 1px solid #2E2A24; color: #F4F0E8; font-size: 14px; padding: 6px 14px; border-radius: 999px; font-family: -apple-system, system-ui, sans-serif">Hybrid</span>
+          </div>
+          <div style="font-size: 13px; color: #8F877A; margin-top: 8px">The wash is a dark tint of the accent, not the accent at low opacity — opacity over a warm ground goes grey.</div>
+        </div>
+        <div>
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; font-weight: 600; letter-spacing: 0.09em; color: #8F877A; margin-bottom: 9px">STATUS · NOT TAPPABLE, LABELS ONLY</div>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap">
+            <span style="background: #2A1F27; color: #C489BA; font-size: 13.5px; padding: 5px 13px; border-radius: 999px; font-family: -apple-system, system-ui, sans-serif">Mapfre</span>
+            <span style="background: #262219; color: #F4F0E8; font-size: 13.5px; padding: 5px 13px; border-radius: 999px; font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums">1.240/1.500 km</span>
+            <span style="background: #262219; color: #F4F0E8; font-size: 13.5px; padding: 5px 13px; border-radius: 999px; font-family: -apple-system, system-ui, sans-serif">Insurance in 16 days</span>
+          </div>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px">
+            <span style="background: #2E2318; color: #E8934A; font-size: 13.5px; padding: 5px 13px; border-radius: 999px; font-family: -apple-system, system-ui, sans-serif">180 km over</span>
+            <span style="background: #262219; color: #F4F0E8; font-size: 13.5px; padding: 5px 13px; border-radius: 999px; font-family: -apple-system, system-ui, sans-serif">Owned</span>
+          </div>
+          <div style="font-size: 13px; color: #8F877A; margin-top: 8px">The plum chip is the one place a domain hue carries type at chip size — so it takes the <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12.5px">-text</span> step, per sheet 01's rule.</div>
+        </div>
+        <div style="border-top: 1px solid #2E2A24; padding-top: 22px">
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; font-weight: 600; letter-spacing: 0.09em; color: #8F877A; margin-bottom: 11px">BUTTONS · ONE PRIMARY PER SURFACE</div>
+          <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center">
+            <span style="background: #F4F0E8; color: #14120F; font-size: 15px; font-weight: 500; padding: 12px 22px; border-radius: 8px; font-family: -apple-system, system-ui, sans-serif">Review</span>
+            <span style="border: 1px solid #2E2A24; background: #211E19; color: #F4F0E8; font-size: 15px; padding: 11px 20px; border-radius: 8px; font-family: -apple-system, system-ui, sans-serif">Mark done</span>
+            <span style="color: #62A64C; font-size: 15px; padding: 11px 12px; font-family: -apple-system, system-ui, sans-serif">Snooze +7</span>
+            <span style="color: #E86458; font-size: 15px; padding: 11px 12px; font-family: -apple-system, system-ui, sans-serif">Delete this fill</span>
+          </div>
+          <div style="font-size: 13px; color: #8F877A; margin-top: 10px">The primary's label goes to the <em>paper</em>, not to white — a solid accent with white type on a warm dark ground reads as a notification, not as a button.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div style="display: grid; grid-template-columns: auto minmax(280px, 1fr); gap: 20px; align-items: baseline; margin-bottom: 24px">
+      <h2 style="margin: 0; font-size: 34px">05 · Toasts, and the surface that never turns red</h2>
+      <div style="border-bottom: 1px solid var(--color-divider); padding-bottom: 6px; font-size: 14px; color: var(--color-neutral-700)">One at a time, app-level. Success 3 s · undo 6 s behind a draining hairline · error persists. Undo and Retry are the only actions that ride in a toast.</div>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px">
+      <div>
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; font-weight: 600; letter-spacing: 0.09em; color: var(--color-neutral-700); margin-bottom: 10px">SUCCESS · 3 s · NO ACTION</div>
+        <div style="background: #FBF9F5; border: 1px solid #E6E1D8; padding: 22px">
+          <div style="background: #FFFFFF; border: 1px solid #E6E1D8; border-radius: 13px; padding: 14px 16px; box-shadow: 0 6px 18px rgba(28,26,23,0.09); display: flex; gap: 12px; align-items: center">
+            <span style="color: #35692F; font-size: 17px">✓</span>
+            <span style="font-family: -apple-system, system-ui, sans-serif; font-size: 14.5px; color: #1C1A17">Done. Next one created for 16 July 2027.</span>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; font-weight: 600; letter-spacing: 0.09em; color: var(--color-neutral-700); margin-bottom: 10px">UNDO · 6 s · DRAINING HAIRLINE</div>
+        <div style="background: #FBF9F5; border: 1px solid #E6E1D8; padding: 22px">
+          <div style="background: #FFFFFF; border: 1px solid #E6E1D8; border-radius: 13px; box-shadow: 0 6px 18px rgba(28,26,23,0.09); overflow: hidden">
+            <div style="padding: 14px 16px; display: flex; gap: 12px; align-items: center">
+              <span style="color: #5B564E; font-size: 15px">⌫</span>
+              <span style="font-family: -apple-system, system-ui, sans-serif; font-size: 14.5px; color: #1C1A17; flex: 1">Reading deleted.</span>
+              <span style="font-family: -apple-system, system-ui, sans-serif; font-size: 14.5px; font-weight: 500; color: #35692F">Undo</span>
+            </div>
+            <div style="height: 2px; background: #E6E1D8"><div style="height: 2px; background: #5B564E; transform-origin: left; animation: koi-drain 6s linear infinite"></div></div>
+          </div>
+        </div>
+        <div style="font-size: 13px; color: var(--color-neutral-700); margin-top: 8px; line-height: 1.45">The hairline <em>is</em> the state. It is why the surface never needs to turn a colour to tell you something is time-boxed.</div>
+      </div>
+      <div>
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; font-weight: 600; letter-spacing: 0.09em; color: var(--color-neutral-700); margin-bottom: 10px">ERROR · PERSISTS · ICON CARRIES IT</div>
+        <div style="background: #FBF9F5; border: 1px solid #E6E1D8; padding: 22px">
+          <div style="background: #FFFFFF; border: 1px solid #E6E1D8; border-radius: 13px; padding: 14px 16px; box-shadow: 0 6px 18px rgba(28,26,23,0.09); display: flex; gap: 12px; align-items: flex-start">
+            <span style="color: #9C5A16; font-size: 15px; padding-top: 1px">▪</span>
+            <span style="font-family: -apple-system, system-ui, sans-serif; font-size: 14.5px; color: #1C1A17; flex: 1; line-height: 1.4">Not syncing: your server didn't answer. Your records are safe on this device.</span>
+            <span style="font-family: -apple-system, system-ui, sans-serif; font-size: 14.5px; font-weight: 500; color: #35692F">Retry</span>
+          </div>
+        </div>
+        <div style="font-size: 13px; color: var(--color-neutral-700); margin-top: 8px; line-height: 1.45">A sentence, never a raw error string — and <strong>attention, not critical</strong>: a server that did not answer is a fact, and the records are fine.</div>
+      </div>
+    </div>
+
+    <div class="blueprint" style="margin-top: 26px; padding: 20px 24px; background: var(--color-accent-100)">
+      <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+      <h6 style="margin: 0 0 6px">§16 #8 — two quick deletes, and the answer I took</h6>
+      <p style="font-size: 15px; line-height: 1.55; margin: 0; max-width: 1080px; text-wrap: pretty">One-toast-at-a-time plus an in-memory undo closure means a second delete silently makes the first permanent. Following the wireframes' own recommendation rather than inventing a third option: <strong>the closures queue.</strong> The new toast supersedes visually, each closure survives its own 6 s, and the copy collapses — <span style="font-family: 'IBM Plex Mono', monospace; font-size: 14px">"2 records deleted."</span> with one <span style="font-family: 'IBM Plex Mono', monospace; font-size: 14px">Undo</span> that restores both. Still open for you: this is a recommendation, and it is logged as one.</p>
+    </div>
+  </section>
+
+  <section>
+    <div style="display: grid; grid-template-columns: auto minmax(280px, 1fr); gap: 20px; align-items: baseline; margin-bottom: 24px">
+      <h2 style="margin: 0; font-size: 34px">06 · The three layer species</h2>
+      <div style="border-bottom: 1px solid var(--color-divider); padding-bottom: 6px; font-size: 14px; color: var(--color-neutral-700)">Push to go, sheet to do, fit to pick — and never two tall layers. Maximum depth anywhere: root → pushes → one task sheet → one fitted pick.</div>
+    </div>
+    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 28px">
+      <div>
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; font-weight: 600; letter-spacing: 0.09em; color: var(--color-neutral-700); margin-bottom: 10px">PUSHED PAGE · TAB BAR STAYS</div>
+        <div style="background: #FBF9F5; border: 1px solid #E6E1D8; border-radius: 16px; overflow: hidden">
+          <div style="padding: 13px 16px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #E6E1D8">
+            <span style="font-family: -apple-system, system-ui, sans-serif; font-size: 15px; color: #35692F">‹ Garage</span>
+            <span style="font-family: -apple-system, system-ui, sans-serif; font-size: 15px; font-weight: 600; color: #1C1A17">Golf GTI</span>
+            <span style="font-size: 15px; color: #35692F"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="color: currentColor"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"></path><path d="m15 5 4 4"></path></svg></span>
+          </div>
+          <div style="height: 96px; background: #FFFFFF; display: grid; place-items: center; font-size: 13px; color: #787166">page body</div>
+          <div style="border-top: 1px solid #E6E1D8; background: #FBF9F5; padding: 9px 10px; display: flex; justify-content: space-around; font-family: -apple-system, system-ui, sans-serif; font-size: 10.5px; color: #787166">
+            <span>Home</span><span>History</span><span>Insights</span><span style="color: #35692F; font-weight: 600">Garage</span>
+          </div>
+        </div>
+        <div style="font-size: 13.5px; line-height: 1.5; color: var(--color-neutral-800); margin-top: 10px">Back always means back. A pushed page <strong>never dismisses itself</strong> — it pops by path mutation only, which is the hard-won bug: <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12.5px">dismiss()</span> inside a pushed page eventually rebinds to a sheet and kills Back.</div>
+      </div>
+      <div>
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; font-weight: 600; letter-spacing: 0.09em; color: var(--color-neutral-700); margin-bottom: 10px">TASK SHEET · ONE TALL LAYER, NO TAB BAR</div>
+        <div style="background: #FBF9F5; border: 1px solid #E6E1D8; border-radius: 16px; overflow: hidden; position: relative">
+          <div style="height: 18px; background: #EFEDE7"></div>
+          <div style="background: #FFFFFF; border-top: 1px solid #E6E1D8; border-radius: 16px 16px 0 0">
+            <div style="padding: 13px 16px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #E6E1D8">
+              <span style="font-family: -apple-system, system-ui, sans-serif; font-size: 15px; color: #35692F">Discard</span>
+              <span style="font-family: -apple-system, system-ui, sans-serif; font-size: 15px; font-weight: 600; color: #1C1A17">Fill-up</span>
+              <span style="font-family: -apple-system, system-ui, sans-serif; font-size: 15px; color: #35692F; font-weight: 500">Save</span>
+            </div>
+            <div style="height: 133px; display: grid; place-items: center; font-size: 13px; color: #787166">task body</div>
+          </div>
+        </div>
+        <div style="font-size: 13.5px; line-height: 1.5; color: var(--color-neutral-800); margin-top: 10px">A sheet never presents a second tall surface. It continues by <strong>inline swap</strong> (the car form's ownership rows) or by pushing on its <strong>own</strong> internal stack (Settings does this, back-only, swipe-close disabled while pushed).</div>
+      </div>
+      <div>
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; font-weight: 600; letter-spacing: 0.09em; color: var(--color-neutral-700); margin-bottom: 10px">FITTED PICK · PARENT VISIBLE, NO SAVE</div>
+        <div style="background: #FBF9F5; border: 1px solid #E6E1D8; border-radius: 16px; overflow: hidden">
+          <div style="height: 62px; padding: 12px 16px; opacity: 0.45">
+            <div style="font-family: -apple-system, system-ui, sans-serif; font-size: 15px; font-weight: 600">Cost ▾</div>
+            <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; color: #5B564E; margin-top: 4px">‹ July 2026 · to date ▾ ›</div>
+          </div>
+          <div style="background: #FFFFFF; border-top: 1px solid #E6E1D8; border-radius: 16px 16px 0 0; padding: 6px 0">
+            <div style="padding: 11px 18px; display: flex; justify-content: space-between; font-family: -apple-system, system-ui, sans-serif; font-size: 15px; color: #1C1A17">Cost <span style="color: #35692F">✓</span></div>
+            <div style="padding: 11px 18px; font-family: -apple-system, system-ui, sans-serif; font-size: 15px; color: #1C1A17">Fuel</div>
+            <div style="padding: 11px 18px; font-family: -apple-system, system-ui, sans-serif; font-size: 15px; color: #1C1A17">Distance</div>
+            <div style="padding: 11px 18px; font-family: -apple-system, system-ui, sans-serif; font-size: 15px; color: #1C1A17">Ownership</div>
+          </div>
+        </div>
+        <div style="font-size: 13.5px; line-height: 1.5; color: var(--color-neutral-800); margin-top: 10px">Applies on tap, closes itself, <strong>no Save button</strong>. Drawn with <strong>no title</strong> — §16 #11's recommendation: four rows say what they are, and "lens" never becomes user-facing vocabulary, which was the whole objection.</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div style="display: grid; grid-template-columns: auto minmax(280px, 1fr); gap: 20px; align-items: baseline; margin-bottom: 24px">
+      <h2 style="margin: 0; font-size: 34px">07 · Stat table, gauge, confirmation</h2>
+      <div style="border-bottom: 1px solid var(--color-divider); padding-bottom: 6px; font-size: 14px; color: var(--color-neutral-700)">The three constructs that carry most of Insights and every destructive act.</div>
+    </div>
+    <div style="display: grid; grid-template-columns: 1fr 1.1fr 1fr; gap: 28px; align-items: start">
+      <div>
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; font-weight: 600; letter-spacing: 0.09em; color: var(--color-neutral-700); margin-bottom: 10px">STAT TABLE · VERTICAL, ALWAYS</div>
+        <div style="background: #FBF9F5; border: 1px solid #E6E1D8; padding: 20px 22px">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 14px">
+            <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; font-weight: 600; letter-spacing: 0.09em; color: #787166">THE NUMBERS</span>
+            <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; font-weight: 600; letter-spacing: 0.09em; color: #787166">JULY</span>
+          </div>
+          <div style="display: flex; flex-direction: column">
+            <div style="display: flex; justify-content: space-between; padding: 7px 0; border-bottom: 1px solid #E6E1D8"><span style="font-family: -apple-system, system-ui, sans-serif; font-size: 14.5px; color: #5B564E">Average</span><span style="font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 14.5px; color: #1C1A17">6,9 L/100km</span></div>
+            <div style="display: flex; justify-content: space-between; padding: 7px 0; border-bottom: 1px solid #E6E1D8"><span style="font-family: -apple-system, system-ui, sans-serif; font-size: 14.5px; color: #5B564E">Best · worst</span><span style="font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 14.5px; color: #1C1A17">6,4 · 7,4</span></div>
+            <div style="display: flex; justify-content: space-between; padding: 7px 0; border-bottom: 1px solid #E6E1D8"><span style="font-family: -apple-system, system-ui, sans-serif; font-size: 14.5px; color: #5B564E">Last</span><span style="font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 14.5px; color: #1C1A17">6,9 · 12 Jul</span></div>
+            <div style="display: flex; justify-content: space-between; padding: 7px 0; border-bottom: 1px solid #E6E1D8"><span style="font-family: -apple-system, system-ui, sans-serif; font-size: 14.5px; color: #5B564E">Cadence</span><span style="font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 14.5px; color: #1C1A17">11 days · 378 km</span></div>
+            <div style="display: flex; justify-content: space-between; padding: 7px 0"><span style="font-family: -apple-system, system-ui, sans-serif; font-size: 14.5px; color: #5B564E">Per fill</span><span style="font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 14.5px; color: #1C1A17">28,4 L · 46,15 €</span></div>
+          </div>
+        </div>
+        <div style="font-size: 13.5px; line-height: 1.5; color: var(--color-neutral-800); margin-top: 10px">Verticals beat horizontal pills — Tester M's round-3 note. The label column is <em>not</em> fixed-width; at the largest text sizes each pair stacks.</div>
+      </div>
+
+      <div>
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; font-weight: 600; letter-spacing: 0.09em; color: var(--color-neutral-700); margin-bottom: 10px">GAUGE · FILL + TRACK + A SENTENCE</div>
+        <div style="background: #FBF9F5; border: 1px solid #E6E1D8; padding: 20px 22px; display: flex; flex-direction: column; gap: 22px">
+          <div>
+            <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; font-weight: 600; letter-spacing: 0.09em; color: #787166; margin-bottom: 8px">CAP CYCLE · 23 JUL – 22 AUG</div>
+            <div style="font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 21px; color: #1C1A17; margin-bottom: 8px">1.240 / 1.760 km</div>
+            <div style="height: 10px; background: #E6E1D8; border-radius: 5px; overflow: hidden"><div style="height: 10px; width: 70.5%; background: #1C1A17"></div></div>
+            <div style="font-family: -apple-system, system-ui, sans-serif; font-size: 13.5px; color: #5B564E; margin-top: 8px; line-height: 1.45">1.500 cap + 260 carried over from June.<br>At your pace, ≈1.410 km by 22 August.<br><span style="color: #1C1A17">Under the cap.</span></div>
+          </div>
+          <div style="border-top: 1px solid #E6E1D8; padding-top: 18px">
+            <div style="font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 21px; color: #1C1A17; margin-bottom: 8px">1.840 / 1.760 km</div>
+            <div style="height: 10px; background: #E6E1D8; border-radius: 5px; overflow: hidden"><div style="height: 10px; width: 100%; background: #9C5A16"></div></div>
+            <div style="font-family: -apple-system, system-ui, sans-serif; font-size: 13.5px; color: #5B564E; margin-top: 8px; line-height: 1.45">1.500 cap + 260 carried over from June.<br><span style="color: #9C5A16">80 km over your pooled budget.</span><br>At your pace, ≈2.020 km by 22 August.</div>
+          </div>
+        </div>
+        <div style="font-size: 13.5px; line-height: 1.5; color: var(--color-neutral-800); margin-top: 10px">Over-cap fills <strong>attention</strong>, the overage is counted in text, and the pace line stays present tense. Never hidden, never red, nothing flashes. The denominator is the <strong>pooled</strong> budget — a gauge drawn against the bare 1.500 would flag a car that is still under budget.</div>
+      </div>
+
+      <div>
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; font-weight: 600; letter-spacing: 0.09em; color: var(--color-neutral-700); margin-bottom: 10px">CONFIRMATION · TYPED WHERE IT MUST BE</div>
+        <div style="background: #EFEDE7; border: 1px solid #E6E1D8; padding: 20px; display: flex; flex-direction: column; gap: 16px">
+          <div style="background: #FFFFFF; border-radius: 15px; padding: 18px 20px; box-shadow: 0 10px 28px rgba(28,26,23,0.13)">
+            <div style="font-family: -apple-system, system-ui, sans-serif; font-size: 17px; font-weight: 600; color: #1C1A17; margin-bottom: 8px">Delete this fill?</div>
+            <div style="font-family: -apple-system, system-ui, sans-serif; font-size: 14.5px; color: #5B564E; line-height: 1.45; margin-bottom: 16px">It leaves History and your averages, and the next fill's interval is measured again.</div>
+            <div style="display: flex; gap: 10px">
+              <span style="flex: 1; text-align: center; border: 1px solid #E6E1D8; padding: 11px; border-radius: 8px; font-family: -apple-system, system-ui, sans-serif; font-size: 15px; color: #1C1A17">Keep it</span>
+              <span style="flex: 1; text-align: center; padding: 11px; border-radius: 8px; font-family: -apple-system, system-ui, sans-serif; font-size: 15px; color: #A32D22; border: 1px solid #A32D22">Delete</span>
+            </div>
+          </div>
+          <div style="background: #FFFFFF; border-radius: 15px; padding: 18px 20px; box-shadow: 0 10px 28px rgba(28,26,23,0.13)">
+            <div style="font-family: -apple-system, system-ui, sans-serif; font-size: 17px; font-weight: 600; color: #1C1A17; margin-bottom: 8px">Remove Golf GTI?</div>
+            <div style="font-family: -apple-system, system-ui, sans-serif; font-size: 14.5px; color: #5B564E; line-height: 1.45; margin-bottom: 12px">This deletes the car, its records, reminders and documents. There is no undo.</div>
+            <div style="border: 1px solid #E6E1D8; border-radius: 10px; padding: 10px 12px; font-family: 'IBM Plex Mono', monospace; font-size: 14.5px; color: #787166; margin-bottom: 12px">Type Golf GTI to confirm</div>
+            <div style="display: flex; gap: 10px">
+              <span style="flex: 1; text-align: center; border: 1px solid #E6E1D8; padding: 11px; border-radius: 8px; font-family: -apple-system, system-ui, sans-serif; font-size: 15px; color: #1C1A17">Cancel</span>
+              <span style="flex: 1; text-align: center; padding: 11px; border-radius: 8px; font-family: -apple-system, system-ui, sans-serif; font-size: 15px; color: #787166; border: 1px solid #E6E1D8">Remove</span>
+            </div>
+          </div>
+        </div>
+        <div style="font-size: 13.5px; line-height: 1.5; color: var(--color-neutral-800); margin-top: 10px">A car delete demands <strong>the car's name</strong>, not a generic word — "demands its name understood". Remove stays disabled until it matches, and a wrong entry <em>says so</em> rather than silently doing nothing, which is what the build does today.</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div style="display: grid; grid-template-columns: auto minmax(280px, 1fr); gap: 20px; align-items: baseline; margin-bottom: 8px">
+      <h2 style="margin: 0; font-size: 34px">08 · The chart grammar, and its table-first form</h2>
+      <div style="border-bottom: 1px solid var(--color-divider); padding-bottom: 6px; font-size: 14px; color: var(--color-neutral-700)">Charts are deliberately not installed. §D4's own escape hatch makes that honest rather than a compromise: <em>a chart that cannot earn its headline and sentence is a stat table instead.</em></div>
+    </div>
+    <p style="font-size: 15.5px; line-height: 1.55; margin: 0 0 26px; max-width: 1080px; text-wrap: pretty">Each pair below is <strong>ships-now</strong> on the left and <strong>the target</strong> on the right. The left column is what sheets 04–07 draw, per your call. The right column is the grammar the marks must obey when the canvas arrives — same headline, same sentence, same period receipt, so gaining marks later is not an IA change.</p>
+
+    <div style="display: flex; flex-direction: column; gap: 26px">
+
+      <div style="display: grid; grid-template-columns: minmax(0, 190px) minmax(240px, 1fr) minmax(240px, 1fr); gap: 26px; align-items: start; border-top: 1px solid var(--color-divider); padding-top: 22px">
+        <div>
+          <div style="font-family: var(--font-heading); font-size: 23px; line-height: 1.1">By week</div>
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; letter-spacing: 0.08em; color: var(--color-neutral-700); margin-top: 4px">COST · DISTANCE</div>
+          <div style="font-size: 13.5px; line-height: 1.45; color: var(--color-neutral-800); margin-top: 8px">The table loses at-a-glance shape and the ghost bars that say "there is more history this way".</div>
+        </div>
+        <div>
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; font-weight: 600; letter-spacing: 0.09em; color: var(--color-accent-700); margin-bottom: 9px">SHIPS NOW · TABLE</div>
+          <div style="background: #FBF9F5; border: 1px solid #E6E1D8; padding: 18px 20px">
+            <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; font-weight: 600; letter-spacing: 0.09em; color: #787166; margin-bottom: 10px">BY WEEK · JUNE</div>
+            <div style="margin-bottom: 14px">
+              <div style="font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 22px; color: #1C1A17">534,10 €</div>
+              <div style="font-family: -apple-system, system-ui, sans-serif; font-size: 14px; color: #1C1A17; margin-top: 2px; line-height: 1.4">Week of 15 June was your heaviest.</div>
+            </div>
+            <div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #E6E1D8"><span style="font-family: -apple-system, system-ui, sans-serif; font-size: 14px; color: #5B564E">1 – 7 Jun</span><span style="font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 14px; color: #1C1A17">48,60 €</span></div>
+            <div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #E6E1D8"><span style="font-family: -apple-system, system-ui, sans-serif; font-size: 14px; color: #5B564E">8 – 14 Jun</span><span style="font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 14px; color: #1C1A17">142,50 €</span></div>
+            <div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #E6E1D8"><span style="font-family: -apple-system, system-ui, sans-serif; font-size: 14px; color: #5B564E">15 – 21 Jun</span><span style="font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 14px; color: #1C1A17">289,00 €</span></div>
+            <div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #E6E1D8"><span style="font-family: -apple-system, system-ui, sans-serif; font-size: 14px; color: #5B564E">22 – 28 Jun</span><span style="font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 14px; color: #1C1A17">50,80 €</span></div>
+            <div style="display: flex; justify-content: space-between; padding: 6px 0"><span style="font-family: -apple-system, system-ui, sans-serif; font-size: 14px; color: #5B564E">29 – 30 Jun</span><span style="font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 14px; color: #1C1A17">3,20 €</span></div>
+            <div style="font-family: -apple-system, system-ui, sans-serif; font-size: 13px; color: #787166; margin-top: 10px; line-height: 1.45">Day-of-month blocks, not ISO weeks — §16 #3's recommendation. They telescope exactly to the month total and the short last block is honest because it is labelled by its dates.</div>
+          </div>
+        </div>
+        <div>
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; font-weight: 600; letter-spacing: 0.09em; color: var(--color-neutral-700); margin-bottom: 9px">THE TARGET · MARKS</div>
+          <div style="background: #FBF9F5; border: 1px solid #E6E1D8; padding: 18px 20px">
+            <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; font-weight: 600; letter-spacing: 0.09em; color: #787166; margin-bottom: 10px">BY WEEK · JUNE</div>
+            <div style="margin-bottom: 14px">
+              <div style="font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 22px; color: #1C1A17">534,10 €</div>
+              <div style="font-family: -apple-system, system-ui, sans-serif; font-size: 14px; color: #1C1A17; margin-top: 2px; line-height: 1.4">Week of 15 June was your heaviest.</div>
+            </div>
+            <div style="text-align: center; margin-bottom: 6px"><span style="font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 11.5px; color: #1C1A17">15 – 21 Jun · 289,00 €</span></div>
+            <div style="display: flex; gap: 10px; height: 92px; align-items: flex-end; justify-content: center">
+              <div style="width: 15px; height: 18%; background: #EFEBE2; border-radius: 2px 2px 0 0"></div>
+              <div style="width: 15px; height: 17%; background: #1C1A17; border-radius: 2px 2px 0 0"></div>
+              <div style="width: 15px; height: 49%; background: #1C1A17; border-radius: 2px 2px 0 0"></div>
+              <div style="width: 15px; height: 100%; background: #1C1A17; border-radius: 2px 2px 0 0"></div>
+              <div style="width: 15px; height: 18%; background: #1C1A17; border-radius: 2px 2px 0 0"></div>
+              <div style="width: 15px; height: 4%; background: #1C1A17; border-radius: 2px 2px 0 0"></div>
+              <div style="width: 15px; height: 12%; background: #EFEBE2; border-radius: 2px 2px 0 0"></div>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-top: 7px; border-top: 1px solid #E6E1D8; padding-top: 6px">
+              <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #787166">1 Jun</span>
+              <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #787166">15 Jun</span>
+              <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #787166">30 Jun</span>
+            </div>
+            <div style="font-family: -apple-system, system-ui, sans-serif; font-size: 13px; color: #787166; margin-top: 10px; line-height: 1.45">Ink bars — a monthly total is a total, not a category. The pale bars at both edges are ghosts; the peak carries period + value, and tapping any bar replaces that label.</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: minmax(0, 190px) minmax(240px, 1fr) minmax(240px, 1fr); gap: 26px; align-items: start; border-top: 1px solid var(--color-divider); padding-top: 22px">
+        <div>
+          <div style="font-family: var(--font-heading); font-size: 23px; line-height: 1.1">Per fill</div>
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; letter-spacing: 0.08em; color: var(--color-neutral-700); margin-top: 4px">FUEL</div>
+          <div style="font-size: 13.5px; line-height: 1.45; color: var(--color-neutral-800); margin-top: 8px">The table loses the per-fill shape — but <em>The numbers</em> already carries average, best, worst and last, so nothing factual is missing.</div>
+        </div>
+        <div>
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; font-weight: 600; letter-spacing: 0.09em; color: var(--color-accent-700); margin-bottom: 9px">SHIPS NOW · TABLE</div>
+          <div style="background: #FBF9F5; border: 1px solid #E6E1D8; padding: 18px 20px">
+            <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; font-weight: 600; letter-spacing: 0.09em; color: #787166; margin-bottom: 10px">THE NUMBERS · JULY</div>
+            <div style="margin-bottom: 14px">
+              <div style="font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 22px; color: #1C1A17">6,9 L/100km</div>
+              <div style="font-family: -apple-system, system-ui, sans-serif; font-size: 14px; color: #1C1A17; margin-top: 2px; line-height: 1.4">Steady, over your last 5 measured fills.</div>
+            </div>
+            <div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #E6E1D8"><span style="font-family: -apple-system, system-ui, sans-serif; font-size: 14px; color: #5B564E">Average</span><span style="font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 14px; color: #1C1A17">6,9 L/100km</span></div>
+            <div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #E6E1D8"><span style="font-family: -apple-system, system-ui, sans-serif; font-size: 14px; color: #5B564E">Best · worst</span><span style="font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 14px; color: #1C1A17">6,4 · 7,4</span></div>
+            <div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #E6E1D8"><span style="font-family: -apple-system, system-ui, sans-serif; font-size: 14px; color: #5B564E">Last</span><span style="font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 14px; color: #1C1A17">6,9 · 12 Jul</span></div>
+            <div style="display: flex; justify-content: space-between; padding: 6px 0"><span style="font-family: -apple-system, system-ui, sans-serif; font-size: 14px; color: #5B564E">Measured fills</span><span style="font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 14px; color: #1C1A17">2 of 3</span></div>
+            <div style="font-family: -apple-system, system-ui, sans-serif; font-size: 13px; color: #787166; margin-top: 10px; line-height: 1.45">Below three measured fills this replaces the chart outright — a two-point trend is refused. That is the same rule, not a fallback.</div>
+          </div>
+        </div>
+        <div>
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; font-weight: 600; letter-spacing: 0.09em; color: var(--color-neutral-700); margin-bottom: 9px">THE TARGET · MARKS</div>
+          <div style="background: #FBF9F5; border: 1px solid #E6E1D8; padding: 18px 20px">
+            <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; font-weight: 600; letter-spacing: 0.09em; color: #787166; margin-bottom: 10px">PER FILL · JULY</div>
+            <div style="margin-bottom: 14px">
+              <div style="font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 22px; color: #1C1A17">6,9 L/100km</div>
+              <div style="font-family: -apple-system, system-ui, sans-serif; font-size: 14px; color: #1C1A17; margin-top: 2px; line-height: 1.4">Steady, over your last 5 measured fills.</div>
+            </div>
+            <div style="position: relative; height: 92px; margin-top: 4px">
+              <div style="position: absolute; left: 0; right: 0; top: 22px; border-top: 1px dashed #787166"></div>
+              <span style="position: absolute; left: 0; top: 0; font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; color: #9C5A16">7,4</span>
+              <span style="position: absolute; right: 0; top: 26px; font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; color: #787166">avg 6,85</span>
+              <span style="position: absolute; left: 0; bottom: 8px; font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; color: #35692F">6,4</span>
+              <div style="position: absolute; left: 22%; top: 17px; width: 11px; height: 11px; border-radius: 999px; border: 2px solid #9C5A16"></div>
+              <div style="position: absolute; left: 50%; top: 58px; width: 11px; height: 11px; border-radius: 999px; background: #43823B"></div>
+              <div style="position: absolute; left: 80%; top: 40px; width: 11px; height: 11px; border-radius: 999px; background: #43823B"></div>
+            </div>
+            <div style="display: flex; justify-content: space-between; border-top: 1px solid #E6E1D8; padding-top: 6px">
+              <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #787166">1 Jul</span>
+              <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #787166">12 Jul</span>
+              <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #787166">24 Jul</span>
+            </div>
+            <div style="font-family: -apple-system, system-ui, sans-serif; font-size: 13px; color: #787166; margin-top: 10px; line-height: 1.45">Best is a <strong>filled</strong> fuel dot, worst a <strong>hollow</strong> attention one — the shape, not the hue, is what carries the pair. Partial fills and odometer-less fills are <em>not</em> dots here; their litres join the enclosing interval.</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: minmax(0, 190px) minmax(240px, 1fr) minmax(240px, 1fr); gap: 26px; align-items: start; border-top: 1px solid var(--color-divider); padding-top: 22px">
+        <div>
+          <div style="font-family: var(--font-heading); font-size: 23px; line-height: 1.1">Odometer</div>
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; letter-spacing: 0.08em; color: var(--color-neutral-700); margin-top: 4px">DISTANCE</div>
+          <div style="font-size: 13.5px; line-height: 1.45; color: var(--color-neutral-800); margin-top: 8px">The table loses the curve and its dashed tail. The ≈ and its date survive intact, which is the load-bearing part.</div>
+        </div>
+        <div>
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; font-weight: 600; letter-spacing: 0.09em; color: var(--color-accent-700); margin-bottom: 9px">SHIPS NOW · TABLE</div>
+          <div style="background: #FBF9F5; border: 1px solid #E6E1D8; padding: 18px 20px">
+            <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; font-weight: 600; letter-spacing: 0.09em; color: #787166; margin-bottom: 10px">ODOMETER · JULY</div>
+            <div style="margin-bottom: 14px">
+              <div style="font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 22px; color: #1C1A17">412 km</div>
+              <div style="font-family: -apple-system, system-ui, sans-serif; font-size: 14px; color: #1C1A17; margin-top: 2px; line-height: 1.4">14,7 km/day over 28 tracked days.</div>
+            </div>
+            <div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #E6E1D8"><span style="font-family: -apple-system, system-ui, sans-serif; font-size: 14px; color: #5B564E">Anchor reading</span><span style="font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 14px; color: #1C1A17">90.828 km · 28 Jun</span></div>
+            <div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #E6E1D8"><span style="font-family: -apple-system, system-ui, sans-serif; font-size: 14px; color: #5B564E">Last reading</span><span style="font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 14px; color: #1C1A17">91.240 km · 12 Jul</span></div>
+            <div style="display: flex; justify-content: space-between; padding: 6px 0"><span style="font-family: -apple-system, system-ui, sans-serif; font-size: 14px; color: #5B564E">Projected</span><span style="font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 14px; color: #1C1A17">≈92.388 km · 28 Sep</span></div>
+            <div style="font-family: -apple-system, system-ui, sans-serif; font-size: 13px; color: #787166; margin-top: 10px; line-height: 1.45">The window's distance is measured from the last reading <em>at or before</em> it opens — 28 June here, not a July row. Labelling that row <em>Anchor</em> rather than <em>First</em> is the difference between a receipt and a number that cannot be checked. The projection anchors <strong>two months past today</strong>, never past the last reading.</div>
+          </div>
+        </div>
+        <div>
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; font-weight: 600; letter-spacing: 0.09em; color: var(--color-neutral-700); margin-bottom: 9px">THE TARGET · MARKS</div>
+          <div style="background: #FBF9F5; border: 1px solid #E6E1D8; padding: 18px 20px">
+            <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; font-weight: 600; letter-spacing: 0.09em; color: #787166; margin-bottom: 10px">ODOMETER · JULY</div>
+            <div style="margin-bottom: 14px">
+              <div style="font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 22px; color: #1C1A17">412 km</div>
+              <div style="font-family: -apple-system, system-ui, sans-serif; font-size: 14px; color: #1C1A17; margin-top: 2px; line-height: 1.4">14,7 km/day over 28 tracked days.</div>
+            </div>
+            <div style="position: relative; height: 92px; margin-top: 4px">
+              <div style="position: absolute; left: 9px; bottom: 20px; width: 46%; height: 1px; background: #1C1A17; transform: rotate(-19deg); transform-origin: left bottom"></div>
+              <div style="position: absolute; left: 4px; bottom: 16px; width: 10px; height: 10px; border-radius: 999px; background: #1C1A17"></div>
+              <span style="position: absolute; left: 19px; bottom: 4px; font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; color: #1C1A17">90.828</span>
+              <div style="position: absolute; left: 52%; top: 30px; width: 10px; height: 10px; border-radius: 999px; background: #1C1A17"></div>
+              <span style="position: absolute; left: 52%; top: 8px; font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; color: #1C1A17">91.240</span>
+              <div style="position: absolute; left: 56%; top: 18px; width: 34%; border-top: 1px dashed #787166; transform: rotate(-14deg); transform-origin: left center"></div>
+              <div style="position: absolute; right: 2px; top: 4px; width: 10px; height: 10px; border-radius: 999px; border: 2px solid #787166"></div>
+              <span style="position: absolute; right: 0; top: 22px; font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; color: #787166">≈92.388</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; border-top: 1px solid #E6E1D8; padding-top: 6px">
+              <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #787166">1 Jul</span>
+              <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #787166">31 Jul</span>
+              <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #787166">≈28 Sep</span>
+            </div>
+            <div style="font-family: -apple-system, system-ui, sans-serif; font-size: 13px; color: #787166; margin-top: 10px; line-height: 1.45">Dashed tail, hollow endpoint, ≈ on the value and the date in the caption. Full locale format throughout — <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12.5px">92.388 km</span>, never an abbreviated <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12.5px">92k</span>.</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 28px; margin-top: 30px; border-top: 1px solid var(--color-text); padding-top: 22px">
+      <div>
+        <h6 style="margin: 0 0 6px; color: var(--color-neutral-700)">The marks, fixed</h6>
+        <div style="font-size: 14px; line-height: 1.6; color: var(--color-neutral-800)">Average = dashed hairline. Best = <strong>filled</strong> dot. Worst = <strong>hollow</strong> dot, attention. Projection = dashed tail + hollow endpoint, always ≈, dated in the caption. Ghost bars past the edges say "more history this way".</div>
+      </div>
+      <div>
+        <h6 style="margin: 0 0 6px; color: var(--color-neutral-700)">One series colour per chart</h6>
+        <div style="font-size: 14px; line-height: 1.6; color: var(--color-neutral-800)">This is why sheet 01's fuel-vs-service luminance collision never bites: no chart shows two domain hues. The single exception labels every bar by name.</div>
+      </div>
+      <div>
+        <h6 style="margin: 0 0 6px; color: var(--color-neutral-700)">Max ~8 marks, labels that answer</h6>
+        <div style="font-size: 14px; line-height: 1.6; color: var(--color-neutral-800)">The peak bar carries period + value; tapping any bar replaces that label and clears on data change. Line endpoints carry values beside the dots. A trend line needs ≥3 points to earn its space.</div>
+      </div>
+      <div>
+        <h6 style="margin: 0 0 6px; color: var(--color-neutral-700)">Ownership needs no canvas at all</h6>
+        <div style="font-size: 14px; line-height: 1.6; color: var(--color-neutral-800)">A ledger card and a dot list, losing nothing. It is also the lens Tester M asked for by name — which makes it the one to build first if a real lens is wanted before the chart work.</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div style="display: grid; grid-template-columns: auto minmax(280px, 1fr); gap: 20px; align-items: baseline; margin-bottom: 24px">
+      <h2 style="margin: 0; font-size: 34px">09 · Motion, and targets</h2>
+      <div style="border-bottom: 1px solid var(--color-divider); padding-bottom: 6px; font-size: 14px; color: var(--color-neutral-700)">150 ms fades everywhere. Exactly one spring in the whole app. Reduce-motion gets fades only.</div>
+    </div>
+    <div style="display: grid; grid-template-columns: 1.3fr 1fr 1fr; gap: 32px">
+      <div class="blueprint" style="padding: 22px 26px; background: #fff">
+        <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+        <h4 style="margin: 0 0 10px; font-size: 22px">The one spring, and where it is not</h4>
+        <p style="font-size: 15px; line-height: 1.55; margin: 0 0 12px; text-wrap: pretty">The fuel-capture saved moment is the only spring in Koi. It is for the <em>record landing</em>, not for the user's behaviour — which is the difference between feedback and gamification.</p>
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; line-height: 1.9; color: var(--color-neutral-800); border-top: 1px solid var(--color-divider); padding-top: 12px">
+          <div>page push / pop&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;150 ms fade + platform slide</div>
+          <div>row → record page&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;zoom transition from the row</div>
+          <div>state change on Home&nbsp;&nbsp;&nbsp;150 ms fade — Home must not perform relief</div>
+          <div>toast in / out&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;150 ms fade</div>
+          <div>carousel page turn&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;native snap physics, edges rubber-band</div>
+          <div>capture success&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #35692F">one spring · ~2 s · auto-dismiss</span></div>
+        </div>
+      </div>
+      <div class="blueprint" style="padding: 22px 26px; background: #fff">
+        <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+        <h4 style="margin: 0 0 10px; font-size: 22px">Never</h4>
+        <div style="font-size: 14.5px; line-height: 1.7; color: var(--color-neutral-800)">A streak. A badge. Confetti. A progress ring that fills for encouragement. A pulsing dot. A count-up animation on a number. A chart on Home. A red surface. An exclamation mark.</div>
+        <p style="font-size: 14px; line-height: 1.5; margin: 12px 0 0; color: var(--color-neutral-700); text-wrap: pretty">These are refusals, not omissions — the app never performs enthusiasm, and progress dots in the sparse fuel card teach rather than reward.</p>
+      </div>
+      <div class="blueprint" style="padding: 22px 26px; background: #fff">
+        <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+        <h4 style="margin: 0 0 10px; font-size: 22px">Targets</h4>
+        <div style="font-size: 14.5px; line-height: 1.6; color: var(--color-neutral-800)">≥44 pt everywhere, rows are real buttons, and decorative glyphs are hidden from the screen reader. A chart exposes its <strong>headline + sentence</strong> as its accessible summary — which is the same thing the table-first build already renders, so accessibility arrives with the feature instead of as an overlay later.</div>
+      </div>
+    </div>
+  </section>
+
+  <footer style="border-top: 1px solid var(--color-text); padding-top: 18px; display: grid; grid-template-columns: 1fr auto; gap: 30px; align-items: start">
+    <div style="font-size: 14px; color: var(--color-neutral-700); max-width: 820px; line-height: 1.55; text-wrap: pretty">Sheet 02 of 08. Everything from here is assembled out of exactly these parts — if a screen needs something that is not on this sheet, that is a finding about the screen, not a licence to draw a new control. Next: <strong>03</strong> the shell.</div>
+    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; line-height: 1.9; color: var(--color-neutral-700); text-align: right; white-space: nowrap">
+      <div>{{ rowCount }} ROW KINDS · 8 WELLS</div>
+      <div>3 CHIP SPECIES · 4 BUTTONS</div>
+      <div>2 OPEN QUESTIONS NOTED</div>
+    </div>
+  </footer>
+
+</div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{
+  &quot;$preview&quot;: { &quot;width&quot;: 1456, &quot;height&quot;: 1100 }
+}">
+class Component extends DCLogic {
+  renderVals() {
+    const L = { fuel: '#E7F0E5', service: '#F5EBD8', expense: '#E3EDF6', contract: '#F3E9F1', hair: '#EFEDE7' };
+    const LI = { fuel: '#35692F', service: '#7E5C12', expense: '#24608F', contract: '#6E3960', hair: '#5B564E' };
+    const D = { fuel: '#1E2A1B', service: '#2E2417', expense: '#1C2731', contract: '#2A1F27', hair: '#262219' };
+    const DI = { fuel: '#62A64C', service: '#D2A03C', expense: '#78B0DE', contract: '#C489BA', hair: '#B8B0A4' };
+    const SANS = "-apple-system, BlinkMacSystemFont, system-ui, sans-serif";
+    const MONO = "'IBM Plex Mono', monospace";
+
+    const mk = (icon, title, meta, amount, date, domain, titleMono) => {
+      const k = domain === 'ink' ? 'hair' : domain;
+      return {
+        iconLight: glyph(icon, 20, LI[k]), iconDark: glyph(icon, 20, DI[k]),
+        title, meta, amount, date,
+        wellLight: L[k], wellDark: D[k], glyphLight: LI[k], glyphDark: DI[k],
+        titleFontLight: titleMono ? MONO : SANS,
+        titleFontDark: titleMono ? MONO : SANS,
+      };
+    };
+
+
+    // A data-driven SVG glyph cannot be expressed as template markup — the paths
+    // are chosen by data. Narrow leaf element only; all layout stays in the template.
+    const PATHS = {"i-fuel":[["path",{"d":"M14 13h2a2 2 0 0 1 2 2v2a2 2 0 0 0 4 0v-6.998a2 2 0 0 0-.59-1.42L18 5"}],["path",{"d":"M14 21V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v16"}],["path",{"d":"M2 21h13"}],["path",{"d":"M3 9h11"}]],"i-wrench":[["path",{"d":"M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.106-3.105c.32-.322.863-.22.983.218a6 6 0 0 1-8.259 7.057l-7.91 7.91a1 1 0 0 1-2.999-3l7.91-7.91a6 6 0 0 1 7.057-8.259c.438.12.54.662.219.984z"}]],"i-receipt":[["path",{"d":"M12 17V7"}],["path",{"d":"M16 8h-6a2 2 0 0 0 0 4h4a2 2 0 0 1 0 4H8"}],["path",{"d":"M4 3a1 1 0 0 1 1-1 1.3 1.3 0 0 1 .7.2l.933.6a1.3 1.3 0 0 0 1.4 0l.934-.6a1.3 1.3 0 0 1 1.4 0l.933.6a1.3 1.3 0 0 0 1.4 0l.933-.6a1.3 1.3 0 0 1 1.4 0l.934.6a1.3 1.3 0 0 0 1.4 0l.933-.6A1.3 1.3 0 0 1 19 2a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1 1.3 1.3 0 0 1-.7-.2l-.933-.6a1.3 1.3 0 0 0-1.4 0l-.934.6a1.3 1.3 0 0 1-1.4 0l-.933-.6a1.3 1.3 0 0 0-1.4 0l-.933.6a1.3 1.3 0 0 1-1.4 0l-.934-.6a1.3 1.3 0 0 0-1.4 0l-.933.6a1.3 1.3 0 0 1-.7.2 1 1 0 0 1-1-1z"}]],"i-shield":[["path",{"d":"M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"}]],"i-file":[["path",{"d":"M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"}],["path",{"d":"M14 2v5a1 1 0 0 0 1 1h5"}],["path",{"d":"M10 9H8"}],["path",{"d":"M16 13H8"}],["path",{"d":"M16 17H8"}]],"i-gauge":[["path",{"d":"m12 14 4-4"}],["path",{"d":"M3.34 19a10 10 0 1 1 17.32 0"}]],"i-route":[["circle",{"cx":"6","cy":"19","r":"3"}],["path",{"d":"M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15"}],["circle",{"cx":"18","cy":"5","r":"3"}]],"i-note":[["path",{"d":"M13.4 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7.4"}],["path",{"d":"M2 6h4"}],["path",{"d":"M2 10h4"}],["path",{"d":"M2 14h4"}],["path",{"d":"M2 18h4"}],["path",{"d":"M21.378 5.626a1 1 0 1 0-3.004-3.004l-5.01 5.012a2 2 0 0 0-.506.854l-.837 2.87a.5.5 0 0 0 .62.62l2.87-.837a2 2 0 0 0 .854-.506z"}]]};
+    const glyph = (id, px, colour) => React.createElement('svg', {
+      width: px, height: px, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor',
+      strokeWidth: 1.75, strokeLinecap: 'round', strokeLinejoin: 'round',
+      style: { color: colour }, 'aria-hidden': true,
+    }, (PATHS[id] || []).map(([tag, a], i) => React.createElement(tag, Object.assign({ key: i }, a))));
+
+    const rows = [
+      mk('i-fuel', 'Repsol Tarragona', '6,9 L/100km · 378 km', '35,75 €', '12 Jul', 'fuel'),
+      mk('i-fuel', 'BP Reus', 'partial · 18,20 L', '30,00 €', '25 Jun', 'fuel'),
+      mk('i-fuel', 'Cepsa Salou', '42,10 L · no odometer', '68,40 €', '19 Jun', 'fuel'),
+      mk('i-fuel', 'Repsol Reus', '42,10 L · a fill was missed before this one', '66,80 €', '4 Jun', 'fuel'),
+      mk('i-fuel', 'Fill-up', 'Golf GTI', '54,20 €', '11 May', 'fuel'),
+      mk('i-wrench', 'Oil & filter', 'Golf GTI · 91.108 km', '96,50 €', '8 Jul', 'service'),
+      mk('i-receipt', 'Parking', 'Interparking Tarragona', '4,20 €', '28 Jun', 'expense'),
+      mk('i-shield', 'Insurance renewed', 'Mapfre · 412,00 € · +14 € vs last year', '', '17 Jun', 'contract'),
+      mk('i-gauge', '90.828 km', 'manual · +186 km since 12 Jun', '', '28 Jun', 'ink', true),
+      mk('i-route', 'Salou', '2 – 4 Jul · ≈20,40 € fuel', '232 km', '2 Jul', 'ink'),
+      mk('i-note', 'Rattle from the near-side front wheel', 'Golf GTI', '', '21 Jun', 'ink'),
+    ];
+
+    const wells = [
+      { iconLight: glyph('i-fuel', 23, LI.fuel), iconDark: glyph('i-fuel', 23, DI.fuel), name: 'Fill-up', role: 'FUEL', light: L.fuel, dark: D.fuel },
+      { iconLight: glyph('i-wrench', 23, LI.service), iconDark: glyph('i-wrench', 23, DI.service), name: 'Service', role: 'SERVICE', light: L.service, dark: D.service },
+      { iconLight: glyph('i-receipt', 23, LI.expense), iconDark: glyph('i-receipt', 23, DI.expense), name: 'Expense', role: 'EXPENSE', light: L.expense, dark: D.expense },
+      { iconLight: glyph('i-shield', 23, LI.contract), iconDark: glyph('i-shield', 23, DI.contract), name: 'Insurance', role: 'CONTRACT', light: L.contract, dark: D.contract },
+      { iconLight: glyph('i-file', 23, LI.contract), iconDark: glyph('i-file', 23, DI.contract), name: 'Plan', role: 'CONTRACT', light: L.contract, dark: D.contract },
+      { iconLight: glyph('i-gauge', 23, LI.hair), iconDark: glyph('i-gauge', 23, DI.hair), name: 'Odometer', role: 'INK', light: L.hair, dark: D.hair },
+      { iconLight: glyph('i-route', 23, LI.hair), iconDark: glyph('i-route', 23, DI.hair), name: 'Trip', role: 'INK', light: L.hair, dark: D.hair },
+      { iconLight: glyph('i-note', 23, LI.hair), iconDark: glyph('i-note', 23, DI.hair), name: 'Note', role: 'INK', light: L.hair, dark: D.hair },
+    ];
+
+    return { rows, wells, rowCount: rows.length };
+  }
+}
+</script>
+</body>
+</html>

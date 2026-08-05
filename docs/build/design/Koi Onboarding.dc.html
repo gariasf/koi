@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="stylesheet" href="_ds/industry-502e7e7f-a454-4e0f-a758-32b893d6b801/styles.css">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<script src="_ds/industry-502e7e7f-a454-4e0f-a758-32b893d6b801/_ds_bundle.js"></script>
+<style>
+  body { margin: 0; background: var(--color-bg); }
+  a { color: var(--color-accent-700); text-decoration: none; border-bottom: 1px solid var(--color-accent-300); }
+  a:hover { color: var(--color-accent-900); border-bottom-color: var(--color-accent-700); }
+</style>
+</helmet>
+
+<div style="background: var(--color-bg); color: var(--color-text); font-family: var(--font-body); padding: 56px 48px 96px; min-height: 100vh">
+<div style="max-width: 1880px; margin: 0 auto; display: flex; flex-direction: column; gap: 68px">
+
+  <header style="display: grid; grid-template-columns: 1fr auto; gap: 40px; align-items: end; border-bottom: 1px solid var(--color-text); padding-bottom: 20px">
+    <div>
+      <div style="font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--color-neutral-700); margin-bottom: 10px">Koi · car-cost ledger · design batch 2 · sheet 13 — last of the surface</div>
+      <h1 style="font-size: 68px; line-height: 0.95; margin: 0 0 6px; letter-spacing: -0.02em">Onboarding</h1>
+      <div style="font-family: var(--font-heading); font-size: 25px; color: var(--color-neutral-700)">Three beats, all skippable — and no account, ever, before the first fill</div>
+    </div>
+    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; line-height: 1.9; color: var(--color-neutral-700); text-align: right; white-space: nowrap">
+      <div>DRAWS&nbsp;&nbsp;&nbsp;&nbsp;wireframes §11 · §1.4</div>
+      <div>READS&nbsp;&nbsp;&nbsp;&nbsp;spec §C8 · D-006 · §I1</div>
+      <div>FIXTURE&nbsp;&nbsp;the Golf, before it existed</div>
+      <div>DATE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2026-08-04</div>
+    </div>
+  </header>
+
+  <section class="blueprint" style="padding: 26px 30px; background: #fff">
+    <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 40px">
+      <div>
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; letter-spacing: 0.12em; color: #A32D22; margin-bottom: 10px">WHAT IS DELIBERATELY ABSENT</div>
+        <h3 style="margin: 0 0 12px; font-size: 24px">No sync, no account, no passkey</h3>
+        <p style="font-size: 15.5px; line-height: 1.55; margin: 0 0 10px; text-wrap: pretty">Sync is opt-in from Settings only. Putting an account concept in beat one would contradict the product's own floor — <em>fully functional local-only with no account</em> — and would be a bigger, earlier commitment than anything here asks for.</p>
+        <p style="font-size: 15px; line-height: 1.5; margin: 0; color: var(--color-neutral-800); text-wrap: pretty">Also absent: a tour, a permission prompt, a paywall, a "welcome back". The app opens onto a ledger you can use before it knows your name.</p>
+      </div>
+      <div>
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; letter-spacing: 0.12em; color: var(--color-neutral-700); margin-bottom: 10px">THE THREE FIELDS, NAMED</div>
+        <h3 style="margin: 0 0 12px; font-size: 24px">Make · model · fuel type</h3>
+        <p style="font-size: 15.5px; line-height: 1.55; margin: 0 0 10px; text-wrap: pretty">§C8 promises "three fields" without naming them. These three, because <strong>fuel type is load-bearing</strong> — it decides how economy is computed and which reminders even make sense — while the odometer arrives free with the first fill.</p>
+        <p style="font-size: 15px; line-height: 1.5; margin: 0; color: var(--color-neutral-800); text-wrap: pretty">Asking for an odometer here would be asking someone to walk to their car during setup. It is the one number that captures itself.</p>
+      </div>
+      <div>
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; letter-spacing: 0.12em; color: var(--color-accent-700); margin-bottom: 10px">THE HOLE IN "ONCE, NEVER AGAIN"</div>
+        <h3 style="margin: 0 0 12px; font-size: 24px">Beat 3 is anchored to the first car, not to onboarding</h3>
+        <p style="font-size: 15.5px; line-height: 1.55; margin: 0 0 10px; text-wrap: pretty">A reminder needs a <span style="font-family: 'IBM Plex Mono', monospace; font-size: 14px">carID</span>. If the suggestion were tied to "onboarding ran", anyone who skipped beat 2 would burn it <em>unshown</em> — spending a once-ever offer on a screen that could not accept it.</p>
+        <p style="font-size: 15px; line-height: 1.5; margin: 0; color: var(--color-neutral-800); text-wrap: pretty">So it fires after beat 2, after an import, or after a later Garage add — whichever comes first, exactly once.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div style="display: grid; grid-template-columns: auto minmax(280px, 1fr); gap: 20px; align-items: baseline; margin-bottom: 28px">
+      <h2 style="margin: 0; font-size: 34px">01 · The three beats</h2>
+      <div style="border-bottom: 1px solid var(--color-divider); padding-bottom: 6px; font-size: 14px; color: var(--color-neutral-700)">No tab bar and no FAB — onboarding owns the whole screen until it hands over. Every beat has a visible way out.</div>
+    </div>
+
+    <div style="display: flex; gap: 34px; flex-wrap: wrap; align-items: start">
+
+      <div style="width: 414px">
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; letter-spacing: 0.08em; color: var(--color-neutral-700); margin-bottom: 11px">BEAT 1 · THE VALUE LINE · §C8 VERBATIM</div>
+        <div style="width: 414px; padding: 11px; background: #24211D; border-radius: 48px; box-shadow: 0 16px 44px rgba(28,26,23,0.2)">
+          <div style="width: 392px; height: 812px; background: #FBF9F5; border-radius: 38px; overflow: hidden; position: relative; font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif">
+            <div style="height: 46px; display: flex; align-items: center; justify-content: space-between; padding: 0 26px; position: relative">
+              <span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; color: #1C1A17">9:41</span>
+              <div style="position: absolute; left: 50%; transform: translateX(-50%); top: 8px; width: 92px; height: 26px; background: #24211D; border-radius: 999px"></div>
+              <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #1C1A17; letter-spacing: 0.06em">▮▮▮ ⌾ ▊</span>
+            </div>
+
+            <div style="position: absolute; left: 0; right: 0; top: 168px; padding: 0 36px">
+              <div style="width: 72px; height: 72px; border-radius: 20px; border: 1.5px solid #43823B; display: grid; place-items: center; margin-bottom: 40px"><span style="font-size: 32px; color: #43823B">魚</span></div>
+              <div style="font-size: 30px; font-weight: 600; color: #1C1A17; letter-spacing: -0.015em; line-height: 1.22">Koi keeps your car's story.</div>
+              <div style="font-size: 17px; color: #5B564E; line-height: 1.5; margin-top: 14px">Fills, services and reminders.<br>Computed honestly, kept on your phone.</div>
+            </div>
+
+            <div style="position: absolute; left: 36px; right: 36px; bottom: 54px">
+              <span style="display: block; text-align: center; background: #1C1A17; color: #FBF9F5; font-size: 16px; font-weight: 500; padding: 15px 0; border-radius: 8px">Start</span>
+              <span style="display: block; text-align: center; color: #35692F; font-size: 15px; padding: 14px 0; margin-top: 6px">Skip</span>
+            </div>
+          </div>
+        </div>
+        <p style="font-size: 13.5px; line-height: 1.5; margin: 12px 0 0; color: var(--color-neutral-800); text-wrap: pretty"><strong>"Computed honestly, kept on your phone"</strong> is the entire product promise in six words, and it is the only marketing sentence in the app. It earns its place by being <em>true</em>: article 4's derivations and the local-first default are both literal readings of it.</p>
+        <p style="font-size: 13.5px; line-height: 1.5; margin: 9px 0 0; color: var(--color-neutral-800); text-wrap: pretty"><strong>Skip is a real control, not a grey afterthought</strong> — accent-tinted type at full 44 pt. A skip that is hard to find is a dark pattern, and this screen has nothing to defend.</p>
+      </div>
+
+      <div style="width: 414px">
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; letter-spacing: 0.08em; color: var(--color-neutral-700); margin-bottom: 11px">BEAT 2 · ADD A CAR · THREE FIELDS</div>
+        <div style="width: 414px; padding: 11px; background: #24211D; border-radius: 48px; box-shadow: 0 16px 44px rgba(28,26,23,0.2)">
+          <div style="width: 392px; height: 812px; background: #FBF9F5; border-radius: 38px; overflow: hidden; position: relative; font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif">
+            <div style="height: 46px; display: flex; align-items: center; justify-content: space-between; padding: 0 26px; position: relative">
+              <span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; color: #1C1A17">9:41</span>
+              <div style="position: absolute; left: 50%; transform: translateX(-50%); top: 8px; width: 92px; height: 26px; background: #24211D; border-radius: 999px"></div>
+              <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #1C1A17; letter-spacing: 0.06em">▮▮▮ ⌾ ▊</span>
+            </div>
+
+            <div style="padding: 40px 28px 0">
+              <div style="font-size: 28px; font-weight: 600; color: #1C1A17; letter-spacing: -0.012em">Add your car</div>
+              <div style="font-size: 16px; color: #5B564E; line-height: 1.5; margin-top: 8px">Three fields. Everything else can wait.</div>
+
+              <div style="margin-top: 32px">
+                <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 0.09em; color: #787166; margin-bottom: 6px">MAKE</div>
+                <div style="border: 1px solid #E6E1D8; background: #FFFFFF; border-radius: 8px; padding: 13px 13px; font-size: 16px; color: #1C1A17">VW</div>
+              </div>
+              <div style="margin-top: 16px">
+                <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 0.09em; color: #787166; margin-bottom: 6px">MODEL</div>
+                <div style="border: 1px solid #E6E1D8; background: #FFFFFF; border-radius: 8px; padding: 13px 13px; font-size: 16px; color: #1C1A17">Golf GTI</div>
+              </div>
+              <div style="margin-top: 18px">
+                <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 0.09em; color: #787166; margin-bottom: 9px">FUEL</div>
+                <div style="display: flex; gap: 7px; flex-wrap: wrap">
+                  <span style="background: #F2EFE8; border: 1px solid #1C1A17; color: #1C1A17; font-size: 14px; padding: 7px 15px; border-radius: 999px; display: inline-flex; gap: 5px; align-items: center"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>Petrol</span>
+                  <span style="border: 1px solid #E6E1D8; color: #1C1A17; font-size: 14px; padding: 7px 15px; border-radius: 999px">Diesel</span>
+                  <span style="border: 1px solid #E6E1D8; color: #1C1A17; font-size: 14px; padding: 7px 15px; border-radius: 999px">Electric</span>
+                  <span style="border: 1px solid #E6E1D8; color: #1C1A17; font-size: 14px; padding: 7px 15px; border-radius: 999px">Hybrid</span>
+                </div>
+              </div>
+
+              <div style="margin-top: 22px; font-size: 13.5px; color: #5B564E; line-height: 1.5">The odometer comes with your first fill. Nothing to look up now.</div>
+            </div>
+
+            <div style="position: absolute; left: 28px; right: 28px; bottom: 46px">
+              <span style="display: block; text-align: center; background: #1C1A17; color: #FBF9F5; font-size: 16px; font-weight: 500; padding: 15px 0; border-radius: 8px">Save</span>
+              <span style="display: block; text-align: center; border: 1px solid #E6E1D8; background: #FFFFFF; color: #1C1A17; font-size: 15px; padding: 13px 0; border-radius: 8px; margin-top: 10px">Import from MyCar</span>
+              <span style="display: block; text-align: center; color: #35692F; font-size: 15px; padding: 13px 0; margin-top: 4px">Skip</span>
+            </div>
+          </div>
+        </div>
+        <p style="font-size: 13.5px; line-height: 1.5; margin: 12px 0 0; color: var(--color-neutral-800); text-wrap: pretty"><strong>The same form as Garage's add-car, minus everything below the rule — and minus the photo, which is a detour during setup.</strong> Not a parallel implementation — the "everything else" section is simply collapsed, so a field can never exist here and be missing there.</p>
+        <p style="font-size: 13.5px; line-height: 1.5; margin: 9px 0 0; color: var(--color-neutral-800); text-wrap: pretty"><strong>Fuel is a chip row, not free text</strong> — an enum entered by tapping, which is also the fix for the build writing fuel type as an unvalidated string. Import sits <em>below</em> Save: it is the rarer path, and offering it first would imply Koi expects you to arrive with data.</p>
+      </div>
+
+      <div style="width: 414px">
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; letter-spacing: 0.08em; color: var(--color-neutral-700); margin-bottom: 11px">BEAT 3 · ONE SUGGESTION · ONCE, EVER · DARK</div>
+        <div style="width: 414px; padding: 11px; background: #24211D; border-radius: 48px; box-shadow: 0 16px 44px rgba(28,26,23,0.2)">
+          <div style="width: 392px; height: 812px; background: #14120F; border-radius: 38px; overflow: hidden; position: relative; font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif">
+            <div style="height: 46px; display: flex; align-items: center; justify-content: space-between; padding: 0 26px; position: relative">
+              <span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; color: #F4F0E8">9:41</span>
+              <div style="position: absolute; left: 50%; transform: translateX(-50%); top: 8px; width: 92px; height: 26px; background: #000; border-radius: 999px"></div>
+              <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #F4F0E8; letter-spacing: 0.06em">▮▮▮ ⌾ ▊</span>
+            </div>
+
+            <div style="position: absolute; left: 0; right: 0; top: 150px; padding: 0 32px">
+              <div style="width: 48px; height: 48px; border-radius: 13px; display: grid; place-items: center; background: #2E2417; margin-bottom: 26px"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="color: #D2A03C"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.106-3.105c.32-.322.863-.22.983.218a6 6 0 0 1-8.259 7.057l-7.91 7.91a1 1 0 0 1-2.999-3l7.91-7.91a6 6 0 0 1 7.057-8.259c.438.12.54.662.219.984z"></path></svg></div>
+              <div style="font-size: 27px; font-weight: 600; color: #F4F0E8; letter-spacing: -0.012em; line-height: 1.25">One reminder to start?</div>
+              <div style="font-size: 16px; color: #B8B0A4; line-height: 1.55; margin-top: 14px">Spain's ITV inspection is due every year for cars over four years old.</div>
+              <div style="font-size: 14.5px; color: #8F877A; line-height: 1.5; margin-top: 14px">You can change the date, or add your own later from any car.</div>
+            </div>
+
+            <div style="position: absolute; left: 32px; right: 32px; bottom: 54px">
+              <span style="display: block; text-align: center; background: #F4F0E8; color: #14120F; font-size: 16px; font-weight: 500; padding: 15px 0; border-radius: 8px">Add it</span>
+              <span style="display: block; text-align: center; color: #62A64C; font-size: 15px; padding: 14px 0; margin-top: 6px">No thanks</span>
+            </div>
+          </div>
+        </div>
+        <p style="font-size: 13.5px; line-height: 1.5; margin: 12px 0 0; color: var(--color-neutral-800); text-wrap: pretty"><strong>One suggestion, and it explains itself.</strong> The ITV sentence is there because a driver new to Spain genuinely may not know the rule — the offer teaches rather than assuming. <em>No thanks</em> is persisted and respected: it never returns, on any car.</p>
+        <p style="font-size: 13.5px; line-height: 1.5; margin: 9px 0 0; color: var(--color-neutral-800); text-wrap: pretty"><strong>Refused:</strong> suggesting a second reminder, pre-ticking it, or showing it as a list of five with checkboxes. One offer is a courtesy; five is a setup wizard, and the product does not have those.</p>
+      </div>
+
+      <div style="flex: 1; min-width: 330px; display: flex; flex-direction: column; gap: 18px">
+        <div class="blueprint" style="padding: 18px 22px; background: var(--color-accent-100)">
+          <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+          <h4 style="margin: 0 0 7px; font-size: 20px">Skipping everything is a supported path</h4>
+          <p style="font-size: 14.5px; line-height: 1.5; margin: 0 0 10px; text-wrap: pretty">Skip on beat 1 and beat 2 lands on Home's zero-car state — <em>"Add your car to begin."</em> — which is a complete, usable screen, not a punishment. Beat 3 has not been spent, because no car exists yet to attach a reminder to.</p>
+          <p style="font-size: 14.5px; line-height: 1.5; margin: 0; color: var(--color-neutral-800); text-wrap: pretty">It fires later, on the first car added from Garage. That is the whole reason the anchor is "a car exists" and not "onboarding ran".</p>
+        </div>
+        <div class="blueprint" style="padding: 18px 22px; background: #fff">
+          <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+          <h4 style="margin: 0 0 7px; font-size: 20px">The second device must not be told to add a car</h4>
+          <div style="background: #FBF9F5; border: 1px solid #E6E1D8; border-radius: 12px; padding: 15px 16px; margin-bottom: 11px; font-family: -apple-system, system-ui, sans-serif; text-align: center">
+            <div style="font-size: 17px; font-weight: 600; color: #1C1A17">Waiting for your records to arrive.</div>
+            <div style="font-size: 13.5px; color: #5B564E; margin-top: 6px">Sync is on. This usually takes a moment.</div>
+          </div>
+          <p style="font-size: 14.5px; line-height: 1.5; margin: 0; text-wrap: pretty">When <span style="font-family: 'IBM Plex Mono', monospace; font-size: 13.5px">syncEnabled &amp;&amp; !hasSynced</span>, the zero-car copy changes. "Add your car to begin" on a phone that is <em>about</em> to receive a car produces a duplicate the architecture deliberately will not auto-merge — one sentence prevents it.</p>
+        </div>
+        <div class="blueprint" style="padding: 18px 22px; background: #fff">
+          <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+          <h4 style="margin: 0 0 7px; font-size: 20px">Where the first fill happens</h4>
+          <p style="font-size: 14.5px; line-height: 1.5; margin: 0; text-wrap: pretty">Not in onboarding. Beat 3 hands over to Home, and the fill is captured through the ordinary <span style="font-family: 'IBM Plex Mono', monospace; font-size: 13.5px">+</span> — the same keypad it will be for the next thousand fills. It gets the app’s one spring — the saved moment — <strong>the same on the first fill as on the thousandth</strong>. The spring is for the record landing, not for the user’s behaviour, so it belongs in the real surface rather than in a tutorial.</p>
+        </div>
+        <div class="blueprint" style="padding: 18px 22px; background: #fff">
+          <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+          <h4 style="margin: 0 0 7px; font-size: 20px">What the first fill cannot yet say</h4>
+          <p style="font-size: 14.5px; line-height: 1.5; margin: 0; text-wrap: pretty">Its record page reads <em>"Not measured yet — two full tanks with odometers measure your first number."</em> with two progress dots, one filled. Koi's first honest act is to admit it does not know your economy yet, on the very screen a lesser app would put a fabricated figure.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div style="display: grid; grid-template-columns: auto minmax(280px, 1fr); gap: 20px; align-items: baseline; margin-bottom: 24px">
+      <h2 style="margin: 0; font-size: 34px">02 · Batch 2 complete — what the thirteen sheets now cover</h2>
+      <div style="border-bottom: 1px solid var(--color-divider); padding-bottom: 6px; font-size: 14px; color: var(--color-neutral-700)">Every surface in <span style="font-family: 'IBM Plex Mono', monospace">wireframes.md</span> §1 – §11 is drawn on one reconciled fixture, with both themes shown wherever the palette is load-bearing.</div>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px">
+      <div>
+        <h6 style="margin: 0 0 8px; color: var(--color-neutral-700)">Foundations · 01–03, 08</h6>
+        <div style="font-size: 14.5px; line-height: 1.6; color: var(--color-neutral-800)">The authored dark palette with every pair AA-validated. The control language — rows, wells, chips, buttons, toasts, layers, the chart grammar and its table-first form. The four-tab shell and its depth ladder. And the accent sheet, which moved emphasis to ink so the one green means fuel and nothing else.</div>
+      </div>
+      <div>
+        <h6 style="margin: 0 0 8px; color: var(--color-neutral-700)">The tabs · 04–05, 09–10</h6>
+        <div style="font-size: 14.5px; line-height: 1.6; color: var(--color-neutral-800)">Garage and the car page in both ownership shapes. Home's four states. History's ledger with the plan row that makes July reconcile. Insights' four lenses, drawn as stat tables first.</div>
+      </div>
+      <div>
+        <h6 style="margin: 0 0 8px; color: var(--color-neutral-700)">The tasks · 06–07, 11–13</h6>
+        <div style="font-size: 14.5px; line-height: 1.6; color: var(--color-neutral-800)">Settings and Sync. Capture and the odometer sheet. The record pages and their computed panels. Reminders and Insurance &amp; papers. This sheet.</div>
+      </div>
+      <div>
+        <h6 style="margin: 0 0 8px; color: var(--color-neutral-700)">Two annexes · A and B</h6>
+        <div style="font-size: 14.5px; line-height: 1.6; color: var(--color-neutral-800)"><strong>A ·</strong> the degraded states, every enumerated one, none of them styled as an error. <strong>B ·</strong> the icon-well exploration that replaced emoji with a tinted well and a thin-stroke set. <span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px">decisions.md</span> logs every open question taken and every arithmetic correction made.</div>
+      </div>
+    </div>
+  </section>
+
+  <footer style="border-top: 1px solid var(--color-text); padding-top: 18px; display: grid; grid-template-columns: 1fr auto; gap: 30px; align-items: start">
+    <div style="font-size: 14px; color: var(--color-neutral-700); max-width: 900px; line-height: 1.55; text-wrap: pretty">Sheet 13 of 13 — the surface is complete. What is <em>not</em> designed here, named so it is not mistaken for an omission: the MyCar import mapping screens, the paper viewer, and the export writers. All three sit behind features the build has not installed, and each needs its own pass with real data in front of it.</div>
+    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; line-height: 1.9; color: var(--color-neutral-700); text-align: right; white-space: nowrap">
+      <div>3 BEATS · ALL SKIPPABLE</div>
+      <div>0 ACCOUNTS BEFORE THE FIRST FILL</div>
+      <div>13 SHEETS + 2 ANNEXES</div>
+    </div>
+  </footer>
+</x-dc>
+</body>
+</html>

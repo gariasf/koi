@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/industry-502e7e7f-a454-4e0f-a758-32b893d6b801/styles.css">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<script src="_ds/industry-502e7e7f-a454-4e0f-a758-32b893d6b801/_ds_bundle.js"></script>
+<style>
+  body { margin: 0; background: var(--color-bg); }
+  a { color: var(--color-accent-700); text-decoration: none; border-bottom: 1px solid var(--color-accent-300); }
+  a:hover { color: var(--color-accent-900); border-bottom-color: var(--color-accent-700); }
+  /* The one spring in the whole app. Nothing else here is springy. */
+  @keyframes koi-spring {
+    0%   { transform: scale(0.86); opacity: 0 }
+    45%  { transform: scale(1.035); opacity: 1 }
+    70%  { transform: scale(0.992) }
+    100% { transform: scale(1) }
+  }
+  @keyframes koi-fade { from { opacity: 0 } to { opacity: 1 } }
+  @keyframes koi-sheet-up { from { transform: translateY(14px); opacity: 0 } to { transform: translateY(0); opacity: 1 } }
+  .koi-spring { animation: koi-spring 620ms cubic-bezier(.34,1.42,.64,1) both }
+  .koi-fade { animation: koi-fade 150ms linear both }
+  .koi-sheet { animation: koi-sheet-up 220ms cubic-bezier(.2,.8,.3,1) both }
+  @media (prefers-reduced-motion: reduce) {
+    .koi-spring, .koi-sheet { animation: koi-fade 150ms linear both }
+  }
+</style>
+</helmet>
+
+<div style="background: var(--color-bg); color: var(--color-text); font-family: var(--font-body); padding: 48px 40px 72px; min-height: 100vh">
+<div style="max-width: 1280px; margin: 0 auto; display: flex; flex-direction: column; gap: 40px">
+
+  <header style="display: grid; grid-template-columns: auto minmax(280px, 1fr); gap: 40px; align-items: end; border-bottom: 1px solid var(--color-text); padding-bottom: 18px">
+    <div>
+      <div style="font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--color-neutral-700); margin-bottom: 9px">Koi · working prototype · the capture loop</div>
+      <h1 style="font-size: 56px; line-height: 0.96; margin: 0 0 5px; letter-spacing: -0.02em">Log a fill</h1>
+      <div style="font-family: var(--font-heading); font-size: 22px; color: var(--color-neutral-700)">The one flow whose feel cannot be judged from a static frame</div>
+    </div>
+    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; line-height: 1.85; color: var(--color-neutral-700); text-align: right; white-space: nowrap; padding-bottom: 4px">
+      <div>LIVE&nbsp;&nbsp;&nbsp;&nbsp;keypad · computed third · monotonicity</div>
+      <div>SPRING&nbsp;&nbsp;the app's only one, on save</div>
+      <div>DRAWS&nbsp;&nbsp;&nbsp;sheet 07 · tokens from sheets 01 · 08</div>
+    </div>
+  </header>
+
+  <div style="display: flex; gap: 44px; flex-wrap: wrap; align-items: start">
+
+    <div style="width: 414px">
+      <div style="width: 414px; padding: 11px; background: #24211D; border-radius: 48px; box-shadow: 0 16px 44px rgba(28,26,23,0.2)">
+        <div style="width: 392px; height: 812px; background: {{ paper }}; border-radius: 38px; overflow: hidden; position: relative; font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif">
+
+          <div style="height: 46px; display: flex; align-items: center; justify-content: space-between; padding: 0 26px; position: relative">
+            <span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; color: {{ ink }}">9:41</span>
+            <div style="position: absolute; left: 50%; transform: translateX(-50%); top: 8px; width: 92px; height: 26px; background: {{ notch }}; border-radius: 999px"></div>
+            <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: {{ ink }}; letter-spacing: 0.06em">▮▮▮ ⌾ ▊</span>
+          </div>
+
+          <div style="padding: 8px 20px 0; display: flex; justify-content: space-between; align-items: flex-start">
+            <div style="font-size: 30px; font-weight: 700; color: {{ ink }}; letter-spacing: -0.02em">History</div>
+            <div style="width: 36px; height: 36px; border-radius: 999px; background: {{ card }}; border: 1px solid {{ hair }}; display: grid; place-items: center">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="color: {{ inkSoft }}"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"></path><circle cx="12" cy="12" r="3"></circle></svg>
+            </div>
+          </div>
+
+          <div style="padding: 14px 20px 6px; display: flex; justify-content: space-between; align-items: baseline">
+            <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; font-weight: 600; letter-spacing: 0.09em; color: {{ inkFaint }}">JULY 2026</span>
+            <span style="font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 10.5px; font-weight: 600; letter-spacing: 0.09em; color: {{ inkFaint }}">{{ whisper }}</span>
+          </div>
+
+          <div style="position: absolute; left: 0; right: 0; top: 126px; bottom: 74px; overflow-y: auto">
+          <sc-for list="{{ feed }}" as="r" hint-placeholder-count="7">
+            <div style="display: grid; grid-template-columns: 38px 1fr auto; gap: 12px; align-items: center; padding: 9px 20px; animation: {{ r.anim }}">
+              <span style="width: 38px; height: 38px; border-radius: 10px; display: grid; place-items: center; background: {{ r.well }}">{{ r.icon }}</span>
+              <span style="min-width: 0">
+                <span style="display: block; font-family: {{ r.titleFont }}; font-size: 15px; color: {{ ink }}">{{ r.title }}</span>
+                <span style="display: block; font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 12.5px; color: {{ inkSoft }}">{{ r.meta }}</span>
+              </span>
+              <span style="text-align: right">
+                <span style="display: block; font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 14.5px; color: {{ ink }}">{{ r.amount }}</span>
+                <span style="display: block; font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 11.5px; color: {{ inkFaint }}">{{ r.date }}</span>
+              </span>
+            </div>
+          </sc-for>
+          </div>
+
+          <div onClick="{{ openChooser }}" style="position: absolute; right: 20px; bottom: 84px; width: 52px; height: 52px; border-radius: 16px; background: {{ primaryBg }}; display: grid; place-items: center; box-shadow: {{ fabShadow }}; cursor: pointer">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="color: {{ primaryFg }}"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg>
+          </div>
+
+          <div style="position: absolute; left: 0; right: 0; bottom: 0; border-top: 1px solid {{ hair }}; background: {{ paper }}; padding: 8px 8px 22px; display: flex; justify-content: space-around">
+            <div style="text-align: center; color: {{ inkFaint }}"><div style="line-height: 1.2"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg></div><div style="font-size: 10.5px">Home</div></div>
+            <div style="text-align: center; color: {{ accentText }}"><div style="line-height: 1.2"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M15 12h-5"></path><path d="M15 8h-5"></path><path d="M19 17V5a2 2 0 0 0-2-2H4"></path><path d="M8 21h12a2 2 0 0 0 2-2v-1a1 1 0 0 0-1-1H11a1 1 0 0 0-1 1v1a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v2a1 1 0 0 0 1 1h3"></path></svg></div><div style="font-size: 10.5px; font-weight: 600">History</div></div>
+            <div style="text-align: center; color: {{ inkFaint }}"><div style="line-height: 1.2"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v16a2 2 0 0 0 2 2h16"></path><path d="M18 17V9"></path><path d="M13 17V5"></path><path d="M8 17v-3"></path></svg></div><div style="font-size: 10.5px">Insights</div></div>
+            <div style="text-align: center; color: {{ inkFaint }}"><div style="line-height: 1.2"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M18 21V10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1v11"></path><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8a2 2 0 0 1 1.132-1.803l7.95-3.974a2 2 0 0 1 1.837 0l7.948 3.974A2 2 0 0 1 22 8z"></path><path d="M6 13h12"></path><path d="M6 17h12"></path></svg></div><div style="font-size: 10.5px">Garage</div></div>
+          </div>
+
+          <sc-if value="{{ scrim }}" hint-placeholder-val="{{ false }}">
+            <div onClick="{{ onScrim }}" style="position: absolute; inset: 0; background: rgba(28,26,23,0.32); animation: koi-fade 150ms linear both"></div>
+          </sc-if>
+
+          <sc-if value="{{ onChooser }}" hint-placeholder-val="{{ false }}">
+            <div class="koi-sheet" style="position: absolute; left: 0; right: 0; bottom: 0; background: {{ sheet }}; border-radius: 26px 26px 0 0; border-top: 1px solid {{ hair }}; padding: 16px 0 26px; box-shadow: 0 -10px 34px rgba(28,26,23,0.2)">
+              <div style="width: 34px; height: 4px; background: {{ hair }}; border-radius: 999px; margin: 0 auto 16px"></div>
+              <div style="padding: 0 20px 12px; font-size: 17px; font-weight: 600; color: {{ ink }}">What are you logging?</div>
+              <sc-for list="{{ tiles }}" as="t" hint-placeholder-count="6">
+                <div onClick="{{ t.onPress }}" style="display: grid; grid-template-columns: 40px 1fr auto; gap: 13px; align-items: center; padding: 11px 20px; cursor: {{ t.cursor }}; opacity: {{ t.opacity }}">
+                  <span style="width: 40px; height: 40px; border-radius: 10px; display: grid; place-items: center; background: {{ t.well }}">{{ t.icon }}</span>
+                  <span style="font-size: 16px; color: {{ ink }}">{{ t.label }}</span>
+                  <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: {{ inkFaint }}">{{ t.note }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ onFuel }}" hint-placeholder-val="{{ false }}">
+            <div class="koi-sheet" style="position: absolute; left: 0; right: 0; top: 40px; bottom: 0; background: {{ sheet }}; border-radius: 26px 26px 0 0; border-top: 1px solid {{ hair }}; overflow: hidden">
+              <div style="padding: 14px 18px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid {{ hair }}">
+                <span onClick="{{ tryDiscard }}" style="font-size: 15px; color: {{ accentText }}; cursor: pointer">Discard</span>
+                <span style="font-size: 15.5px; font-weight: 600; color: {{ ink }}">Fill-up</span>
+                <span onClick="{{ save }}" style="font-size: 15px; font-weight: 600; color: {{ saveColor }}; cursor: {{ saveCursor }}">Save</span>
+              </div>
+
+              <div style="padding: 14px 18px 0">
+                <div style="display: flex; gap: 7px">
+                  <sc-for list="{{ trio }}" as="f" hint-placeholder-count="3">
+                    <span onClick="{{ f.onPress }}" style="flex: 1; text-align: center; cursor: pointer">
+                      <span style="display: block; font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 600; letter-spacing: 0.09em; color: {{ f.labelColor }}; margin-bottom: 4px">{{ f.label }}</span>
+                      <span style="display: block; border: 1px solid {{ f.border }}; background: {{ f.bg }}; border-radius: 8px; padding: 10px 4px; font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 14px; color: {{ f.color }}">{{ f.shown }}</span>
+                      <span style="display: block; font-family: 'IBM Plex Mono', monospace; font-size: 8.5px; color: {{ inkFaint }}; margin-top: 3px; height: 11px">{{ f.hint }}</span>
+                    </span>
+                  </sc-for>
+                </div>
+                <div style="font-size: 13px; color: {{ inkSoft }}; margin-top: 6px; line-height: 1.4">{{ trioSentence }}</div>
+
+                <div style="font-family: 'IBM Plex Mono', monospace; font-size: 9.5px; font-weight: 600; letter-spacing: 0.09em; color: {{ odoLabelColor }}; margin: 16px 0 5px">ODOMETER</div>
+                <div onClick="{{ focusOdo }}" style="border: 1px solid {{ odoBorder }}; background: {{ odoBg }}; border-radius: 8px; padding: 11px 12px; font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 15px; color: {{ ink }}; cursor: pointer">{{ odoShown }} <span style="color: {{ inkFaint }}">km</span></div>
+                <div style="font-size: 12.5px; color: {{ odoNoteColor }}; margin-top: 6px; line-height: 1.45; min-height: 34px">{{ odoNote }}</div>
+
+                <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-top: 4px">
+                  <span onClick="{{ toggleFull }}" style="background: {{ fullBg }}; border: 1px solid {{ fullBorder }}; color: {{ fullColor }}; font-size: 12.5px; padding: 6px 12px; border-radius: 999px; cursor: pointer; display: inline-flex; gap: 5px; align-items: center">{{ fullCheck }}Full tank</span>
+                  <span style="border: 1px solid {{ hair }}; color: {{ ink }}; font-size: 12.5px; padding: 6px 12px; border-radius: 999px">Repsol ▾</span>
+                  <span style="border: 1px solid {{ hair }}; color: {{ ink }}; font-size: 12.5px; padding: 6px 12px; border-radius: 999px">28 Jul ▾</span>
+                </div>
+
+                <sc-if value="{{ showMissed }}" hint-placeholder-val="{{ false }}">
+                  <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 14px; padding-top: 13px; border-top: 1px solid {{ hair }}">
+                    <span style="font-size: 13.5px; color: {{ missedLabelColor }}; line-height: 1.4; padding-right: 12px">A fill was missed before this one</span>
+                    <span onClick="{{ toggleMissed }}" style="width: 44px; height: 27px; border-radius: 999px; background: {{ missedTrack }}; padding: 3px; flex-shrink: 0; cursor: pointer; display: flex; justify-content: {{ missedJustify }}">
+                      <span style="display: block; width: 21px; height: 21px; border-radius: 999px; background: {{ missedKnob }}; box-shadow: 0 1px 3px rgba(28,26,23,0.2)"></span>
+                    </span>
+                  </div>
+                  <sc-if value="{{ missed }}" hint-placeholder-val="{{ false }}">
+                    <div style="font-size: 12.5px; color: {{ inkSoft }}; line-height: 1.5; margin-top: 8px">This fill won't measure economy. Your next full tank starts a fresh interval.</div>
+                  </sc-if>
+                </sc-if>
+              </div>
+
+              <div style="position: absolute; left: 0; right: 0; bottom: 0; border-top: 1px solid {{ hair }}; background: {{ paper }}; padding: 7px 8px 16px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px">
+                <sc-for list="{{ keys }}" as="k" hint-placeholder-count="12">
+                  <span onClick="{{ k.onPress }}" style="text-align: center; padding: 11px 0; font-family: 'IBM Plex Mono', monospace; font-size: 20px; color: {{ k.color }}; border-radius: 8px; cursor: pointer">{{ k.label }}</span>
+                </sc-for>
+              </div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ onDiscard }}" hint-placeholder-val="{{ false }}">
+            <div style="position: absolute; inset: 0; background: rgba(28,26,23,0.38); display: grid; place-items: center; padding: 0 26px; animation: koi-fade 150ms linear both">
+              <div style="background: {{ card }}; border-radius: 15px; padding: 19px 20px; box-shadow: 0 12px 32px rgba(28,26,23,0.24)">
+                <div style="font-size: 17px; font-weight: 600; color: {{ ink }}; margin-bottom: 8px">Discard this fill?</div>
+                <div style="font-size: 14.5px; color: {{ inkSoft }}; line-height: 1.45; margin-bottom: 17px">What you have typed will be lost.</div>
+                <div style="display: flex; gap: 10px">
+                  <span onClick="{{ keepEditing }}" style="flex: 1; text-align: center; border: 1px solid {{ hair }}; padding: 11px 0; border-radius: 8px; font-size: 15px; color: {{ ink }}; cursor: pointer">Keep editing</span>
+                  <span onClick="{{ confirmDiscard }}" style="flex: 1; text-align: center; border: 1px solid {{ critical }}; padding: 11px 0; border-radius: 8px; font-size: 15px; color: {{ critical }}; cursor: pointer">Discard</span>
+                </div>
+              </div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ onSaved }}" hint-placeholder-val="{{ false }}">
+            <div style="position: absolute; inset: 0; background: {{ paper }}; display: grid; place-items: center; padding: 0 34px; animation: koi-fade 150ms linear both">
+              <div class="koi-spring" style="text-align: center">
+                <div style="width: 62px; height: 62px; margin: 0 auto 24px; border-radius: 16px; background: {{ fuelWash }}; display: grid; place-items: center">
+                  <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="color: {{ fuelText }}"><path d="M14 13h2a2 2 0 0 1 2 2v2a2 2 0 0 0 4 0v-6.998a2 2 0 0 0-.59-1.42L18 5"></path><path d="M14 21V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v16"></path><path d="M2 21h13"></path><path d="M3 9h11"></path></svg>
+                </div>
+                <div style="font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 34px; color: {{ ink }}; letter-spacing: -0.01em">{{ savedHeadline }}</div>
+                <div style="font-size: 15px; color: {{ inkSoft }}; line-height: 1.5; margin-top: 10px; white-space: pre-line">{{ savedBasis }}</div>
+                <div style="font-size: 15px; color: {{ ink }}; line-height: 1.45; margin-top: 14px">{{ savedVerdict }}</div>
+              </div>
+            </div>
+          </sc-if>
+
+        </div>
+      </div>
+      <div style="display: flex; gap: 10px; align-items: center; margin-top: 16px">
+        <span onClick="{{ toggleTheme }}" style="border: 1px solid var(--color-divider); background: #fff; font-size: 13.5px; padding: 8px 15px; cursor: pointer">{{ themeLabel }}</span>
+        <span onClick="{{ reset }}" style="border: 1px solid var(--color-divider); background: #fff; font-size: 13.5px; padding: 8px 15px; cursor: pointer">Reset</span>
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--color-neutral-700)">{{ stateLabel }}</span>
+      </div>
+    </div>
+
+    <div style="flex: 1; min-width: 340px; display: flex; flex-direction: column; gap: 18px">
+      <div class="blueprint" style="padding: 20px 24px; background: var(--color-accent-100)">
+        <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+        <h4 style="margin: 0 0 8px; font-size: 21px">Try this</h4>
+        <div style="font-size: 15px; line-height: 1.65; color: var(--color-neutral-800)">
+          Tap <strong>+</strong> → <strong>Fill-up</strong>. Type <span style="font-family: 'IBM Plex Mono', monospace; font-size: 14px">3575</span> into Total, tap <strong>Litres</strong>, type <span style="font-family: 'IBM Plex Mono', monospace; font-size: 14px">2610</span> — <strong>€/L computes itself</strong>. Tap the odometer, type <span style="font-family: 'IBM Plex Mono', monospace; font-size: 14px">91880</span>, then <strong>Save</strong>.
+        </div>
+        <div style="font-size: 14.5px; line-height: 1.6; color: var(--color-neutral-800); margin-top: 11px">Then try the honest paths: type an odometer <em>lower</em> than the last reading · turn <strong>Full tank</strong> off · save with no odometer at all · start typing and hit <strong>Discard</strong>.</div>
+        <div style="font-size: 14px; line-height: 1.55; color: var(--color-neutral-800); margin-top: 11px; padding-top: 11px; border-top: 1px solid var(--color-divider)"><strong>Watch the interval, not just the fill.</strong> The saved economy counts <span style="font-family: 'IBM Plex Mono', monospace; font-size: 13.5px">43,60 L</span>, not your 26,10 — the 24 July fill in the feed recorded litres with no odometer, so the fold rule puts them in this interval. The moment says so.</div>
+      </div>
+      <div class="blueprint" style="padding: 20px 24px; background: #fff">
+        <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+        <h4 style="margin: 0 0 8px; font-size: 21px">What this prototype is testing</h4>
+        <div style="font-size: 14.5px; line-height: 1.6; color: var(--color-neutral-800)">
+          <strong>Speed.</strong> Two numbers and a reading is the whole interaction — no scrolling, no dropdowns, no confirmation step. If it does not feel like seconds, the design is wrong.<br><br>
+          <strong>The computed third.</strong> Whether watching <span style="font-family: 'IBM Plex Mono', monospace; font-size: 13.5px">€/L</span> fill itself reads as helpful or as the app editing your input. It is labelled <em>computed</em> and stays inkSoft to say "not yours".<br><br>
+          <strong>The one spring.</strong> Whether the saved moment feels like the record landing or like praise. It is the only spring in the app; everything else is a 150 ms fade.
+        </div>
+      </div>
+      <div class="blueprint" style="padding: 20px 24px; background: #fff">
+        <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+        <h4 style="margin: 0 0 8px; font-size: 21px">Honest by construction</h4>
+        <div style="font-size: 14.5px; line-height: 1.6; color: var(--color-neutral-800)">
+          A reading below <span style="font-family: 'IBM Plex Mono', monospace; font-size: 13.5px">91.240 km</span> <strong>names the conflicting record and offers to open it</strong> — the build's current message does neither. Save stays disabled while it conflicts.<br><br>
+          Save with no odometer and the moment says <em>Not measured — no odometer on this fill</em>, and where the litres went. Turn Full tank off and it says the same for a partial. <strong>Neither is styled as an error</strong>, and the record still saves.<br><br>
+          The missed-fill switch appears only when it can be true, and states its cost the moment it is on.
+        </div>
+      </div>
+      <div class="blueprint" style="padding: 20px 24px; background: #fff">
+        <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+        <h4 style="margin: 0 0 8px; font-size: 21px">Two things deliberately not simulated</h4>
+        <div style="font-size: 14.5px; line-height: 1.6; color: var(--color-neutral-800)">The station and date chips are inert — they open fitted pickers, which sheet 03 already specifies and which would add a layer without testing anything new here. And the keypad is Koi's own, not the iOS numeric pad: the sheet owns its full height, so the pad is drawn rather than summoned.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{
+  &quot;$preview&quot;: { &quot;width&quot;: 1360, &quot;height&quot;: 1000 }
+}">
+class Component extends DCLogic {
+  state = {
+    dark: false,
+    screen: 'feed',        // feed · chooser · fuel · discard · saved
+    focus: 'total',
+    total: '', litres: '', price: '', odo: '',
+    order: [],             // which trio fields the user touched, oldest first
+    fullTank: true,
+    missed: false,
+    saved: null,           // the record just written
+    extra: [],             // records added this session
+  };
+
+  // ── es-ES formatting, written literally. Intl's minimumGroupingDigits:2
+  //    silently drops the separator on 4-digit values (1148, not 1.148).
+  group(intStr) {
+    let out = '', n = 0;
+    for (let i = intStr.length - 1; i >= 0; i--) {
+      out = intStr[i] + out;
+      if (++n % 3 === 0 && i > 0) out = '.' + out;
+    }
+    return out;
+  }
+  fmt(num, dp) {
+    if (num === null || !isFinite(num)) return '';
+    const fixed = Math.abs(num).toFixed(dp);
+    const [i, d] = fixed.split('.');
+    return this.group(i) + (d ? ',' + d : '');
+  }
+  money(n) { return this.fmt(n, 2) + ' €'; }
+  km(n) { return this.fmt(n, 0) + ' km'; }
+
+  // Digits typed into a field are minor units; 3575 → 35,75
+  val(raw, dp) {
+    if (!raw) return null;
+    const n = parseInt(raw, 10);
+    return isFinite(n) ? n / Math.pow(10, dp) : null;
+  }
+  shown(raw, dp) {
+    if (!raw) return '—';
+    return this.fmt(this.val(raw, dp), dp);
+  }
+
+  get dp() { return { total: 2, litres: 2, price: 3, odo: 0 }; }
+
+  // The trio: whichever two were touched most recently drive the third.
+  get computedField() {
+    const o = this.state.order.filter(k => this.state[k]);
+    if (o.length < 2) return null;
+    const two = o.slice(-2);
+    return ['total', 'litres', 'price'].find(k => two.indexOf(k) < 0) || null;
+  }
+  computedValue(field) {
+    const t = this.val(this.state.total, 2);
+    const l = this.val(this.state.litres, 2);
+    const p = this.val(this.state.price, 3);
+    if (field === 'price' && t && l) return t / l;
+    if (field === 'litres' && t && p) return t / p;
+    if (field === 'total' && l && p) return l * p;
+    return null;
+  }
+  fieldValue(field) {
+    if (field === this.computedField) return this.computedValue(field);
+    return this.val(this.state[field], this.dp[field]);
+  }
+
+  // ── validation
+  get lastReading() { return 91240; }
+  get odoNum() { return this.state.odo ? parseInt(this.state.odo, 10) : null; }
+  get odoConflict() { return this.odoNum !== null && this.odoNum < this.lastReading; }
+  get canSave() {
+    const money = this.fieldValue('total');
+    return !!money && !this.odoConflict;
+  }
+
+  press(k) {
+    const f = this.state.focus;
+    this.setState(s => {
+      const cur = s[f] || '';
+      let next;
+      if (k === 'del') next = cur.slice(0, -1);
+      else if (cur.length >= (f === 'odo' ? 7 : 6)) next = cur;
+      else next = cur + k;
+      const patch = { [f]: next };
+      if (f !== 'odo') {
+        const order = s.order.filter(x => x !== f);
+        if (next) order.push(f);
+        patch.order = order;
+      }
+      return patch;
+    });
+  }
+
+  // The 24 Jul fill recorded litres but no odometer, so per the fold rule its
+  // litres join the interval that ends at the next full tank with a reading.
+  get pendingLitres() { return 17.50; }
+
+  save() {
+    if (!this.canSave) return;
+    const money = this.fieldValue('total');
+    const litres = this.fieldValue('litres');
+    const odo = this.odoNum;
+    const measured = !!(odo && litres && this.state.fullTank && !this.state.missed);
+    const dist = odo ? odo - this.lastReading : null;
+    const numer = litres === null ? null : litres + this.pendingLitres;
+    const econ = measured && dist > 0 ? (numer / dist) * 100 : null;
+    const rec = { money, litres, numer, odo, econ, dist, measured, partial: !this.state.fullTank, missed: this.state.missed };
+    this.setState({ screen: 'saved', saved: rec });
+    clearTimeout(this._t);
+    this._t = setTimeout(() => {
+      this.setState(s => ({
+        screen: 'feed', saved: null, extra: [rec].concat(s.extra),
+        total: '', litres: '', price: '', odo: '', order: [], fullTank: true, missed: false, focus: 'total',
+      }));
+    }, 2200);
+  }
+
+  componentWillUnmount() { clearTimeout(this._t); }
+
+  renderVals() {
+    const s = this.state, d = s.dark;
+    const T = d
+      ? { paper: '#14120F', card: '#211E19', sheet: '#282420', hair: '#2E2A24', ink: '#F4F0E8', inkSoft: '#B8B0A4', inkFaint: '#8F877A',
+          fuelWash: '#1E2A1B', fuelText: '#62A64C', accentText: '#62A64C', primaryBg: '#F4F0E8', primaryFg: '#14120F',
+          critical: '#E86458', attention: '#E8934A', selBg: '#262219', selBorder: '#F4F0E8', notch: '#000',
+          fabShadow: '0 6px 18px rgba(0,0,0,0.34)', inkWell: '#262219', inkGlyph: '#B8B0A4' }
+      : { paper: '#FBF9F5', card: '#FFFFFF', sheet: '#FFFFFF', hair: '#E6E1D8', ink: '#1C1A17', inkSoft: '#5B564E', inkFaint: '#787166',
+          fuelWash: '#E7F0E5', fuelText: '#35692F', accentText: '#35692F', primaryBg: '#1C1A17', primaryFg: '#FBF9F5',
+          critical: '#A32D22', attention: '#9C5A16', selBg: '#F2EFE8', selBorder: '#1C1A17', notch: '#24211D',
+          fabShadow: '0 6px 18px rgba(28,26,23,0.18)', inkWell: '#EFEDE7', inkGlyph: '#5B564E' };
+
+    const SANS = '-apple-system, BlinkMacSystemFont, system-ui, sans-serif';
+    const MONO = "'IBM Plex Mono', monospace";
+    const h = React.createElement;
+    const P = {
+      fuel: [['path', { d: 'M14 13h2a2 2 0 0 1 2 2v2a2 2 0 0 0 4 0v-6.998a2 2 0 0 0-.59-1.42L18 5' }], ['path', { d: 'M14 21V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v16' }], ['path', { d: 'M2 21h13' }], ['path', { d: 'M3 9h11' }]],
+      wrench: [['path', { d: 'M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.106-3.105c.32-.322.863-.22.983.218a6 6 0 0 1-8.259 7.057l-7.91 7.91a1 1 0 0 1-2.999-3l7.91-7.91a6 6 0 0 1 7.057-8.259c.438.12.54.662.219.984z' }]],
+      receipt: [['path', { d: 'M12 17V7' }], ['path', { d: 'M16 8h-6a2 2 0 0 0 0 4h4a2 2 0 0 1 0 4H8' }], ['path', { d: 'M4 3a1 1 0 0 1 1-1 1.3 1.3 0 0 1 .7.2l.933.6a1.3 1.3 0 0 0 1.4 0l.934-.6a1.3 1.3 0 0 1 1.4 0l.933.6a1.3 1.3 0 0 0 1.4 0l.933-.6a1.3 1.3 0 0 1 1.4 0l.934.6a1.3 1.3 0 0 0 1.4 0l.933-.6A1.3 1.3 0 0 1 19 2a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1 1.3 1.3 0 0 1-.7-.2l-.933-.6a1.3 1.3 0 0 0-1.4 0l-.934.6a1.3 1.3 0 0 1-1.4 0l-.933-.6a1.3 1.3 0 0 0-1.4 0l-.933.6a1.3 1.3 0 0 1-1.4 0l-.934-.6a1.3 1.3 0 0 0-1.4 0l-.933.6a1.3 1.3 0 0 1-.7.2 1 1 0 0 1-1-1z' }]],
+      gauge: [['path', { d: 'm12 14 4-4' }], ['path', { d: 'M3.34 19a10 10 0 1 1 17.32 0' }]],
+      route: [['circle', { cx: 6, cy: 19, r: 3 }], ['path', { d: 'M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15' }], ['circle', { cx: 18, cy: 5, r: 3 }]],
+      note: [['path', { d: 'M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z' }], ['path', { d: 'm15 5 4 4' }]],
+      file: [['path', { d: 'M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z' }], ['path', { d: 'M14 2v5a1 1 0 0 0 1 1h5' }], ['path', { d: 'M16 13H8' }], ['path', { d: 'M16 17H8' }]],
+      check: [['path', { d: 'M20 6 9 17l-5-5' }]],
+    };
+    const glyph = (k, colour, px, sw) => h('svg', {
+      width: px || 19, height: px || 19, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor',
+      strokeWidth: sw || 1.75, strokeLinecap: 'round', strokeLinejoin: 'round', style: { color: colour }, 'aria-hidden': true,
+    }, (P[k] || []).map(([t, a], i) => h(t, Object.assign({ key: i }, a))));
+
+    // ── the feed · the real July ledger from decisions.md §B7, so the whisper
+    //    below is DERIVED from these rows and cannot drift from them.
+    //    money is the figure that enters the total; a trip carries km, not money.
+    const base = [
+      { icon: 'receipt', dom: 'expense', title: 'Parking', meta: 'Interparking Tarragona', money: 4.20, date: '26 Jul' },
+      { icon: 'fuel', dom: 'fuel', title: 'Cepsa Salou', meta: '17,50 L · no odometer', money: 24.00, date: '24 Jul', fill: true },
+      { icon: 'file', dom: 'contract', title: 'Plan charge', meta: 'Golf GTI · monthly', money: 289.00, date: '23 Jul' },
+      { icon: 'fuel', dom: 'fuel', title: 'Repsol Tarragona', meta: '6,9 L/100km · 378 km', money: 35.75, date: '12 Jul', fill: true },
+      { icon: 'wrench', dom: 'service', title: 'Oil & filter', meta: 'Golf GTI · 91.108 km', money: 96.50, date: '8 Jul' },
+      { icon: 'route', dom: 'ink', title: 'Salou', meta: '2 – 4 Jul · ≈20,40 € fuel', km: 232, date: '2 Jul' },
+      { icon: 'fuel', dom: 'fuel', title: 'Repsol Reus', meta: '7,2 L/100km · 402 km', money: 38.45, date: '2 Jul', fill: true },
+    ];
+    const WASH = d
+      ? { fuel: '#1E2A1B', service: '#2E2417', expense: '#1C2731', contract: '#2A1F27', ink: T.inkWell }
+      : { fuel: '#E7F0E5', service: '#F5EBD8', expense: '#E3EDF6', contract: '#F3E9F1', ink: T.inkWell };
+    const TEXT = d
+      ? { fuel: '#62A64C', service: '#D2A03C', expense: '#78B0DE', contract: '#C489BA', ink: T.inkGlyph }
+      : { fuel: '#35692F', service: '#7E5C12', expense: '#24608F', contract: '#6E3960', ink: T.inkGlyph };
+
+    const newRows = s.extra.map((r, i) => {
+      let meta;
+      if (r.measured) meta = this.fmt(r.econ, 1) + ' L/100km · ' + this.fmt(r.dist, 0) + ' km';
+      else if (r.missed) meta = this.fmt(r.litres, 2) + ' L · a fill was missed before this one';
+      else if (r.partial) meta = 'partial · ' + (r.litres ? this.fmt(r.litres, 2) + ' L' : 'no litres');
+      else if (!r.odo) meta = (r.litres ? this.fmt(r.litres, 2) + ' L · ' : '') + 'no odometer';
+      else meta = 'Golf GTI';
+      return {
+        icon: glyph('fuel', TEXT.fuel), well: WASH.fuel, titleFont: SANS,
+        title: 'Repsol Tarragona', meta, amount: this.money(r.money), date: '28 Jul',
+        anim: i === 0 ? 'koi-fade 150ms linear both' : 'none',
+      };
+    });
+    const feed = newRows.concat(base.map(r => ({
+      icon: glyph(r.icon, TEXT[r.dom]), well: WASH[r.dom], titleFont: SANS,
+      title: r.title, meta: r.meta,
+      amount: r.money ? this.money(r.money) : (r.km ? this.fmt(r.km, 0) + ' km' : ''),
+      date: r.date, anim: 'none',
+    })));
+
+    // Derived from the rows on screen — count fills, sum every money row.
+    // Base: 3 fills · 38,45 + 96,50 + 35,75 + 289,00 + 24,00 + 4,20 = 487,90 €.
+    const rows = base.concat(s.extra.map(r => ({ money: r.money, fill: true })));
+    const fills = rows.filter(r => r.fill).length;
+    const spent = rows.reduce((a, r) => a + (r.money || 0), 0);
+    const whisper = fills + (fills === 1 ? ' FILL · ' : ' FILLS · ') + this.money(spent);
+
+    // ── chooser
+    const mk = (icon, dom, label, note, go) => ({
+      icon: glyph(icon, TEXT[dom]), well: WASH[dom], label, note,
+      onPress: go ? () => this.setState({ screen: 'fuel' }) : () => {},
+      cursor: go ? 'pointer' : 'default', opacity: go ? 1 : 0.42,
+    });
+    const tiles = [
+      mk('fuel', 'fuel', 'Fill-up', 'LIVE', true),
+      mk('wrench', 'service', 'Service', 'sheet 07'),
+      mk('receipt', 'expense', 'Expense', 'sheet 07'),
+      mk('gauge', 'ink', 'Odometer', 'sheet 07'),
+      mk('route', 'ink', 'Trip', 'sheet 07'),
+      mk('note', 'ink', 'Note', 'sheet 07'),
+    ];
+
+    // ── the trio
+    const comp = this.computedField;
+    const trio = [
+      { key: 'total', label: 'TOTAL', dp: 2 },
+      { key: 'litres', label: 'LITRES', dp: 2 },
+      { key: 'price', label: '€/L', dp: 3 },
+    ].map(f => {
+      const isComp = comp === f.key;
+      const v = this.fieldValue(f.key);
+      const filled = isComp ? v !== null : !!s[f.key];
+      const focused = s.focus === f.key;
+      return {
+        label: f.label,
+        labelColor: focused ? T.ink : T.inkFaint,
+        shown: isComp ? (v === null ? '—' : this.fmt(v, f.dp)) : this.shown(s[f.key], f.dp),
+        hint: isComp ? 'computed' : '',
+        color: isComp ? T.inkSoft : T.ink,
+        bg: focused ? T.selBg : 'transparent',
+        border: focused ? T.selBorder : (filled && !isComp ? T.selBorder : T.hair),
+        onPress: () => this.setState({ focus: f.key }),
+      };
+    });
+
+    const touched = s.order.filter(k => s[k]).length;
+    const trioSentence = touched >= 2
+      ? 'The third is computed. Tap a field to change which two you enter.'
+      : 'Enter any two. The third is computed.';
+
+    // ── odometer
+    let odoNote, odoNoteColor = T.inkSoft, odoBorder = s.focus === 'odo' ? T.selBorder : T.hair;
+    if (this.odoConflict) {
+      odoNote = 'Lower than your last reading, 91.240 km on 12 July. Open that record ›';
+      odoNoteColor = T.attention;
+      odoBorder = T.attention;
+    } else if (this.odoNum) {
+      odoNote = '+' + this.fmt(this.odoNum - this.lastReading, 0) + ' km since the last reading.';
+    } else {
+      odoNote = 'Optional. Without it this fill will not measure economy.';
+      odoNoteColor = T.inkFaint;
+    }
+
+    // ── the saved moment
+    const r = s.saved || {};
+    let savedHeadline = '', savedBasis = '', savedVerdict = '';
+    if (s.saved) {
+      if (r.measured) {
+        savedHeadline = this.fmt(r.econ, 1) + ' L/100km';
+        savedBasis = this.fmt(r.numer, 2) + ' L over ' + this.fmt(r.dist, 0) + ' km · since the 12 July fill'
+          + '\nIncludes the 24 July fill, which had no odometer.';
+        savedVerdict = Math.abs(r.econ - 6.85) < 0.4 ? 'About your usual 6,85.'
+          : (r.econ > 6.85 ? 'Above your usual 6,85.' : 'Below your usual 6,85.');
+      } else if (r.missed) {
+        savedHeadline = this.money(r.money);
+        savedBasis = 'Not measured — a fill was missed before this one.';
+        savedVerdict = 'Your next full tank starts a fresh interval.';
+      } else if (r.partial) {
+        savedHeadline = this.money(r.money);
+        savedBasis = 'Partial fill — economy needs a full tank.';
+        savedVerdict = r.litres ? 'Its ' + this.fmt(r.litres, 2) + ' L join the next interval.' : 'Saved.';
+      } else {
+        savedHeadline = this.money(r.money);
+        savedBasis = 'Not measured — no odometer on this fill.';
+        savedVerdict = r.litres ? 'Its ' + this.fmt(r.litres, 2) + ' L join the next interval.' : 'Saved.';
+      }
+    }
+
+    const keys = ['1','2','3','4','5','6','7','8','9',',','0','del'].map(k => ({
+      label: k === 'del' ? '⌫' : k,
+      color: k === ',' || k === 'del' ? T.inkSoft : T.ink,
+      onPress: () => this.press(k === ',' ? '' : k),
+    }));
+
+    const dirty = !!(s.total || s.litres || s.price || s.odo);
+
+    return Object.assign({}, T, {
+      whisper, feed, tiles, trio, trioSentence, keys,
+
+      scrim: s.screen === 'chooser',
+      onChooser: s.screen === 'chooser',
+      onFuel: s.screen === 'fuel' || s.screen === 'discard',
+      onDiscard: s.screen === 'discard',
+      onSaved: s.screen === 'saved',
+
+      openChooser: () => this.setState({ screen: 'chooser' }),
+      onScrim: () => this.setState({ screen: 'feed' }),
+      focusOdo: () => this.setState({ focus: 'odo' }),
+      toggleFull: () => this.setState(p => ({ fullTank: !p.fullTank, missed: p.fullTank ? false : p.missed })),
+      toggleMissed: () => this.setState(p => ({ missed: !p.missed })),
+      tryDiscard: () => (dirty ? this.setState({ screen: 'discard' }) : this.setState({ screen: 'feed' })),
+      keepEditing: () => this.setState({ screen: 'fuel' }),
+      confirmDiscard: () => this.setState({ screen: 'feed', total: '', litres: '', price: '', odo: '', order: [], fullTank: true, missed: false, focus: 'total' }),
+      save: () => this.save(),
+      saveColor: this.canSave ? T.ink : T.inkFaint,
+      saveCursor: this.canSave ? 'pointer' : 'default',
+
+      odoShown: s.odo ? this.group(s.odo) : '—',
+      odoNote, odoNoteColor, odoBorder,
+      odoBg: s.focus === 'odo' ? T.selBg : 'transparent',
+      odoLabelColor: s.focus === 'odo' ? T.ink : T.inkFaint,
+
+      fullBg: s.fullTank ? T.selBg : 'transparent',
+      fullBorder: s.fullTank ? T.selBorder : T.hair,
+      fullColor: T.ink,
+      fullCheck: s.fullTank ? glyph('check', T.ink, 12, 2.5) : null,
+
+      // §16 #13 — renders only when it can be true
+      showMissed: s.fullTank,
+      missed: s.missed,
+      missedTrack: s.missed ? T.ink : T.hair,
+      missedKnob: s.missed ? T.paper : T.card,
+      missedJustify: s.missed ? 'flex-end' : 'flex-start',
+      missedLabelColor: s.missed ? T.ink : T.inkSoft,
+
+      savedHeadline, savedBasis, savedVerdict,
+
+      toggleTheme: () => this.setState(p => ({ dark: !p.dark })),
+      themeLabel: d ? 'Light' : 'Dark',
+      reset: () => this.setState({ screen: 'feed', total: '', litres: '', price: '', odo: '', order: [], fullTank: true, missed: false, focus: 'total', extra: [], saved: null }),
+      stateLabel: s.screen + (dirty ? ' · dirty' : '') + (s.extra.length ? ' · ' + s.extra.length + ' logged' : ''),
+    });
+  }
+}
+</script>
+</body>
+</html>

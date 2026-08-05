@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="stylesheet" href="_ds/industry-502e7e7f-a454-4e0f-a758-32b893d6b801/styles.css">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<script src="_ds/industry-502e7e7f-a454-4e0f-a758-32b893d6b801/_ds_bundle.js"></script>
+<style>
+  body { margin: 0; background: var(--color-bg); }
+  a { color: var(--color-accent-700); text-decoration: none; border-bottom: 1px solid var(--color-accent-300); }
+  a:hover { color: var(--color-accent-900); border-bottom-color: var(--color-accent-700); }
+</style>
+</helmet>
+
+
+<div style="background: var(--color-bg); color: var(--color-text); font-family: var(--font-body); padding: 56px 48px 96px; min-height: 100vh">
+<div style="max-width: 1420px; margin: 0 auto; display: flex; flex-direction: column; gap: 68px">
+
+  <header style="display: grid; grid-template-columns: 1fr auto; gap: 40px; align-items: end; border-bottom: 1px solid var(--color-text); padding-bottom: 20px">
+    <div>
+      <div style="font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--color-neutral-700); margin-bottom: 10px">Koi · car-cost ledger · design batch 1 · sheet 04 of 08 · + 2 annexes</div>
+      <h1 style="font-size: 68px; line-height: 0.95; margin: 0 0 6px; letter-spacing: -0.02em">Garage &amp; the car page</h1>
+      <div style="font-family: var(--font-heading); font-size: 25px; color: var(--color-neutral-700)">One car, no selectors anywhere. Several, effortless scoping. One ledger, never a second copy.</div>
+    </div>
+    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; line-height: 1.9; color: var(--color-neutral-700); text-align: right; white-space: nowrap">
+      <div>DRAWS&nbsp;&nbsp;&nbsp;&nbsp;wireframes §6.1 – §6.5 · §10</div>
+      <div>READS&nbsp;&nbsp;&nbsp;&nbsp;spec §C4 · inv. 15 · 24 – 30</div>
+      <div>FIXTURE&nbsp;&nbsp;§0.6 · today 28 Jul 2026</div>
+      <div>DATE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2026-07-29</div>
+    </div>
+  </header>
+
+  <section class="blueprint" style="padding: 26px 30px; background: #fff">
+    <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 44px">
+      <div>
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; letter-spacing: 0.12em; color: #A32D22; margin-bottom: 10px">FIXTURE ARITHMETIC · THREE CORRECTIONS, STATED NOT SMUGGLED</div>
+        <h3 style="margin: 0 0 12px; font-size: 24px">The wireframes' cap numbers cannot all be true at once</h3>
+        <div style="display: flex; flex-direction: column; gap: 14px">
+          <div style="border-left: 2px solid #9C5A16; padding-left: 14px">
+            <div style="font-size: 15px; font-weight: 500; margin-bottom: 3px">1 · The cap gauge read <span style="font-family: 'IBM Plex Mono', monospace; font-size: 14px">1.240 / 1.760 km</span> on day 6 of a 31-day cycle</div>
+            <p style="font-size: 14.5px; line-height: 1.5; margin: 0; color: var(--color-neutral-800); text-wrap: pretty">1.240 km over six days is 207 km/day, which projects to <strong>≈6.400 km</strong> by 22 August — not the <span style="font-family: 'IBM Plex Mono', monospace; font-size: 13.5px">≈1.410</span> the card claims, and nowhere near "under the cap". It also contradicts Home's own July pulse of 412 km, since 23–28 July is a <em>subset</em> of July. <strong>Corrected to 268 km</strong>, which is 44,7 km/day and projects to ≈1.385.</p>
+          </div>
+          <div style="border-left: 2px solid #9C5A16; padding-left: 14px">
+            <div style="font-size: 15px; font-weight: 500; margin-bottom: 3px">2 · "Insurance in 16 days" and "16 August 2026" are different dates</div>
+            <p style="font-size: 14.5px; line-height: 1.5; margin: 0; color: var(--color-neutral-800); text-wrap: pretty">From 28 July, sixteen days is 13 August. Since the reminder hero names 16 August explicitly, the chip and every meta line are <strong>corrected to "in 19 days"</strong>, and the policy's valid-until is set to 16 Aug 2026 so the Garage chip, Home's reminder and the vault card cannot disagree.</p>
+          </div>
+          <div style="border-left: 2px solid var(--color-accent); padding-left: 14px">
+            <div style="font-size: 15px; font-weight: 500; margin-bottom: 3px">3 · The Care group has one insurance door, not two</div>
+            <p style="font-size: 14.5px; line-height: 1.5; margin: 0; color: var(--color-neutral-800); text-wrap: pretty">§6.2's frame draws <em>Insurance</em> and <em>Documents</em> as separate rows; §10 then rules that two rows to one page is a nav smell and gives the meta line the second row's job. §10 is the later decision, so the drawn Care group carries <strong>one</strong> row.</p>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; letter-spacing: 0.12em; color: var(--color-neutral-700); margin-bottom: 10px">THE FIXTURE THESE SCREENS OBEY</div>
+        <div style="border: 1px solid var(--color-divider)">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; border-bottom: 1px solid var(--color-divider)">
+            <div style="padding: 12px 14px; border-right: 1px solid var(--color-divider)">
+              <div style="font-family: var(--font-heading); font-size: 20px">Golf GTI</div>
+              <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; line-height: 1.75; color: var(--color-neutral-800); margin-top: 5px">VW · 2019 · petrol<br>1234-ABC · 50 L · 245 hp<br>91.240 km<br>Mapfre subscription<br>289,00 €/month<br>1.500 km/mo · pooling<br>anchored to the 23rd<br>cycle 23 Jul – 22 Aug<br>tracking began Mar 2025</div>
+            </div>
+            <div style="padding: 12px 14px">
+              <div style="font-family: var(--font-heading); font-size: 20px">Ibiza</div>
+              <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; line-height: 1.75; color: var(--color-neutral-800); margin-top: 5px">Seat · 2014<br>5678-DEF<br>142.600 km<br>owned outright<br>bought 9.200,00 €<br>no plan<br>no cap<br>tank / power not on file<br>tracking began Mar 2022</div>
+            </div>
+          </div>
+          <div style="padding: 12px 14px; border-bottom: 1px solid var(--color-divider)">
+            <div style="font-family: var(--font-heading); font-size: 20px">Ibiza 1.9 TDI</div>
+            <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--color-neutral-800); margin-top: 4px">archived 2020 · records kept · restorable</div>
+          </div>
+          <div style="padding: 12px 14px; background: var(--color-accent-100)">
+            <div style="font-size: 14.5px; line-height: 1.5; text-wrap: pretty"><strong>Golf GTI has one overdue reminder</strong> — ITV, due 16 July 2026, so 12 days over on 28 July. That is what lights its attention dot. The Ibiza has nothing overdue and no cap, so it has no dot and no chips beyond <em>Owned</em>.</div>
+          </div>
+        </div>
+        <p style="font-size: 14px; line-height: 1.5; margin: 14px 0 0; color: var(--color-neutral-800); text-wrap: pretty"><strong>The Ibiza's missing tank and power are deliberate.</strong> §0.6 does not give them, so rather than invent two numbers on the one product whose rule is never to invent, the car page shows <em>not on file</em> — which is also the honest empty state §D5 asks for, drawn on a real car instead of hypothetically.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div style="display: grid; grid-template-columns: auto minmax(280px, 1fr); gap: 20px; align-items: baseline; margin-bottom: 28px">
+      <h2 style="margin: 0; font-size: 34px">01 · Garage</h2>
+      <div style="border-bottom: 1px solid var(--color-divider); padding-bottom: 6px; font-size: 14px; color: var(--color-neutral-700)">The Garage is <em>the cars</em>. No sync card, no review card, no dashboard — those live where sheet 03 and sheet 06 put them.</div>
+    </div>
+
+    <div style="display: flex; flex-wrap: wrap; gap: 40px; align-items: start">
+
+      <div>
+        <div style="width: 414px; padding: 11px; background: #24211D; border-radius: 48px; box-shadow: 0 16px 44px rgba(28,26,23,0.2)">
+          <div style="width: 392px; height: 812px; background: #FBF9F5; border-radius: 38px; overflow: hidden; position: relative; font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif">
+            <div style="height: 46px; display: flex; align-items: center; justify-content: space-between; padding: 0 26px; position: relative">
+              <span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; color: #1C1A17">9:41</span>
+              <div style="position: absolute; left: 50%; transform: translateX(-50%); top: 8px; width: 92px; height: 26px; background: #24211D; border-radius: 999px"></div>
+              <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #1C1A17; letter-spacing: 0.06em">▮▮▮ ⌾ ▊</span>
+            </div>
+            <div style="padding: 8px 20px 0; display: flex; justify-content: space-between; align-items: flex-start">
+              <div style="font-size: 30px; font-weight: 700; color: #1C1A17; letter-spacing: -0.02em">Garage</div>
+              <div style="width: 36px; height: 36px; border-radius: 999px; background: #FFFFFF; border: 1px solid #E6E1D8; display: grid; place-items: center; font-size: 15px; color: #5B564E; box-shadow: 0 2px 6px rgba(28,26,23,0.06)"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="color: currentColor"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"></path><circle cx="12" cy="12" r="3"></circle></svg></div>
+            </div>
+
+            <div style="padding: 18px 20px 0">
+              <div style="background: #FFFFFF; border: 1px solid #E6E1D8; border-radius: 16px; overflow: hidden">
+                <div style="height: 132px; background: linear-gradient(160deg, #E8E2D6 0%, #D8CFBE 100%); position: relative">
+                  <span style="position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); opacity: 0.34"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="color: #5B564E"><path d="m21 8-2 2-1.5-3.7A2 2 0 0 0 15.646 5H8.4a2 2 0 0 0-1.903 1.257L5 10 3 8"></path><path d="M7 14h.01"></path><path d="M17 14h.01"></path><rect width="18" height="8" x="3" y="10" rx="2"></rect><path d="M5 18v2"></path><path d="M19 18v2"></path></svg></span>
+                </div>
+                <div style="padding: 13px 15px 15px">
+                  <div style="display: flex; justify-content: space-between; align-items: center">
+                    <span style="font-size: 19px; font-weight: 600; color: #1C1A17">Golf GTI</span>
+                    <span style="width: 9px; height: 9px; border-radius: 999px; background: #9C5A16"></span>
+                  </div>
+                  <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; color: #5B564E; margin-top: 3px">VW Golf GTI · 2019 · 1234-ABC</div>
+                  <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-top: 11px">
+                    <span style="background: #F3E9F1; color: #6E3960; font-size: 12.5px; padding: 4px 11px; border-radius: 999px">Mapfre</span>
+                    <span style="background: #EFEDE7; color: #1C1A17; font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 12.5px; padding: 4px 11px; border-radius: 999px">268/1.760 km</span>
+                    <span style="background: #EFEDE7; color: #1C1A17; font-size: 12.5px; padding: 4px 11px; border-radius: 999px">Insurance in 19 days</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div style="padding: 14px 20px 0">
+              <div style="background: #FFFFFF; border: 1px solid #E6E1D8; border-radius: 16px; overflow: hidden">
+                <div style="height: 132px; background: linear-gradient(160deg, #DFDACF 0%, #CEC5B4 100%); position: relative">
+                  <span style="position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); opacity: 0.34"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="color: #5B564E"><path d="m21 8-2 2-1.5-3.7A2 2 0 0 0 15.646 5H8.4a2 2 0 0 0-1.903 1.257L5 10 3 8"></path><path d="M7 14h.01"></path><path d="M17 14h.01"></path><rect width="18" height="8" x="3" y="10" rx="2"></rect><path d="M5 18v2"></path><path d="M19 18v2"></path></svg></span>
+                </div>
+                <div style="padding: 13px 15px 15px">
+                  <div style="font-size: 19px; font-weight: 600; color: #1C1A17">Ibiza</div>
+                  <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; color: #5B564E; margin-top: 3px">Seat Ibiza · 2014 · 5678-DEF</div>
+                  <div style="display: flex; gap: 6px; margin-top: 11px">
+                    <span style="background: #EFEDE7; color: #1C1A17; font-size: 12.5px; padding: 4px 11px; border-radius: 999px">Owned</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div style="padding: 18px 20px 0; text-align: center">
+              <span style="display: inline-block; border: 1px solid #E6E1D8; background: #FFFFFF; color: #1C1A17; font-size: 15px; padding: 12px 28px; border-radius: 8px">Add a car</span>
+            </div>
+
+            <div style="padding: 24px 20px 0">
+              <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; font-weight: 600; letter-spacing: 0.09em; color: #787166; margin-bottom: 8px">ARCHIVED</div>
+              <div style="display: grid; grid-template-columns: 36px 1fr auto; gap: 12px; align-items: center; padding: 8px 0">
+                <span style="width: 36px; height: 36px; border-radius: 9px; background: #EFEDE7; display: grid; place-items: center; opacity: 0.55"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="color: #5B564E"><path d="m21 8-2 2-1.5-3.7A2 2 0 0 0 15.646 5H8.4a2 2 0 0 0-1.903 1.257L5 10 3 8"></path><path d="M7 14h.01"></path><path d="M17 14h.01"></path><rect width="18" height="8" x="3" y="10" rx="2"></rect><path d="M5 18v2"></path><path d="M19 18v2"></path></svg></span>
+                <span><span style="display: block; font-size: 14.5px; color: #5B564E">Ibiza 1.9 TDI</span><span style="display: block; font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; color: #787166">Archived 2020 · records kept</span></span>
+                <span style="border: 1px solid #E6E1D8; color: #35692F; font-size: 12.5px; padding: 6px 13px; border-radius: 999px">Restore</span>
+              </div>
+            </div>
+
+            <div style="position: absolute; right: 20px; bottom: 84px; width: 52px; height: 52px; border-radius: 16px; background: #1C1A17; display: grid; place-items: center; color: #FBF9F5; font-size: 27px; font-weight: 300; box-shadow: 0 6px 18px rgba(28,26,23,0.18)"><svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="color: currentColor"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg></div>
+            <div style="position: absolute; left: 0; right: 0; bottom: 0; border-top: 1px solid #E6E1D8; background: rgba(251,249,245,0.94); backdrop-filter: blur(12px); padding: 8px 8px 22px; display: flex; justify-content: space-around">
+              <div style="text-align: center; color: #787166"><div style="font-size: 19px; line-height: 1.2"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="color: currentColor"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg></div><div style="font-size: 10.5px">Home</div></div>
+              <div style="text-align: center; color: #787166"><div style="font-size: 19px; line-height: 1.2"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="color: currentColor"><path d="M15 12h-5"></path><path d="M15 8h-5"></path><path d="M19 17V5a2 2 0 0 0-2-2H4"></path><path d="M8 21h12a2 2 0 0 0 2-2v-1a1 1 0 0 0-1-1H11a1 1 0 0 0-1 1v1a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v2a1 1 0 0 0 1 1h3"></path></svg></div><div style="font-size: 10.5px">History</div></div>
+              <div style="text-align: center; color: #787166"><div style="font-size: 19px; line-height: 1.2"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="color: currentColor"><path d="M3 3v16a2 2 0 0 0 2 2h16"></path><path d="M18 17V9"></path><path d="M13 17V5"></path><path d="M8 17v-3"></path></svg></div><div style="font-size: 10.5px">Insights</div></div>
+              <div style="text-align: center; color: #35692F"><div style="font-size: 19px; line-height: 1.2"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="color: currentColor"><path d="M18 21V10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1v11"></path><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8a2 2 0 0 1 1.132-1.803l7.95-3.974a2 2 0 0 1 1.837 0l7.948 3.974A2 2 0 0 1 22 8z"></path><path d="M6 13h12"></path><path d="M6 17h12"></path></svg></div><div style="font-size: 10.5px; font-weight: 600">Garage</div></div>
+            </div>
+          </div>
+        </div>
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; letter-spacing: 0.09em; color: var(--color-neutral-700); margin-top: 14px; text-align: center">§6.1 · GARAGE · TWO LIVE CARS + ONE ARCHIVED</div>
+      </div>
+
+      <div>
+        <div style="width: 414px; padding: 11px; background: #24211D; border-radius: 48px; box-shadow: 0 16px 44px rgba(28,26,23,0.2)">
+          <div style="width: 392px; height: 812px; background: #14120F; border-radius: 38px; overflow: hidden; position: relative; font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif">
+            <div style="height: 46px; display: flex; align-items: center; justify-content: space-between; padding: 0 26px; position: relative">
+              <span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; color: #F4F0E8">9:41</span>
+              <div style="position: absolute; left: 50%; transform: translateX(-50%); top: 8px; width: 92px; height: 26px; background: #000; border-radius: 999px"></div>
+              <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #F4F0E8; letter-spacing: 0.06em">▮▮▮ ⌾ ▊</span>
+            </div>
+            <div style="padding: 8px 20px 0; display: flex; justify-content: space-between; align-items: flex-start">
+              <div style="font-size: 30px; font-weight: 700; color: #F4F0E8; letter-spacing: -0.02em">Garage</div>
+              <div style="width: 36px; height: 36px; border-radius: 999px; background: #211E19; border: 1px solid #2E2A24; display: grid; place-items: center; font-size: 15px; color: #B8B0A4"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="color: currentColor"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"></path><circle cx="12" cy="12" r="3"></circle></svg></div>
+            </div>
+
+            <div style="padding: 18px 20px 0">
+              <div style="background: #211E19; border: 1px solid #2E2A24; border-radius: 16px; overflow: hidden">
+                <div style="height: 132px; background: linear-gradient(160deg, #33301F 0%, #26231B 100%); position: relative">
+                  <span style="position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); opacity: 0.4"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="color: #5B564E"><path d="m21 8-2 2-1.5-3.7A2 2 0 0 0 15.646 5H8.4a2 2 0 0 0-1.903 1.257L5 10 3 8"></path><path d="M7 14h.01"></path><path d="M17 14h.01"></path><rect width="18" height="8" x="3" y="10" rx="2"></rect><path d="M5 18v2"></path><path d="M19 18v2"></path></svg></span>
+                </div>
+                <div style="padding: 13px 15px 15px">
+                  <div style="display: flex; justify-content: space-between; align-items: center">
+                    <span style="font-size: 19px; font-weight: 600; color: #F4F0E8">Golf GTI</span>
+                    <span style="width: 9px; height: 9px; border-radius: 999px; background: #E8934A"></span>
+                  </div>
+                  <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; color: #B8B0A4; margin-top: 3px">VW Golf GTI · 2019 · 1234-ABC</div>
+                  <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-top: 11px">
+                    <span style="background: #2A1F27; color: #C489BA; font-size: 12.5px; padding: 4px 11px; border-radius: 999px">Mapfre</span>
+                    <span style="background: #262219; color: #F4F0E8; font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 12.5px; padding: 4px 11px; border-radius: 999px">268/1.760 km</span>
+                    <span style="background: #262219; color: #F4F0E8; font-size: 12.5px; padding: 4px 11px; border-radius: 999px">Insurance in 19 days</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div style="padding: 14px 20px 0">
+              <div style="background: #211E19; border: 1px solid #2E2A24; border-radius: 16px; overflow: hidden">
+                <div style="height: 132px; background: linear-gradient(160deg, #2D2A20 0%, #221F18 100%); position: relative">
+                  <span style="position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); opacity: 0.4"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="color: #5B564E"><path d="m21 8-2 2-1.5-3.7A2 2 0 0 0 15.646 5H8.4a2 2 0 0 0-1.903 1.257L5 10 3 8"></path><path d="M7 14h.01"></path><path d="M17 14h.01"></path><rect width="18" height="8" x="3" y="10" rx="2"></rect><path d="M5 18v2"></path><path d="M19 18v2"></path></svg></span>
+                </div>
+                <div style="padding: 13px 15px 15px">
+                  <div style="font-size: 19px; font-weight: 600; color: #F4F0E8">Ibiza</div>
+                  <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; color: #B8B0A4; margin-top: 3px">Seat Ibiza · 2014 · 5678-DEF</div>
+                  <div style="display: flex; gap: 6px; margin-top: 11px">
+                    <span style="background: #262219; color: #F4F0E8; font-size: 12.5px; padding: 4px 11px; border-radius: 999px">Owned</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div style="padding: 18px 20px 0; text-align: center">
+              <span style="display: inline-block; border: 1px solid #2E2A24; background: #211E19; color: #F4F0E8; font-size: 15px; padding: 12px 28px; border-radius: 8px">Add a car</span>
+            </div>
+
+            <div style="padding: 24px 20px 0">
+              <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; font-weight: 600; letter-spacing: 0.09em; color: #8F877A; margin-bottom: 8px">ARCHIVED</div>
+              <div style="display: grid; grid-template-columns: 36px 1fr auto; gap: 12px; align-items: center; padding: 8px 0">
+                <span style="width: 36px; height: 36px; border-radius: 9px; background: #262219; display: grid; place-items: center; opacity: 0.5"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="color: #5B564E"><path d="m21 8-2 2-1.5-3.7A2 2 0 0 0 15.646 5H8.4a2 2 0 0 0-1.903 1.257L5 10 3 8"></path><path d="M7 14h.01"></path><path d="M17 14h.01"></path><rect width="18" height="8" x="3" y="10" rx="2"></rect><path d="M5 18v2"></path><path d="M19 18v2"></path></svg></span>
+                <span><span style="display: block; font-size: 14.5px; color: #B8B0A4">Ibiza 1.9 TDI</span><span style="display: block; font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; color: #8F877A">Archived 2020 · records kept</span></span>
+                <span style="border: 1px solid #2E2A24; color: #62A64C; font-size: 12.5px; padding: 6px 13px; border-radius: 999px">Restore</span>
+              </div>
+            </div>
+
+            <div style="position: absolute; right: 20px; bottom: 84px; width: 52px; height: 52px; border-radius: 16px; background: #F4F0E8; display: grid; place-items: center; color: #14120F; font-size: 27px; font-weight: 300"><svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="color: currentColor"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg></div>
+            <div style="position: absolute; left: 0; right: 0; bottom: 0; border-top: 1px solid #2E2A24; background: rgba(20,18,15,0.94); backdrop-filter: blur(12px); padding: 8px 8px 22px; display: flex; justify-content: space-around">
+              <div style="text-align: center; color: #8F877A"><div style="font-size: 19px; line-height: 1.2"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="color: currentColor"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg></div><div style="font-size: 10.5px">Home</div></div>
+              <div style="text-align: center; color: #8F877A"><div style="font-size: 19px; line-height: 1.2"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="color: currentColor"><path d="M15 12h-5"></path><path d="M15 8h-5"></path><path d="M19 17V5a2 2 0 0 0-2-2H4"></path><path d="M8 21h12a2 2 0 0 0 2-2v-1a1 1 0 0 0-1-1H11a1 1 0 0 0-1 1v1a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v2a1 1 0 0 0 1 1h3"></path></svg></div><div style="font-size: 10.5px">History</div></div>
+              <div style="text-align: center; color: #8F877A"><div style="font-size: 19px; line-height: 1.2"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="color: currentColor"><path d="M3 3v16a2 2 0 0 0 2 2h16"></path><path d="M18 17V9"></path><path d="M13 17V5"></path><path d="M8 17v-3"></path></svg></div><div style="font-size: 10.5px">Insights</div></div>
+              <div style="text-align: center; color: #62A64C"><div style="font-size: 19px; line-height: 1.2"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="color: currentColor"><path d="M18 21V10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1v11"></path><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8a2 2 0 0 1 1.132-1.803l7.95-3.974a2 2 0 0 1 1.837 0l7.948 3.974A2 2 0 0 1 22 8z"></path><path d="M6 13h12"></path><path d="M6 17h12"></path></svg></div><div style="font-size: 10.5px; font-weight: 600">Garage</div></div>
+            </div>
+          </div>
+        </div>
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; letter-spacing: 0.09em; color: var(--color-neutral-700); margin-top: 14px; text-align: center">§6.1 · GARAGE · DARK</div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 18px">
+        <div class="blueprint" style="padding: 18px 22px; background: #fff">
+          <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+          <h4 style="margin: 0 0 7px; font-size: 20px">Archived cars are rows, not dimmed cards</h4>
+          <p style="font-size: 14.5px; line-height: 1.5; margin: 0; text-wrap: pretty">Dimming a photo card reads as broken. A row reads as <em>shelved</em>. Archive shelves, delete purges, and the two are never conflated — the archived car keeps its whole story one tap behind "Show archived records" in History.</p>
+        </div>
+        <div class="blueprint" style="padding: 18px 22px; background: #fff">
+          <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+          <h4 style="margin: 0 0 7px; font-size: 20px">The photo is identity, never data</h4>
+          <p style="font-size: 14.5px; line-height: 1.5; margin: 0; text-wrap: pretty">A photoless car gets a <strong>warm placeholder block</strong>, not a grey box. And the card's accent must stop being the fuel hue — the build paints a car row green today, which both breaks the identity-only rule and spends the app's one green on something that is not fuel money.</p>
+        </div>
+        <div class="blueprint" style="padding: 18px 22px; background: #fff">
+          <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+          <h4 style="margin: 0 0 7px; font-size: 20px">Ordering: most-recently-active first</h4>
+          <p style="font-size: 14.5px; line-height: 1.5; margin: 0; text-wrap: pretty">§16 #12's recommendation, taken. An alphabetical garage buries the car you actually drive. Archived always last. Logged as a taste call, not a derivation.</p>
+        </div>
+        <div class="blueprint" style="padding: 18px 22px; background: #fff">
+          <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+          <h4 style="margin: 0 0 7px; font-size: 20px">A single-car garage is still a list of one</h4>
+          <p style="font-size: 14.5px; line-height: 1.5; margin: 0; text-wrap: pretty">Not a promoted dashboard. And with one car, every scope chip and car picker in the product <strong>does not render at all</strong> — that is article 8, and it is a rendering rule, not a disabled state.</p>
+        </div>
+        <div class="blueprint" style="padding: 18px 22px; background: var(--color-accent-100)">
+          <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+          <h4 style="margin: 0 0 7px; font-size: 20px">Chips are facts — and one denominator, decided</h4>
+          <p style="font-size: 14.5px; line-height: 1.5; margin: 0 0 8px; text-wrap: pretty">The cap chip and the car page's gauge both read <span style="font-family: 'IBM Plex Mono', monospace; font-size: 13.5px">268/1.760 km</span> — the <strong>pooled</strong> budget. §5.3 allowed the chip to show the bare 1.500 instead, and drawing it that way surfaced a real contradiction.</p>
+          <p style="font-size: 14.5px; line-height: 1.5; margin: 0; color: var(--color-neutral-800); text-wrap: pretty"><strong>At 1.600 km the two would disagree outright:</strong> a bare-cap chip says "100 km over" while the gauge says under budget — the disagreement §C4 forbids. My first fix synced the chip's over/under <em>state</em> while leaving its numbers bare, which <em>manages</em> the contradiction and still shows <span style="font-family: 'IBM Plex Mono', monospace; font-size: 13.5px">1.600/1.500</span> while calling it fine. <strong>Decided instead: one denominator.</strong> The bare cap survives only where it is defined — the gauge's own line, <em>1.500 cap + 260 carried over from June</em>. Simpler, and it removes the bug class rather than policing it.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div style="display: grid; grid-template-columns: auto minmax(280px, 1fr); gap: 20px; align-items: baseline; margin-bottom: 28px">
+      <h2 style="margin: 0; font-size: 34px">02 · The car page — both ownership shapes</h2>
+      <div style="border-bottom: 1px solid var(--color-divider); padding-bottom: 6px; font-size: 14px; color: var(--color-neutral-700)">The <span style="font-family: 'IBM Plex Mono', monospace">PLAN</span> group and the <span style="font-family: 'IBM Plex Mono', monospace">OWNERSHIP</span> group never both appear. Drawing only the subscription car would have hidden half the rule.</div>
+    </div>
+
+    <div style="display: flex; flex-wrap: wrap; gap: 40px; align-items: start">
+
+      <div>
+        <div style="width: 414px; padding: 11px; background: #24211D; border-radius: 48px; box-shadow: 0 16px 44px rgba(28,26,23,0.2)">
+          <div style="width: 392px; height: 1010px; background: #FBF9F5; border-radius: 38px; overflow: hidden; position: relative; font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif">
+            <div style="height: 46px; display: flex; align-items: center; justify-content: space-between; padding: 0 26px; position: relative">
+              <span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; color: #1C1A17">9:41</span>
+              <div style="position: absolute; left: 50%; transform: translateX(-50%); top: 8px; width: 92px; height: 26px; background: #24211D; border-radius: 999px"></div>
+              <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #1C1A17; letter-spacing: 0.06em">▮▮▮ ⌾ ▊</span>
+            </div>
+            <div style="padding: 4px 20px 11px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #E6E1D8">
+              <span style="font-size: 15.5px; color: #35692F">‹ Garage</span>
+              <span style="font-size: 16px; font-weight: 600; color: #1C1A17">Golf GTI</span>
+              <span style="color: #35692F"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="color: currentColor"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"></path><path d="m15 5 4 4"></path></svg></span>
+            </div>
+
+            <div style="height: 150px; background: linear-gradient(160deg, #E8E2D6 0%, #D8CFBE 100%); position: relative">
+              <span style="position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); opacity: 0.34"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="color: #5B564E"><path d="m21 8-2 2-1.5-3.7A2 2 0 0 0 15.646 5H8.4a2 2 0 0 0-1.903 1.257L5 10 3 8"></path><path d="M7 14h.01"></path><path d="M17 14h.01"></path><rect width="18" height="8" x="3" y="10" rx="2"></rect><path d="M5 18v2"></path><path d="M19 18v2"></path></svg></span>
+            </div>
+            <div style="padding: 14px 20px 0">
+              <span style="display: inline-block; border: 1px solid #E6E1D8; background: #FFFFFF; font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; letter-spacing: 0.05em; color: #1C1A17; padding: 4px 12px; border-radius: 6px">1234-ABC</span>
+              <div style="font-size: 15px; color: #1C1A17; margin-top: 10px">VW Golf GTI · 2019 · petrol</div>
+              <div style="font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 14px; color: #5B564E; margin-top: 2px">245 hp · 50 L tank</div>
+            </div>
+
+            <div style="padding: 22px 20px 0">
+              <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; font-weight: 600; letter-spacing: 0.09em; color: #787166; margin-bottom: 7px">ODOMETER</div>
+              <div style="display: flex; justify-content: space-between; align-items: center">
+                <span style="font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 27px; color: #1C1A17">91.240 km</span>
+                <span style="font-size: 15px; color: #35692F">…›</span>
+              </div>
+              <div style="font-size: 13.5px; color: #5B564E; margin-top: 2px">Read 12 July · derived from your trail</div>
+            </div>
+
+            <div style="padding: 22px 20px 0">
+              <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; font-weight: 600; letter-spacing: 0.09em; color: #787166; margin-bottom: 7px">PLAN</div>
+              <div style="font-size: 16px; color: #1C1A17">Mapfre · <span style="font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums">289,00 €</span> a month</div>
+              <div style="font-size: 13.5px; color: #5B564E; margin-top: 2px">Insurance and maintenance included.</div>
+
+              <div style="margin-top: 16px; background: #FFFFFF; border: 1px solid #E6E1D8; border-radius: 14px; padding: 14px 15px">
+                <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px">
+                  <span style="font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 19px; color: #1C1A17">268 / 1.760 km</span>
+                  <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.05em; color: #787166">23 JUL – 22 AUG</span>
+                </div>
+                <div style="height: 9px; background: #E6E1D8; border-radius: 5px; overflow: hidden"><div style="height: 9px; width: 15.2%; background: #1C1A17"></div></div>
+                <div style="font-size: 13.5px; color: #5B564E; margin-top: 9px; line-height: 1.45">1.500 cap + 260 carried over from June.<br>At your pace, ≈1.385 km by 22 August.<br><span style="color: #1C1A17">Under the cap.</span></div>
+              </div>
+
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 16px; padding: 8px 0">
+                <span style="font-size: 15px; color: #1C1A17">Swap window opens 12 September</span>
+                <span style="font-size: 15px; color: #35692F">…›</span>
+              </div>
+            </div>
+
+            <div style="padding: 18px 20px 0">
+              <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; font-weight: 600; letter-spacing: 0.09em; color: #787166; margin-bottom: 9px">CARE</div>
+              <div style="display: grid; grid-template-columns: 34px 1fr auto; gap: 12px; align-items: center; padding: 9px 0; border-bottom: 1px solid #E6E1D8">
+                <span style="width: 34px; height: 34px; border-radius: 8px; background: #F3E9F1; display: grid; place-items: center; font-size: 15px; color: #6E3960"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="color: #6E3960"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path></svg></span>
+                <span><span style="display: block; font-size: 15px; color: #1C1A17">Insurance &amp; papers</span><span style="display: block; font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; color: #5B564E">Renews 16 Aug · 3 papers</span></span>
+                <span style="font-size: 14px; color: #787166">›</span>
+              </div>
+              <div style="display: grid; grid-template-columns: 34px 1fr auto; gap: 12px; align-items: center; padding: 9px 0; border-bottom: 1px solid #E6E1D8">
+                <span style="width: 34px; height: 34px; border-radius: 8px; background: #F5EBD8; display: grid; place-items: center; font-size: 15px; color: #7E5C12"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="color: #7E5C12"><path d="M10.268 21a2 2 0 0 0 3.464 0"></path><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"></path></svg></span>
+                <span><span style="display: block; font-size: 15px; color: #1C1A17">Reminders · 3</span><span style="display: block; font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; color: #9C5A16">ITV is 12 days over</span></span>
+                <span style="font-size: 14px; color: #787166">›</span>
+              </div>
+              <div style="display: grid; grid-template-columns: 34px 1fr auto; gap: 12px; align-items: center; padding: 9px 0">
+                <span style="width: 34px; height: 34px; border-radius: 8px; background: #EFEDE7; display: grid; place-items: center; font-size: 17px; color: #5B564E">+</span>
+                <span style="font-size: 15px; color: #1C1A17">Add a reminder</span>
+                <span style="font-size: 14px; color: #35692F">…›</span>
+              </div>
+            </div>
+
+            <div style="padding: 18px 20px 0">
+              <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; font-weight: 600; letter-spacing: 0.09em; color: #787166; margin-bottom: 6px">RECENT</div>
+              <div style="display: grid; grid-template-columns: 34px 1fr auto; gap: 12px; align-items: center; padding: 8px 0">
+                <span style="width: 34px; height: 34px; border-radius: 8px; background: #E7F0E5; display: grid; place-items: center; font-size: 14px; color: #35692F"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="color: #35692F"><path d="M14 13h2a2 2 0 0 1 2 2v2a2 2 0 0 0 4 0v-6.998a2 2 0 0 0-.59-1.42L18 5"></path><path d="M14 21V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v16"></path><path d="M2 21h13"></path><path d="M3 9h11"></path></svg></span>
+                <span><span style="display: block; font-size: 14.5px; color: #1C1A17">Repsol Tarragona</span><span style="display: block; font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; color: #5B564E">6,9 L/100km · 378 km</span></span>
+                <span style="text-align: right"><span style="display: block; font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 14px; color: #1C1A17">35,75 €</span><span style="display: block; font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #787166">12 Jul</span></span>
+              </div>
+              <div style="display: grid; grid-template-columns: 34px 1fr auto; gap: 12px; align-items: center; padding: 8px 0">
+                <span style="width: 34px; height: 34px; border-radius: 8px; background: #F5EBD8; display: grid; place-items: center; font-size: 14px; color: #7E5C12"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="color: #7E5C12"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.106-3.105c.32-.322.863-.22.983.218a6 6 0 0 1-8.259 7.057l-7.91 7.91a1 1 0 0 1-2.999-3l7.91-7.91a6 6 0 0 1 7.057-8.259c.438.12.54.662.219.984z"></path></svg></span>
+                <span><span style="display: block; font-size: 14.5px; color: #1C1A17">Oil &amp; filter</span><span style="display: block; font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; color: #5B564E">91.108 km</span></span>
+                <span style="text-align: right"><span style="display: block; font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 14px; color: #1C1A17">96,50 €</span><span style="display: block; font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #787166">8 Jul</span></span>
+              </div>
+              <div style="display: grid; grid-template-columns: 34px 1fr auto; gap: 12px; align-items: center; padding: 8px 0">
+                <span style="width: 34px; height: 34px; border-radius: 8px; background: #EFEDE7; display: grid; place-items: center; font-size: 14px; color: #5B564E"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="color: #5B564E"><path d="m12 14 4-4"></path><path d="M3.34 19a10 10 0 1 1 17.32 0"></path></svg></span>
+                <span><span style="display: block; font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 14.5px; color: #1C1A17">90.828 km</span><span style="display: block; font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; color: #5B564E">manual</span></span>
+                <span style="text-align: right"><span style="display: block; font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #787166">28 Jun</span></span>
+              </div>
+              <div style="text-align: center; margin-top: 12px">
+                <span style="display: inline-block; border: 1px solid #E6E1D8; background: #FFFFFF; color: #35692F; font-size: 14.5px; padding: 10px 22px; border-radius: 999px">Full history ›</span>
+              </div>
+            </div>
+
+            <div style="position: absolute; left: 0; right: 0; bottom: 0; border-top: 1px solid #E6E1D8; background: rgba(251,249,245,0.94); backdrop-filter: blur(12px); padding: 8px 8px 22px; display: flex; justify-content: space-around">
+              <div style="text-align: center; color: #787166"><div style="font-size: 19px; line-height: 1.2"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="color: currentColor"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg></div><div style="font-size: 10.5px">Home</div></div>
+              <div style="text-align: center; color: #787166"><div style="font-size: 19px; line-height: 1.2"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="color: currentColor"><path d="M15 12h-5"></path><path d="M15 8h-5"></path><path d="M19 17V5a2 2 0 0 0-2-2H4"></path><path d="M8 21h12a2 2 0 0 0 2-2v-1a1 1 0 0 0-1-1H11a1 1 0 0 0-1 1v1a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v2a1 1 0 0 0 1 1h3"></path></svg></div><div style="font-size: 10.5px">History</div></div>
+              <div style="text-align: center; color: #787166"><div style="font-size: 19px; line-height: 1.2"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="color: currentColor"><path d="M3 3v16a2 2 0 0 0 2 2h16"></path><path d="M18 17V9"></path><path d="M13 17V5"></path><path d="M8 17v-3"></path></svg></div><div style="font-size: 10.5px">Insights</div></div>
+              <div style="text-align: center; color: #35692F"><div style="font-size: 19px; line-height: 1.2"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="color: currentColor"><path d="M18 21V10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1v11"></path><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8a2 2 0 0 1 1.132-1.803l7.95-3.974a2 2 0 0 1 1.837 0l7.948 3.974A2 2 0 0 1 22 8z"></path><path d="M6 13h12"></path><path d="M6 17h12"></path></svg></div><div style="font-size: 10.5px; font-weight: 600">Garage</div></div>
+            </div>
+          </div>
+        </div>
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; letter-spacing: 0.09em; color: var(--color-neutral-700); margin-top: 14px; text-align: center">§6.2 · CAR PAGE · SUBSCRIPTION · NO OWNERSHIP GROUP</div>
+      </div>
+
+      <div>
+        <div style="width: 414px; padding: 11px; background: #24211D; border-radius: 48px; box-shadow: 0 16px 44px rgba(28,26,23,0.2)">
+          <div style="width: 392px; height: 1010px; background: #FBF9F5; border-radius: 38px; overflow: hidden; position: relative; font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif">
+            <div style="height: 46px; display: flex; align-items: center; justify-content: space-between; padding: 0 26px; position: relative">
+              <span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; color: #1C1A17">9:41</span>
+              <div style="position: absolute; left: 50%; transform: translateX(-50%); top: 8px; width: 92px; height: 26px; background: #24211D; border-radius: 999px"></div>
+              <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #1C1A17; letter-spacing: 0.06em">▮▮▮ ⌾ ▊</span>
+            </div>
+            <div style="padding: 4px 20px 11px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #E6E1D8">
+              <span style="font-size: 15.5px; color: #35692F">‹ Garage</span>
+              <span style="font-size: 16px; font-weight: 600; color: #1C1A17">Ibiza</span>
+              <span style="color: #35692F"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="color: currentColor"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"></path><path d="m15 5 4 4"></path></svg></span>
+            </div>
+
+            <div style="height: 150px; background: linear-gradient(160deg, #DFDACF 0%, #CEC5B4 100%); position: relative">
+              <span style="position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); opacity: 0.34"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="color: #5B564E"><path d="m21 8-2 2-1.5-3.7A2 2 0 0 0 15.646 5H8.4a2 2 0 0 0-1.903 1.257L5 10 3 8"></path><path d="M7 14h.01"></path><path d="M17 14h.01"></path><rect width="18" height="8" x="3" y="10" rx="2"></rect><path d="M5 18v2"></path><path d="M19 18v2"></path></svg></span>
+            </div>
+            <div style="padding: 14px 20px 0">
+              <span style="display: inline-block; border: 1px solid #E6E1D8; background: #FFFFFF; font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; letter-spacing: 0.05em; color: #1C1A17; padding: 4px 12px; border-radius: 6px">5678-DEF</span>
+              <div style="font-size: 15px; color: #1C1A17; margin-top: 10px">Seat Ibiza · 2014</div>
+              <div style="font-size: 14px; color: #787166; margin-top: 2px">Tank and power not on file</div>
+            </div>
+
+            <div style="padding: 22px 20px 0">
+              <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; font-weight: 600; letter-spacing: 0.09em; color: #787166; margin-bottom: 7px">ODOMETER</div>
+              <div style="display: flex; justify-content: space-between; align-items: center">
+                <span style="font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 27px; color: #1C1A17">142.600 km</span>
+                <span style="font-size: 15px; color: #35692F">…›</span>
+              </div>
+              <div style="font-size: 13.5px; color: #5B564E; margin-top: 2px">Read 3 June · derived from your trail</div>
+            </div>
+
+            <div style="padding: 22px 20px 0">
+              <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; font-weight: 600; letter-spacing: 0.09em; color: #787166; margin-bottom: 7px">OWNERSHIP</div>
+              <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #E6E1D8">
+                <span style="font-size: 15px; color: #5B564E">Purchase price</span>
+                <span style="font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 15px; color: #1C1A17">9.200,00 €</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #E6E1D8">
+                <span style="font-size: 15px; color: #5B564E">Owned since</span>
+                <span style="font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 15px; color: #1C1A17">2014</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; padding: 8px 0">
+                <span style="font-size: 15px; color: #5B564E">Sold</span>
+                <span style="font-size: 15px; color: #787166">not sold</span>
+              </div>
+              <div style="font-size: 13.5px; color: #5B564E; margin-top: 8px; line-height: 1.45">A purchase price is a fact, not a charge. It never enters a running rate.</div>
+            </div>
+
+            <div style="padding: 20px 20px 0">
+              <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; font-weight: 600; letter-spacing: 0.09em; color: #787166; margin-bottom: 9px">CARE</div>
+              <div style="display: grid; grid-template-columns: 34px 1fr auto; gap: 12px; align-items: center; padding: 9px 0; border-bottom: 1px solid #E6E1D8">
+                <span style="width: 34px; height: 34px; border-radius: 8px; background: #F3E9F1; display: grid; place-items: center; font-size: 15px; color: #6E3960"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="color: #6E3960"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path></svg></span>
+                <span><span style="display: block; font-size: 15px; color: #1C1A17">Insurance &amp; papers</span><span style="display: block; font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; color: #787166">No policy on file · 1 paper</span></span>
+                <span style="font-size: 14px; color: #787166">›</span>
+              </div>
+              <div style="display: grid; grid-template-columns: 34px 1fr auto; gap: 12px; align-items: center; padding: 9px 0; border-bottom: 1px solid #E6E1D8">
+                <span style="width: 34px; height: 34px; border-radius: 8px; background: #F5EBD8; display: grid; place-items: center; font-size: 15px; color: #7E5C12"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="color: #7E5C12"><path d="M10.268 21a2 2 0 0 0 3.464 0"></path><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"></path></svg></span>
+                <span><span style="display: block; font-size: 15px; color: #1C1A17">Reminders · 1</span><span style="display: block; font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; color: #5B564E">ITV in 8 months</span></span>
+                <span style="font-size: 14px; color: #787166">›</span>
+              </div>
+              <div style="display: grid; grid-template-columns: 34px 1fr auto; gap: 12px; align-items: center; padding: 9px 0">
+                <span style="width: 34px; height: 34px; border-radius: 8px; background: #EFEDE7; display: grid; place-items: center; font-size: 17px; color: #5B564E">+</span>
+                <span style="font-size: 15px; color: #1C1A17">Add a reminder</span>
+                <span style="font-size: 14px; color: #35692F">…›</span>
+              </div>
+            </div>
+
+            <div style="padding: 20px 20px 0">
+              <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; font-weight: 600; letter-spacing: 0.09em; color: #787166; margin-bottom: 6px">RECENT</div>
+              <div style="display: grid; grid-template-columns: 34px 1fr auto; gap: 12px; align-items: center; padding: 8px 0">
+                <span style="width: 34px; height: 34px; border-radius: 8px; background: #F5EBD8; display: grid; place-items: center; font-size: 14px; color: #7E5C12"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="color: #7E5C12"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.106-3.105c.32-.322.863-.22.983.218a6 6 0 0 1-8.259 7.057l-7.91 7.91a1 1 0 0 1-2.999-3l7.91-7.91a6 6 0 0 1 7.057-8.259c.438.12.54.662.219.984z"></path></svg></span>
+                <span><span style="display: block; font-size: 14.5px; color: #1C1A17">Brakes</span><span style="display: block; font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; color: #5B564E">142.600 km</span></span>
+                <span style="text-align: right"><span style="display: block; font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 14px; color: #1C1A17">214,00 €</span><span style="display: block; font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #787166">3 Jun</span></span>
+              </div>
+              <div style="display: grid; grid-template-columns: 34px 1fr auto; gap: 12px; align-items: center; padding: 8px 0">
+                <span style="width: 34px; height: 34px; border-radius: 8px; background: #E7F0E5; display: grid; place-items: center; font-size: 14px; color: #35692F"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="color: #35692F"><path d="M14 13h2a2 2 0 0 1 2 2v2a2 2 0 0 0 4 0v-6.998a2 2 0 0 0-.59-1.42L18 5"></path><path d="M14 21V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v16"></path><path d="M2 21h13"></path><path d="M3 9h11"></path></svg></span>
+                <span><span style="display: block; font-size: 14.5px; color: #1C1A17">Cepsa Reus</span><span style="display: block; font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; color: #5B564E">5,4 L/100km · 412 km</span></span>
+                <span style="text-align: right"><span style="display: block; font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 14px; color: #1C1A17">36,10 €</span><span style="display: block; font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #787166">28 May</span></span>
+              </div>
+              <div style="display: grid; grid-template-columns: 34px 1fr auto; gap: 12px; align-items: center; padding: 8px 0">
+                <span style="width: 34px; height: 34px; border-radius: 8px; background: #E3EDF6; display: grid; place-items: center; font-size: 14px; color: #24608F"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="color: #24608F"><path d="M12 17V7"></path><path d="M16 8h-6a2 2 0 0 0 0 4h4a2 2 0 0 1 0 4H8"></path><path d="M4 3a1 1 0 0 1 1-1 1.3 1.3 0 0 1 .7.2l.933.6a1.3 1.3 0 0 0 1.4 0l.934-.6a1.3 1.3 0 0 1 1.4 0l.933.6a1.3 1.3 0 0 0 1.4 0l.933-.6a1.3 1.3 0 0 1 1.4 0l.934.6a1.3 1.3 0 0 0 1.4 0l.933-.6A1.3 1.3 0 0 1 19 2a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1 1.3 1.3 0 0 1-.7-.2l-.933-.6a1.3 1.3 0 0 0-1.4 0l-.934.6a1.3 1.3 0 0 1-1.4 0l-.933-.6a1.3 1.3 0 0 0-1.4 0l-.933.6a1.3 1.3 0 0 1-1.4 0l-.934-.6a1.3 1.3 0 0 0-1.4 0l-.933.6a1.3 1.3 0 0 1-.7.2 1 1 0 0 1-1-1z"></path></svg></span>
+                <span><span style="display: block; font-size: 14.5px; color: #1C1A17">Tax</span><span style="display: block; font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; color: #5B564E">Ajuntament de Reus</span></span>
+                <span style="text-align: right"><span style="display: block; font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 14px; color: #1C1A17">68,40 €</span><span style="display: block; font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #787166">14 Mar</span></span>
+              </div>
+              <div style="text-align: center; margin-top: 12px">
+                <span style="display: inline-block; border: 1px solid #E6E1D8; background: #FFFFFF; color: #35692F; font-size: 14.5px; padding: 10px 22px; border-radius: 999px">Full history ›</span>
+              </div>
+            </div>
+
+            <div style="position: absolute; left: 0; right: 0; bottom: 0; border-top: 1px solid #E6E1D8; background: rgba(251,249,245,0.94); backdrop-filter: blur(12px); padding: 8px 8px 22px; display: flex; justify-content: space-around">
+              <div style="text-align: center; color: #787166"><div style="font-size: 19px; line-height: 1.2"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="color: currentColor"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg></div><div style="font-size: 10.5px">Home</div></div>
+              <div style="text-align: center; color: #787166"><div style="font-size: 19px; line-height: 1.2"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="color: currentColor"><path d="M15 12h-5"></path><path d="M15 8h-5"></path><path d="M19 17V5a2 2 0 0 0-2-2H4"></path><path d="M8 21h12a2 2 0 0 0 2-2v-1a1 1 0 0 0-1-1H11a1 1 0 0 0-1 1v1a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v2a1 1 0 0 0 1 1h3"></path></svg></div><div style="font-size: 10.5px">History</div></div>
+              <div style="text-align: center; color: #787166"><div style="font-size: 19px; line-height: 1.2"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="color: currentColor"><path d="M3 3v16a2 2 0 0 0 2 2h16"></path><path d="M18 17V9"></path><path d="M13 17V5"></path><path d="M8 17v-3"></path></svg></div><div style="font-size: 10.5px">Insights</div></div>
+              <div style="text-align: center; color: #35692F"><div style="font-size: 19px; line-height: 1.2"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="color: currentColor"><path d="M18 21V10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1v11"></path><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8a2 2 0 0 1 1.132-1.803l7.95-3.974a2 2 0 0 1 1.837 0l7.948 3.974A2 2 0 0 1 22 8z"></path><path d="M6 13h12"></path><path d="M6 17h12"></path></svg></div><div style="font-size: 10.5px; font-weight: 600">Garage</div></div>
+            </div>
+          </div>
+        </div>
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; letter-spacing: 0.09em; color: var(--color-neutral-700); margin-top: 14px; text-align: center">§6.2 · CAR PAGE · OWNED OUTRIGHT · NO PLAN GROUP</div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 18px">
+        <div class="blueprint" style="padding: 18px 22px; background: var(--color-accent-100)">
+          <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+          <h4 style="margin: 0 0 7px; font-size: 20px">Exactly three recent rows, then the link</h4>
+          <p style="font-size: 14.5px; line-height: 1.5; margin: 0 0 8px; text-wrap: pretty">Not five, not "a few", not scrollable. This is article 1 with a number on it, and it is the structural fix for a real defect Tester R found — <em>duplicated history inside car sheet</em> — whose 2.0 fix <strong>was</strong> the one-ledger rule.</p>
+          <p style="font-size: 14.5px; line-height: 1.5; margin: 0; color: var(--color-neutral-800); text-wrap: pretty"><strong>The build has reintroduced it.</strong> <span style="font-family: 'IBM Plex Mono', monospace; font-size: 13.5px">car/[id].tsx</span> renders every reading with an inline add form. A shipped-and-fixed defect is back, and that is the single strongest argument for this pass existing.</p>
+        </div>
+        <div class="blueprint" style="padding: 18px 22px; background: #fff">
+          <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+          <h4 style="margin: 0 0 7px; font-size: 20px">What is deliberately <em>not</em> on this page</h4>
+          <p style="font-size: 14.5px; line-height: 1.5; margin: 0; text-wrap: pretty">A readings list. An inline add-reading form. A delete-car button in the body. The first two are a second copy of the ledger; the third belongs in the car form's foot with Archive and Restore, because destructive lifecycle actions belong together and behind an edit intent.</p>
+        </div>
+        <div class="blueprint" style="padding: 18px 22px; background: #fff">
+          <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+          <h4 style="margin: 0 0 7px; font-size: 20px">The odometer has one surface and two doors</h4>
+          <p style="font-size: 14.5px; line-height: 1.5; margin: 0; text-wrap: pretty">The card's <span style="font-family: 'IBM Plex Mono', monospace; font-size: 13.5px">…›</span> opens the same sheet Capture → Odometer opens, prefilled with this car. A second implementation of the same task is how two surfaces drift apart. The value itself is <strong>derived from the trail, never stored</strong>.</p>
+        </div>
+        <div class="blueprint" style="padding: 18px 22px; background: #fff">
+          <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+          <h4 style="margin: 0 0 7px; font-size: 20px"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 18px">…›</span> versus <span style="font-family: 'IBM Plex Mono', monospace; font-size: 18px">›</span> is load-bearing</h4>
+          <p style="font-size: 14.5px; line-height: 1.5; margin: 0; text-wrap: pretty">A bare chevron pushes a page; the ellipsis form opens a sheet. Three rows on the subscription page use each. Without the distinction a row that opens a task is indistinguishable from one that goes somewhere — and the user cannot predict whether Back or Cancel is coming.</p>
+        </div>
+        <div class="blueprint" style="padding: 18px 22px; background: #fff">
+          <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+          <h4 style="margin: 0 0 7px; font-size: 20px">Full history is a cross-tab jump, deliberately</h4>
+          <p style="font-size: 14.5px; line-height: 1.5; margin: 0; text-wrap: pretty">It switches to the History tab with the car scope chip <strong>already set</strong>, and the arrival is visible — the chip reads <span style="font-family: 'IBM Plex Mono', monospace; font-size: 13.5px">Golf GTI ▾</span>. There is one ledger and it lives on its own tab.</p>
+        </div>
+        <div class="blueprint" style="padding: 18px 22px; background: #fff">
+          <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+          <h4 style="margin: 0 0 7px; font-size: 20px">Two rows carry attention, quietly</h4>
+          <p style="font-size: 14.5px; line-height: 1.5; margin: 0; text-wrap: pretty">The Reminders meta says <em>ITV is 12 days over</em> in attention, and the Insurance meta names its renewal date. Neither is a badge, neither is red. The car page and the Garage card tell the same truth in the same colour.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div style="display: grid; grid-template-columns: auto minmax(280px, 1fr); gap: 20px; align-items: baseline; margin-bottom: 28px">
+      <h2 style="margin: 0; font-size: 34px">03 · Over-cap, the swap sheet, the payoff nudge</h2>
+      <div style="border-bottom: 1px solid var(--color-divider); padding-bottom: 6px; font-size: 14px; color: var(--color-neutral-700)">Three conditional blocks, each drawn on the car it can actually happen to.</div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; align-items: start">
+
+      <div>
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; font-weight: 600; letter-spacing: 0.09em; color: var(--color-neutral-700); margin-bottom: 11px">OVER-CAP · GOLF GTI · 19 AUGUST, DAY 28 OF THE CYCLE</div>
+        <div style="background: #FBF9F5; border: 1px solid #E6E1D8; padding: 22px; font-family: -apple-system, system-ui, sans-serif">
+          <div style="display: flex; gap: 6px; margin-bottom: 18px">
+            <span style="background: #F3E9F1; color: #6E3960; font-size: 12.5px; padding: 4px 11px; border-radius: 999px">Mapfre</span>
+            <span style="background: #F6E9DA; color: #9C5A16; font-size: 12.5px; padding: 4px 11px; border-radius: 999px">80 km over</span>
+          </div>
+          <div style="background: #FFFFFF; border: 1px solid #E6E1D8; border-radius: 14px; padding: 15px 16px">
+            <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px">
+              <span style="font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 19px; color: #1C1A17">1.840 / 1.760 km</span>
+              <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.05em; color: #787166">23 JUL – 22 AUG</span>
+            </div>
+            <div style="height: 9px; background: #E6E1D8; border-radius: 5px; overflow: hidden"><div style="height: 9px; width: 100%; background: #9C5A16"></div></div>
+            <div style="font-size: 13.5px; color: #5B564E; margin-top: 9px; line-height: 1.45">1.500 cap + 260 carried over from June.<br><span style="color: #9C5A16">80 km over your pooled budget.</span><br>At your pace, ≈2.035 km by 22 August.</div>
+          </div>
+        </div>
+        <div style="font-size: 14px; line-height: 1.5; color: var(--color-neutral-800); margin-top: 12px; text-wrap: pretty">Over-cap is never hidden: the gauge fills in attention, the overage is <strong>counted in text</strong>, and the pace line stays present tense. Nothing flashes, nothing turns red, and the chip names the <em>pooled</em> overage so the two surfaces agree.</div>
+        <div style="font-size: 14px; line-height: 1.5; color: var(--color-neutral-800); margin-top: 10px; text-wrap: pretty"><strong>Arithmetic:</strong> 1.840 km over 28 days is 65,7 km/day, which over the cycle's 31 days is ≈2.035 — so the snapshot is dated 19 August, not 28 July. A pace sentence that does not divide by the days it has is exactly the class of error this sheet opened with.</div>
+      </div>
+
+      <div>
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; font-weight: 600; letter-spacing: 0.09em; color: var(--color-neutral-700); margin-bottom: 11px">SWAP · A FITTED SHEET THAT REFUSES HONESTLY</div>
+        <div style="background: #EFEDE7; border: 1px solid #E6E1D8; padding: 22px; font-family: -apple-system, system-ui, sans-serif">
+          <div style="background: #FFFFFF; border-radius: 18px 18px 14px 14px; padding: 20px 20px 22px; box-shadow: 0 -6px 24px rgba(28,26,23,0.1)">
+            <div style="width: 34px; height: 4px; background: #E6E1D8; border-radius: 999px; margin: 0 auto 16px"></div>
+            <div style="font-size: 17px; font-weight: 600; color: #1C1A17; margin-bottom: 12px">Swap window</div>
+            <div style="font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 15px; color: #1C1A17">12 September – 12 October 2026</div>
+            <div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #5B564E; margin-top: 2px">every 12 months</div>
+            <div style="font-size: 15px; color: #1C1A17; margin-top: 16px; line-height: 1.45">Koi can't perform the swap and doesn't pretend to.</div>
+            <div style="font-size: 14px; color: #5B564E; margin-top: 12px; line-height: 1.5">Your records stay with the plan. The new car joins the same history; nothing is retyped.</div>
+            <div style="margin-top: 18px"><span style="display: block; text-align: center; border: 1px solid #E6E1D8; color: #1C1A17; font-size: 15px; padding: 12px; border-radius: 8px">Remind me on 12 September</span></div>
+          </div>
+        </div>
+        <div style="font-size: 14px; line-height: 1.5; color: var(--color-neutral-800); margin-top: 12px; text-wrap: pretty">The refusal is verbatim and it is stated <strong>without apology</strong>. Swap appends the new car to the plan's lineage: date-based reminders carry over, mileage-target reminders retire with the old car. The sheet says the first half in plain words; the reminder builder handles the second.</div>
+        <div style="font-size: 14px; line-height: 1.5; color: var(--color-neutral-800); margin-top: 10px; text-wrap: pretty">It is a <em>fitted</em> sheet, so the car page stays visible behind it and it closes itself — no Save button on something that only tells you a date.</div>
+      </div>
+
+      <div>
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; font-weight: 600; letter-spacing: 0.09em; color: var(--color-neutral-700); margin-bottom: 11px">PAYOFF NUDGE · A FINANCED CAR, ONCE EVER</div>
+        <div style="background: #FBF9F5; border: 1px solid #E6E1D8; padding: 22px; font-family: -apple-system, system-ui, sans-serif">
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; font-weight: 600; letter-spacing: 0.09em; color: #787166; margin-bottom: 7px">PLAN</div>
+          <div style="font-size: 16px; color: #1C1A17">Bank · <span style="font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums">289,00 €</span> a month</div>
+          <div style="font-size: 13.5px; color: #5B564E; margin-top: 2px">48 payments, ending December 2026.</div>
+          <div style="margin-top: 16px; background: #FFFFFF; border: 1px solid #E6E1D8; border-radius: 14px; padding: 16px">
+            <div style="font-size: 15.5px; color: #1C1A17; line-height: 1.4">All 48 payments logged. Paid off?</div>
+            <div style="display: flex; gap: 9px; margin-top: 14px">
+              <span style="flex: 1; text-align: center; border: 1px solid #E6E1D8; color: #1C1A17; font-size: 14.5px; padding: 11px 0; border-radius: 8px">Mark paid off</span>
+              <span style="flex: 1; text-align: center; color: #35692F; font-size: 14.5px; padding: 11px 0">Not yet</span>
+            </div>
+          </div>
+        </div>
+        <div style="font-size: 14px; line-height: 1.5; color: var(--color-neutral-800); margin-top: 12px; text-wrap: pretty">Not a modal, not a badge, not a red dot. A card on the car page, in the text voice, appearing <strong>one time</strong> when a finance plan passes its end date without a payoff.</div>
+        <div style="font-size: 14px; line-height: 1.5; color: var(--color-neutral-800); margin-top: 10px; text-wrap: pretty"><em>Mark paid off</em> flips ownership to owned, keeps every record, stops billing, and lands a milestone in History. <em>Not yet</em> is <strong>persisted and respected</strong> — the nudge never returns. The car form can flip it any time.</div>
+        <div style="font-size: 14px; line-height: 1.5; color: var(--color-neutral-800); margin-top: 10px; text-wrap: pretty"><strong>Neither fixture car can show this</strong> — the Golf is a subscription and the Ibiza is owned. Drawn on a hypothetical financed car and labelled as one, rather than bolted onto a car whose plan kind forbids it.</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div style="display: grid; grid-template-columns: auto minmax(280px, 1fr); gap: 20px; align-items: baseline; margin-bottom: 28px">
+      <h2 style="margin: 0; font-size: 34px">04 · The car form — one sheet, add and edit</h2>
+      <div style="border-bottom: 1px solid var(--color-divider); padding-bottom: 6px; font-size: 14px; color: var(--color-neutral-700)">Three fields up top, everything else below a rule, ownership as three radio rows unfolding <em>inline</em> — because a sheet never presents a second tall surface.</div>
+    </div>
+    <div style="display: flex; flex-wrap: wrap; gap: 44px; align-items: start">
+      <div>
+        <div style="width: 414px; padding: 11px; background: #24211D; border-radius: 48px; box-shadow: 0 16px 44px rgba(28,26,23,0.2)">
+          <div style="width: 392px; height: 1020px; background: #EFEDE7; border-radius: 38px; overflow: hidden; position: relative; font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif">
+            <div style="height: 34px; opacity: 0.4; display: flex; align-items: center; justify-content: space-between; padding: 0 26px">
+              <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600">9:41</span>
+              <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px">▮▮▮ ⌾ ▊</span>
+            </div>
+            <div style="position: absolute; left: 0; right: 0; top: 42px; bottom: 0; background: #FFFFFF; border-radius: 34px 34px 0 0; overflow: hidden">
+              <div style="padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #E6E1D8">
+                <span style="font-size: 15.5px; color: #35692F">Cancel</span>
+                <span style="font-size: 16px; font-weight: 600; color: #1C1A17">Add a car</span>
+                <span style="font-size: 15.5px; color: #35692F; font-weight: 500">Save</span>
+              </div>
+              <div style="padding: 16px 20px 0">
+                <div style="font-size: 15.5px; color: #1C1A17">Three fields. Everything else can wait.</div>
+
+                <div style="display: flex; gap: 14px; align-items: center; margin-top: 18px">
+                  <span style="width: 62px; height: 62px; border-radius: 12px; background: linear-gradient(160deg, #E8E2D6 0%, #D8CFBE 100%); display: grid; place-items: center; opacity: 0.55"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="color: #5B564E"><path d="m21 8-2 2-1.5-3.7A2 2 0 0 0 15.646 5H8.4a2 2 0 0 0-1.903 1.257L5 10 3 8"></path><path d="M7 14h.01"></path><path d="M17 14h.01"></path><rect width="18" height="8" x="3" y="10" rx="2"></rect><path d="M5 18v2"></path><path d="M19 18v2"></path></svg></span>
+                  <span style="border: 1px solid #E6E1D8; color: #1C1A17; font-size: 14px; padding: 9px 16px; border-radius: 999px">Add a photo</span>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 20px">
+                  <div>
+                    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 0.09em; color: #787166; margin-bottom: 5px">MAKE</div>
+                    <div style="border: 1px solid #E6E1D8; border-radius: 8px; padding: 11px 12px; font-size: 15px; background: #FBF9F5">VW</div>
+                  </div>
+                  <div>
+                    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 0.09em; color: #787166; margin-bottom: 5px">MODEL</div>
+                    <div style="border: 1px solid #E6E1D8; border-radius: 8px; padding: 11px 12px; font-size: 15px; background: #FBF9F5">Golf GTI</div>
+                  </div>
+                </div>
+
+                <div style="margin-top: 16px">
+                  <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 0.09em; color: #787166; margin-bottom: 7px">FUEL</div>
+                  <div style="display: flex; gap: 6px; flex-wrap: wrap">
+                    <span style="background: #F2EFE8; border: 1px solid #1C1A17; color: #1C1A17; font-size: 13.5px; padding: 6px 13px; border-radius: 999px">Petrol</span>
+                    <span style="border: 1px solid #E6E1D8; font-size: 13.5px; padding: 6px 13px; border-radius: 999px">Diesel</span>
+                    <span style="border: 1px solid #E6E1D8; font-size: 13.5px; padding: 6px 13px; border-radius: 999px">Electric</span>
+                    <span style="border: 1px solid #E6E1D8; font-size: 13.5px; padding: 6px 13px; border-radius: 999px">Hybrid</span>
+                  </div>
+                </div>
+
+                <div style="display: flex; align-items: center; gap: 12px; margin: 22px 0 18px">
+                  <span style="flex: 1; height: 1px; background: #E6E1D8"></span>
+                  <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #787166">everything else</span>
+                  <span style="flex: 1; height: 1px; background: #E6E1D8"></span>
+                </div>
+
+                <div>
+                  <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 0.09em; color: #787166; margin-bottom: 5px">ODOMETER AT ACQUISITION</div>
+                  <div style="border: 1px solid #E6E1D8; border-radius: 8px; padding: 11px 12px; font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 15px; background: #FBF9F5">91.240 <span style="color: #787166">km</span></div>
+                  <div style="font-size: 12.5px; color: #5B564E; margin-top: 5px; line-height: 1.4">The baseline Koi measures from. New readings come from the odometer sheet.</div>
+                </div>
+
+                <div style="margin-top: 16px">
+                  <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 0.09em; color: #787166; margin-bottom: 9px">HOW YOU HAVE IT</div>
+                  <div style="display: flex; gap: 11px; align-items: center; padding: 9px 0">
+                    <span style="width: 19px; height: 19px; border-radius: 999px; border: 1.5px solid #E6E1D8"></span>
+                    <span style="font-size: 15px; color: #1C1A17">Owned outright</span>
+                  </div>
+                  <div style="border: 1px solid #1C1A17; background: #FBF9F5; border-radius: 12px; padding: 12px 13px; margin: 4px 0">
+                    <div style="display: flex; gap: 11px; align-items: center">
+                      <span style="width: 19px; height: 19px; border-radius: 999px; border: 1.5px solid #1C1A17; display: grid; place-items: center"><span style="width: 9px; height: 9px; border-radius: 999px; background: #1C1A17"></span></span>
+                      <span style="font-size: 15px; color: #1C1A17; font-weight: 500">Financed</span>
+                    </div>
+                    <div style="margin-top: 12px; display: flex; flex-direction: column; gap: 9px">
+                      <div style="display: grid; grid-template-columns: 74px 1fr; gap: 10px; align-items: center"><span style="font-size: 13.5px; color: #5B564E">Lender</span><span style="border: 1px solid #E6E1D8; border-radius: 8px; padding: 8px 10px; font-size: 14px; background: #fff">Bank</span></div>
+                      <div style="display: grid; grid-template-columns: 74px 1fr; gap: 10px; align-items: center"><span style="font-size: 13.5px; color: #5B564E">Monthly</span><span style="border: 1px solid #E6E1D8; border-radius: 8px; padding: 8px 10px; font-family: 'IBM Plex Mono', monospace; font-size: 14px; background: #fff">289,00 €</span></div>
+                      <div style="display: grid; grid-template-columns: 74px 1fr; gap: 10px; align-items: center"><span style="font-size: 13.5px; color: #5B564E">Ends</span><span style="border: 1px solid #E6E1D8; border-radius: 8px; padding: 8px 10px; font-family: 'IBM Plex Mono', monospace; font-size: 14px; background: #fff">12 / 2026</span></div>
+                      <div style="margin-top: 3px"><span style="display: inline-block; border: 1px solid #E6E1D8; color: #1C1A17; font-size: 13.5px; padding: 8px 15px; border-radius: 999px; background: #fff">Mark paid off</span></div>
+                      <div style="font-size: 12.5px; color: #5B564E; line-height: 1.4">Marks it owned, keeps every record, stops billing.</div>
+                    </div>
+                  </div>
+                  <div style="display: flex; gap: 11px; align-items: center; padding: 9px 0">
+                    <span style="width: 19px; height: 19px; border-radius: 999px; border: 1.5px solid #E6E1D8"></span>
+                    <span style="font-size: 15px; color: #1C1A17">On a plan</span>
+                  </div>
+                  <div style="font-size: 13.5px; color: #5B564E; margin-top: 6px; line-height: 1.45">Switching keeps every record.<br>Nothing to retype.</div>
+                </div>
+
+                <div style="margin-top: 18px">
+                  <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 0.09em; color: #787166; margin-bottom: 5px">PURCHASE PRICE</div>
+                  <div style="border: 1px solid #E6E1D8; border-radius: 8px; padding: 11px 12px; font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 15px; background: #FBF9F5">18.500,00 <span style="color: #787166">€</span></div>
+                  <div style="margin-top: 9px"><span style="display: inline-block; border: 1px solid #E6E1D8; color: #1C1A17; font-size: 13.5px; padding: 8px 15px; border-radius: 999px">Mark as sold</span></div>
+                </div>
+
+                <div style="margin-top: 22px; border-top: 1px solid #E6E1D8; padding-top: 16px; display: flex; flex-direction: column; gap: 10px">
+                  <span style="border: 1px solid #E6E1D8; color: #1C1A17; font-size: 15px; padding: 12px; border-radius: 8px; text-align: center">Archive this car</span>
+                  <span style="border: 1px solid #A32D22; color: #A32D22; font-size: 15px; padding: 12px; border-radius: 8px; text-align: center">Remove this car</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; letter-spacing: 0.09em; color: var(--color-neutral-700); margin-top: 14px; text-align: center">§6.5 · CAR FORM · FINANCED ROW UNFOLDED</div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 22px; align-content: start">
+        <div class="blueprint" style="padding: 18px 22px; background: #fff">
+          <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+          <h4 style="margin: 0 0 7px; font-size: 20px">The ownership rows unfold in place</h4>
+          <p style="font-size: 14.5px; line-height: 1.5; margin: 0; text-wrap: pretty">Not a push, not a second sheet. And <em>Switching keeps every record. Nothing to retype.</em> sits directly under the radio group — where the fear actually is.</p>
+        </div>
+        <div class="blueprint" style="padding: 18px 22px; background: #fff">
+          <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+          <h4 style="margin: 0 0 7px; font-size: 20px">The odometer field is a <em>baseline</em></h4>
+          <p style="font-size: 14.5px; line-height: 1.5; margin: 0; text-wrap: pretty">Relabelled from "Odometer now" to <strong>Odometer at acquisition</strong>, with a sentence saying so. It is not a new reading — new readings are only ever minted by the odometer sheet, and a field that quietly mints one would break the fold rule from the very first screen.</p>
+        </div>
+        <div class="blueprint" style="padding: 18px 22px; background: #fff">
+          <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+          <h4 style="margin: 0 0 7px; font-size: 20px">Purchase price sits below the radios</h4>
+          <p style="font-size: 14.5px; line-height: 1.5; margin: 0; text-wrap: pretty">Because it is a fact about the car, not about which ownership row is selected — Owned and Financed both show it. It is <strong>hidden entirely for subscriptions</strong>, which is inv. 15 enforced at the point of entry rather than filtered later.</p>
+        </div>
+        <div class="blueprint" style="padding: 18px 22px; background: #fff">
+          <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+          <h4 style="margin: 0 0 7px; font-size: 20px">Mark paid off is a real control here</h4>
+          <p style="font-size: 14.5px; line-height: 1.5; margin: 0; text-wrap: pretty">Not just a sentence pointing at the car page's once-only nudge. Same consequence through either door — and the form's version is the one that still works after the user tapped <em>Not yet</em>.</p>
+        </div>
+        <div class="blueprint" style="padding: 18px 22px; background: #fff">
+          <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+          <h4 style="margin: 0 0 7px; font-size: 20px">Archive and Remove are different things</h4>
+          <div style="font-size: 14.5px; line-height: 1.55; color: var(--color-neutral-800)"><strong>Archive</strong> → kept, restorable, out of tallies and reminders, hidden from the all-cars feed, one tap brings its records back, and a scoped view always shows them.<br><strong>Remove</strong> → typed confirmation with <em>the car's name</em>, and there is no undo. Never conflated, never adjacent by accident.</div>
+        </div>
+        <div class="blueprint" style="padding: 18px 22px; background: var(--color-accent-100)">
+          <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+          <h4 style="margin: 0 0 7px; font-size: 20px">Validation, at the door</h4>
+          <div style="font-size: 14.5px; line-height: 1.55; color: var(--color-neutral-800)"><strong>Hard:</strong> empty make or model; year outside 1950…next; tank outside 10–200 L; power outside 20–2000 hp; odometer breaking monotonicity either direction — and that error <strong>names the conflicting record and offers to open it</strong>, which the build's message currently does not.<br><br><strong>Fuel type is an enum</strong>, entered by chip. The build writes it as free text, so the client half of "flag, never fix" is applied to readings and not to cars.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer style="border-top: 1px solid var(--color-text); padding-top: 18px; display: grid; grid-template-columns: 1fr auto; gap: 30px; align-items: start">
+    <div style="font-size: 14px; color: var(--color-neutral-700); max-width: 860px; line-height: 1.55; text-wrap: pretty">Sheet 04 of 08. Next: <strong>05</strong> Home and its four states. Corrections and open questions from this sheet are collected in the decisions log so none of them is only visible in a caption.</div>
+    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; line-height: 1.9; color: var(--color-neutral-700); text-align: right; white-space: nowrap">
+      <div>7 FRAMES · 2 OWNERSHIP SHAPES</div>
+      <div>3 ARITHMETIC CORRECTIONS</div>
+      <div>2 OPEN QUESTIONS · 1 NEW FINDING</div>
+    </div>
+  </footer>
+
+</div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{
+  &quot;$preview&quot;: { &quot;width&quot;: 1516, &quot;height&quot;: 1100 }
+}"></script>
+</body>
+</html>

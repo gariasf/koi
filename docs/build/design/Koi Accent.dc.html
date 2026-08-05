@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="stylesheet" href="_ds/industry-502e7e7f-a454-4e0f-a758-32b893d6b801/styles.css">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<script src="_ds/industry-502e7e7f-a454-4e0f-a758-32b893d6b801/_ds_bundle.js"></script>
+<style>
+  body { margin: 0; background: var(--color-bg); }
+  a { color: var(--color-accent-700); text-decoration: none; border-bottom: 1px solid var(--color-accent-300); }
+  a:hover { color: var(--color-accent-900); border-bottom-color: var(--color-accent-700); }
+</style>
+</helmet>
+
+<div style="background: var(--color-bg); color: var(--color-text); font-family: var(--font-body); padding: 56px 48px 96px; min-height: 100vh">
+<div style="max-width: 1500px; margin: 0 auto; display: flex; flex-direction: column; gap: 68px">
+
+  <header style="display: grid; grid-template-columns: 1fr auto; gap: 40px; align-items: end; border-bottom: 1px solid var(--color-text); padding-bottom: 20px">
+    <div>
+      <div style="font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--color-neutral-700); margin-bottom: 10px">Koi · car-cost ledger · design batch 1 · sheet 08 of 08 · + 2 annexes</div>
+      <h1 style="font-size: 68px; line-height: 0.95; margin: 0 0 6px; letter-spacing: -0.02em">Accent, buttons, FAB</h1>
+      <div style="font-family: var(--font-heading); font-size: 25px; color: var(--color-neutral-700)">Route 3: the green stops being the button colour and goes back to meaning fuel</div>
+    </div>
+    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; line-height: 1.9; color: var(--color-neutral-700); text-align: right; white-space: nowrap">
+      <div>ANSWERS&nbsp;&nbsp;your note on sheets 01–07</div>
+      <div>READS&nbsp;&nbsp;&nbsp;&nbsp;spec §D3 one green · §D7</div>
+      <div>PALETTE&nbsp;&nbsp;sheet 01 · icons sheet 02b</div>
+      <div>DATE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2026-08-03</div>
+    </div>
+  </header>
+
+  <section class="blueprint" style="padding: 26px 30px; background: #fff">
+    <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+    <div style="display: grid; grid-template-columns: 1.15fr 1fr 1fr; gap: 40px">
+      <div>
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; letter-spacing: 0.12em; color: var(--color-neutral-700); margin-bottom: 10px">THE DIAGNOSIS</div>
+        <h3 style="margin: 0 0 12px; font-size: 24px">The accent was carrying two unrelated jobs</h3>
+        <p style="font-size: 15.5px; line-height: 1.55; margin: 0 0 12px; text-wrap: pretty">§D3 sets <span style="font-family: 'IBM Plex Mono', monospace; font-size: 14.5px">accent === domain.fuel</span> — one green in the app. But the batch-1 sheets also used that green for every primary button, every FAB, every back link and every ✓. So the same pixel meant <em>fuel money</em> and <em>press this</em>, and because a button is a solid block, "press this" won.</p>
+        <p style="font-size: 15.5px; line-height: 1.55; margin: 0; text-wrap: pretty">That is the same failure the icon wells had. The fix there was to stop saturated blocks being the heaviest object on screen. This is that fix applied to actions.</p>
+      </div>
+      <div>
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; letter-spacing: 0.12em; color: var(--color-neutral-700); margin-bottom: 10px">THE RULE, AFTER</div>
+        <div style="border: 1px solid var(--color-divider)">
+          <div style="padding: 11px 14px; border-bottom: 1px solid var(--color-divider); font-size: 14.5px; line-height: 1.45"><strong>Emphasis is ink.</strong> A primary action is the darkest object on the surface, not the greenest.</div>
+          <div style="padding: 11px 14px; border-bottom: 1px solid var(--color-divider); font-size: 14.5px; line-height: 1.45"><strong>The accent means fuel.</strong> Wells, bars, dots, the fuel tile. Nothing else.</div>
+          <div style="padding: 11px 14px; background: var(--color-accent-100); font-size: 14.5px; line-height: 1.45"><strong>One exception, deliberate:</strong> tinted interactive text — back links, toast actions, sheet affordances — stays accent. It is type, not a block, so it reads as <em>tappable</em> without competing for weight. See §04.</div>
+        </div>
+        <p style="font-size: 14px; line-height: 1.5; margin: 12px 0 0; color: var(--color-neutral-800); text-wrap: pretty">This costs no spec amendment. §D3 asked for one green; it now has exactly one <em>meaning</em> too.</p>
+      </div>
+      <div>
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; letter-spacing: 0.12em; color: var(--color-neutral-700); margin-bottom: 10px">SIDE BY SIDE</div>
+        <div style="display: flex; flex-direction: column; gap: 14px">
+          <div style="background: #FBF9F5; border: 1px solid #E6E1D8; padding: 16px 18px">
+            <div style="font-family: 'IBM Plex Mono', monospace; font-size: 9.5px; letter-spacing: 0.1em; color: #787166; margin-bottom: 11px">BEFORE · TWO GREENS COMPETING</div>
+            <div style="display: flex; gap: 10px; align-items: center">
+              <span style="width: 38px; height: 38px; border-radius: 9px; background: #43823B; display: grid; place-items: center"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="color: #FBF9F5"><path d="M14 13h2a2 2 0 0 1 2 2v2a2 2 0 0 0 4 0v-6.998a2 2 0 0 0-.59-1.42L18 5"></path><path d="M14 21V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v16"></path><path d="M2 21h13"></path><path d="M3 9h11"></path></svg></span>
+              <span style="font-family: -apple-system, system-ui, sans-serif; font-size: 14.5px; color: #1C1A17; flex: 1">Log a fill</span>
+              <span style="background: #43823B; color: #FBF9F5; font-family: -apple-system, system-ui, sans-serif; font-size: 14.5px; font-weight: 500; padding: 10px 18px; border-radius: 11px">Save</span>
+            </div>
+          </div>
+          <div style="background: #FBF9F5; border: 1px solid #E6E1D8; padding: 16px 18px">
+            <div style="font-family: 'IBM Plex Mono', monospace; font-size: 9.5px; letter-spacing: 0.1em; color: #35692F; margin-bottom: 11px">AFTER · ONE GREEN, ONE MEANING</div>
+            <div style="display: flex; gap: 10px; align-items: center">
+              <span style="width: 38px; height: 38px; border-radius: 10px; background: #E7F0E5; display: grid; place-items: center"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="color: #35692F"><path d="M14 13h2a2 2 0 0 1 2 2v2a2 2 0 0 0 4 0v-6.998a2 2 0 0 0-.59-1.42L18 5"></path><path d="M14 21V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v16"></path><path d="M2 21h13"></path><path d="M3 9h11"></path></svg></span>
+              <span style="font-family: -apple-system, system-ui, sans-serif; font-size: 14.5px; color: #1C1A17; flex: 1">Log a fill</span>
+              <span style="background: #1C1A17; color: #FBF9F5; font-family: -apple-system, system-ui, sans-serif; font-size: 14.5px; font-weight: 500; padding: 10px 18px; border-radius: 8px">Save</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div style="display: grid; grid-template-columns: auto minmax(280px, 1fr); gap: 20px; align-items: baseline; margin-bottom: 24px">
+      <h2 style="margin: 0; font-size: 34px">01 · Radius — four candidates</h2>
+      <div style="border-bottom: 1px solid var(--color-divider); padding-bottom: 6px; font-size: 14px; color: var(--color-neutral-700)">The same four buttons at each radius, so the only variable is the corner.</div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 26px">
+      <sc-for list="{{ radii }}" as="r" hint-placeholder-count="4">
+        <div>
+          <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 11px">
+            <span style="font-family: var(--font-heading); font-size: 23px">{{ r.name }}</span>
+            <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: {{ r.verdictColor }}">{{ r.verdict }}</span>
+          </div>
+          <div style="background: #FBF9F5; border: 1px solid #E6E1D8; padding: 22px 20px; display: flex; flex-direction: column; gap: 10px; font-family: -apple-system, system-ui, sans-serif">
+            <span style="background: #1C1A17; color: #FBF9F5; font-size: 15px; font-weight: 500; padding: 12px 0; text-align: center; border-radius: {{ r.px }}">Save</span>
+            <span style="border: 1px solid #E6E1D8; background: #FFFFFF; color: #1C1A17; font-size: 15px; padding: 11px 0; text-align: center; border-radius: {{ r.px }}">Mark done</span>
+            <div style="display: flex; gap: 9px">
+              <span style="flex: 1; border: 1px solid #E6E1D8; background: #FFFFFF; color: #1C1A17; font-size: 14px; padding: 10px 0; text-align: center; border-radius: {{ r.px }}">Snooze +7</span>
+              <span style="flex: 1; border: 1px solid #A32D22; color: #A32D22; font-size: 14px; padding: 10px 0; text-align: center; border-radius: {{ r.px }}">Delete</span>
+            </div>
+            <div style="display: flex; gap: 9px; align-items: center; margin-top: 4px">
+              <span style="border: 1px solid #E6E1D8; background: #FFFFFF; font-family: 'IBM Plex Mono', monospace; font-size: 14px; padding: 9px 11px; border-radius: {{ r.inputPx }}; flex: 1">35,75 €</span>
+              <span style="width: 42px; height: 42px; border-radius: {{ r.fabPx }}; background: #1C1A17; display: grid; place-items: center"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="color: #FBF9F5"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg></span>
+            </div>
+          </div>
+          <p style="font-size: 13.5px; line-height: 1.5; margin: 11px 0 0; color: var(--color-neutral-800); text-wrap: pretty">{{ r.note }}</p>
+        </div>
+      </sc-for>
+    </div>
+
+    <div class="blueprint" style="margin-top: 26px; padding: 20px 24px; background: var(--color-accent-100)">
+      <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+      <h4 style="margin: 0 0 7px; font-size: 21px">Recommendation: <strong>8px</strong>, and the reasoning is not taste</h4>
+      <p style="font-size: 15px; line-height: 1.55; margin: 0 0 8px; max-width: 1180px; text-wrap: pretty">Koi is an iOS-native product using native sheets, native keyboards and native nav bars. Fully square corners fight that chrome — the platform's own controls are round-rectangles, and a square button next to a rounded system sheet reads as a rendering bug, not as a style. But 11px is the radius of a consumer app that wants to feel friendly, and this product's voice is a quiet ledger.</p>
+      <p style="font-size: 15px; line-height: 1.55; margin: 0; max-width: 1180px; text-wrap: pretty">8px is soft enough to belong on iOS and tight enough to read as a document. <strong>It also has a real relationship to the icon wells:</strong> the well is 10px on a 40px box; 8px on a 44px button gives the same ratio, so buttons and wells are now the same family instead of two independent guesses. On the Industry chrome that documents these sheets, corners stay square — the chrome and the product are allowed to disagree, because one is a spec sheet and one is an app.</p>
+    </div>
+  </section>
+
+  <section>
+    <div style="display: grid; grid-template-columns: auto minmax(280px, 1fr); gap: 20px; align-items: baseline; margin-bottom: 24px">
+      <h2 style="margin: 0; font-size: 34px">02 · The FAB — five candidates</h2>
+      <div style="border-bottom: 1px solid var(--color-divider); padding-bottom: 6px; font-size: 14px; color: var(--color-neutral-700)">It floats over every root, so it is the most-seen object in the app. Shown against a real Home body, not on a blank field.</div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px 26px">
+      <sc-for list="{{ fabs }}" as="f" hint-placeholder-count="5">
+        <div>
+          <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 11px; max-width: 320px">
+            <span style="font-family: var(--font-heading); font-size: 21px">{{ f.name }}</span>
+            <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; color: {{ f.verdictColor }}">{{ f.verdict }}</span>
+          </div>
+          <div style="background: #FBF9F5; border: 1px solid #E6E1D8; max-width: 320px; height: 300px; position: relative; overflow: hidden; font-family: -apple-system, system-ui, sans-serif">
+            <div style="padding: 16px 82px 0 18px">
+              <div style="font-size: 22px; font-weight: 700; letter-spacing: -0.02em; color: #1C1A17">Home</div>
+              <div style="font-family: 'IBM Plex Mono', monospace; font-size: 9.5px; font-weight: 600; letter-spacing: 0.09em; color: #787166; margin-top: 15px">COMING UP</div>
+              <div style="background: #FFFFFF; border: 1px solid #E6E1D8; border-radius: 12px; padding: 12px 13px; margin-top: 7px">
+                <div style="display: flex; gap: 9px; align-items: center">
+                  <span style="width: 30px; height: 30px; border-radius: 8px; background: #F3E9F1; display: grid; place-items: center; flex-shrink: 0"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="color: #6E3960"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path></svg></span>
+                  <span style="font-size: 13.5px; font-weight: 600; color: #1C1A17">Insurance renewal</span>
+                </div>
+                <div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #1C1A17; margin-top: 9px">16 August 2026</div>
+              </div>
+              <div style="display: flex; align-items: center; gap: 10px; margin-top: 16px">
+                <span style="flex: 1; height: 1px; background: #E6E1D8"></span>
+                <span style="font-family: 'IBM Plex Mono', monospace; font-size: 9.5px; font-weight: 600; letter-spacing: 0.14em; color: #787166">JULY</span>
+                <span style="flex: 1; height: 1px; background: #E6E1D8"></span>
+              </div>
+              <div style="display: flex; justify-content: space-between; font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #1C1A17; margin-top: 9px; white-space: nowrap">
+                <span>412 km</span><span>318,60 €</span><span>0,77 €/km</span>
+              </div>
+            </div>
+            <div style="position: absolute; right: 16px; bottom: 52px; width: {{ f.size }}; height: {{ f.size }}; border-radius: {{ f.radius }}; background: {{ f.bg }}; display: grid; place-items: center; box-shadow: {{ f.shadow }}">
+              <svg width="{{ f.icon }}" height="{{ f.icon }}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="color: {{ f.fg }}"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg>
+            </div>
+            <div style="position: absolute; left: 0; right: 0; bottom: 0; border-top: 1px solid #E6E1D8; background: #FBF9F5; padding: 7px 8px 12px; display: flex; justify-content: space-around; font-size: 9px; color: #787166">
+              <span style="color: #35692F; font-weight: 700">Home</span><span>History</span><span>Insights</span><span>Garage</span>
+            </div>
+          </div>
+          <p style="font-size: 13.5px; line-height: 1.5; margin: 11px 0 0; max-width: 320px; color: var(--color-neutral-800); text-wrap: pretty">{{ f.note }}</p>
+        </div>
+      </sc-for>
+    </div>
+
+    <div class="blueprint" style="margin-top: 26px; padding: 20px 24px; background: var(--color-accent-100)">
+      <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+      <h4 style="margin: 0 0 7px; font-size: 21px">Recommendation: <strong>C — ink squircle, 52px, neutral shadow</strong></h4>
+      <p style="font-size: 15px; line-height: 1.55; margin: 0 0 8px; max-width: 1180px; text-wrap: pretty">Three reasons. <strong>Ink</strong> because <span style="font-family: 'IBM Plex Mono', monospace; font-size: 14px">+</span> creates <em>any</em> record — a green FAB promises a fuel fill and delivers a chooser with six tiles, five of which are not fuel. <strong>52px</strong> because 58 was sized to compete with a coloured shadow it no longer has; 52 still clears the 44pt target with room, and the object stops being the loudest thing on a calm screen. <strong>Neutral shadow</strong> because a coloured shadow is a glow, and §D7 has no glows.</p>
+      <p style="font-size: 15px; line-height: 1.55; margin: 0; max-width: 1180px; text-wrap: pretty">The squircle (16px on 52) rather than a circle: it matches the 8px button family and the 10px wells at the same ratio, so the FAB reads as the same species of object as everything else rather than as a platform convention bolted on. <strong>Rejected: E</strong> — an outlined FAB is too quiet for the one control that must always be findable, and a translucent fill over a scrolling ledger stops being legible exactly when the list gets dense.</p>
+    </div>
+  </section>
+
+  <section>
+    <div style="display: grid; grid-template-columns: auto minmax(280px, 1fr); gap: 20px; align-items: baseline; margin-bottom: 24px">
+      <h2 style="margin: 0; font-size: 34px">03 · The full button set, both themes</h2>
+      <div style="border-bottom: 1px solid var(--color-divider); padding-bottom: 6px; font-size: 14px; color: var(--color-neutral-700)">At the recommended 8px, with the states §D7 requires — and the pressed state that batch 1 never specified.</div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px">
+      <div style="background: #FBF9F5; border: 1px solid #E6E1D8; padding: 26px 28px">
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.12em; color: #787166; margin-bottom: 20px">LIGHT</div>
+        <div style="display: grid; grid-template-columns: 84px 1fr 1fr 1fr; gap: 14px 16px; align-items: center; font-family: -apple-system, system-ui, sans-serif">
+          <span></span>
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 9.5px; letter-spacing: 0.1em; color: #787166">DEFAULT</span>
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 9.5px; letter-spacing: 0.1em; color: #787166">PRESSED</span>
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 9.5px; letter-spacing: 0.1em; color: #787166">DISABLED</span>
+
+          <span style="font-size: 13px; color: #5B564E">Primary</span>
+          <span style="background: #1C1A17; color: #FBF9F5; font-size: 15px; font-weight: 500; padding: 12px 0; text-align: center; border-radius: 8px">Save</span>
+          <span style="background: #3B3733; color: #FBF9F5; font-size: 15px; font-weight: 500; padding: 12px 0; text-align: center; border-radius: 8px">Save</span>
+          <span style="background: #1C1A17; color: #FBF9F5; font-size: 15px; font-weight: 500; padding: 12px 0; text-align: center; border-radius: 8px; opacity: 0.4">Save</span>
+
+          <span style="font-size: 13px; color: #5B564E">Secondary</span>
+          <span style="border: 1px solid #E6E1D8; background: #FFFFFF; color: #1C1A17; font-size: 15px; padding: 11px 0; text-align: center; border-radius: 8px">Mark done</span>
+          <span style="border: 1px solid #D6CFC2; background: #F2EFE8; color: #1C1A17; font-size: 15px; padding: 11px 0; text-align: center; border-radius: 8px">Mark done</span>
+          <span style="border: 1px solid #E6E1D8; background: #FFFFFF; color: #1C1A17; font-size: 15px; padding: 11px 0; text-align: center; border-radius: 8px; opacity: 0.4">Mark done</span>
+
+          <span style="font-size: 13px; color: #5B564E">Ghost</span>
+          <span style="color: #35692F; font-size: 15px; padding: 11px 0; text-align: center">Snooze +7</span>
+          <span style="color: #35692F; font-size: 15px; padding: 11px 0; text-align: center; background: #EEF3EC; border-radius: 8px">Snooze +7</span>
+          <span style="color: #35692F; font-size: 15px; padding: 11px 0; text-align: center; opacity: 0.4">Snooze +7</span>
+
+          <span style="font-size: 13px; color: #5B564E">Destructive</span>
+          <span style="border: 1px solid #A32D22; color: #A32D22; font-size: 15px; padding: 11px 0; text-align: center; border-radius: 8px">Delete</span>
+          <span style="border: 1px solid #A32D22; background: #F7EAE8; color: #8A251C; font-size: 15px; padding: 11px 0; text-align: center; border-radius: 8px">Delete</span>
+          <span style="border: 1px solid #E6E1D8; color: #787166; font-size: 15px; padding: 11px 0; text-align: center; border-radius: 8px">Remove</span>
+        </div>
+        <div style="border-top: 1px solid #E6E1D8; margin-top: 22px; padding-top: 18px">
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 9.5px; letter-spacing: 0.1em; color: #787166; margin-bottom: 11px">FOCUS · KEYBOARD AND SWITCH CONTROL</div>
+          <div style="display: flex; gap: 14px; align-items: center; font-family: -apple-system, system-ui, sans-serif">
+            <span style="background: #1C1A17; color: #FBF9F5; font-size: 15px; font-weight: 500; padding: 12px 22px; border-radius: 8px; outline: 2px solid #43823B; outline-offset: 2px">Save</span>
+            <span style="font-size: 13.5px; color: #5B564E; line-height: 1.45; flex: 1">The focus ring is the <strong>one place the accent still surrounds a primary</strong> — it is a system affordance, not emphasis, and green-on-ink is unambiguous.</span>
+          </div>
+        </div>
+      </div>
+
+      <div style="background: #14120F; border: 1px solid #2E2A24; padding: 26px 28px">
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.12em; color: #8F877A; margin-bottom: 20px">DARK</div>
+        <div style="display: grid; grid-template-columns: 84px 1fr 1fr 1fr; gap: 14px 16px; align-items: center; font-family: -apple-system, system-ui, sans-serif">
+          <span></span>
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 9.5px; letter-spacing: 0.1em; color: #8F877A">DEFAULT</span>
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 9.5px; letter-spacing: 0.1em; color: #8F877A">PRESSED</span>
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 9.5px; letter-spacing: 0.1em; color: #8F877A">DISABLED</span>
+
+          <span style="font-size: 13px; color: #B8B0A4">Primary</span>
+          <span style="background: #F4F0E8; color: #14120F; font-size: 15px; font-weight: 500; padding: 12px 0; text-align: center; border-radius: 8px">Save</span>
+          <span style="background: #CFC8BC; color: #14120F; font-size: 15px; font-weight: 500; padding: 12px 0; text-align: center; border-radius: 8px">Save</span>
+          <span style="background: #F4F0E8; color: #14120F; font-size: 15px; font-weight: 500; padding: 12px 0; text-align: center; border-radius: 8px; opacity: 0.32">Save</span>
+
+          <span style="font-size: 13px; color: #B8B0A4">Secondary</span>
+          <span style="border: 1px solid #2E2A24; background: #211E19; color: #F4F0E8; font-size: 15px; padding: 11px 0; text-align: center; border-radius: 8px">Mark done</span>
+          <span style="border: 1px solid #3A352D; background: #2B2721; color: #F4F0E8; font-size: 15px; padding: 11px 0; text-align: center; border-radius: 8px">Mark done</span>
+          <span style="border: 1px solid #2E2A24; background: #211E19; color: #F4F0E8; font-size: 15px; padding: 11px 0; text-align: center; border-radius: 8px; opacity: 0.4">Mark done</span>
+
+          <span style="font-size: 13px; color: #B8B0A4">Ghost</span>
+          <span style="color: #62A64C; font-size: 15px; padding: 11px 0; text-align: center">Snooze +7</span>
+          <span style="color: #62A64C; font-size: 15px; padding: 11px 0; text-align: center; background: #1E2A1B; border-radius: 8px">Snooze +7</span>
+          <span style="color: #62A64C; font-size: 15px; padding: 11px 0; text-align: center; opacity: 0.4">Snooze +7</span>
+
+          <span style="font-size: 13px; color: #B8B0A4">Destructive</span>
+          <span style="border: 1px solid #E86458; color: #E86458; font-size: 15px; padding: 11px 0; text-align: center; border-radius: 8px">Delete</span>
+          <span style="border: 1px solid #E86458; background: #2E1D1B; color: #F08076; font-size: 15px; padding: 11px 0; text-align: center; border-radius: 8px">Delete</span>
+          <span style="border: 1px solid #2E2A24; color: #8F877A; font-size: 15px; padding: 11px 0; text-align: center; border-radius: 8px">Remove</span>
+        </div>
+        <div style="border-top: 1px solid #2E2A24; margin-top: 22px; padding-top: 18px">
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 9.5px; letter-spacing: 0.1em; color: #8F877A; margin-bottom: 11px">THE DARK PRIMARY IS THE LIGHTEST OBJECT</div>
+          <p style="font-size: 13.5px; line-height: 1.5; margin: 0; color: #B8B0A4; text-wrap: pretty">"Emphasis is ink" inverts correctly: in dark, ink <em>is</em> the near-white, so the primary is the brightest thing on the surface. That is why this rule survives the theme flip where a coloured primary would need a second hue authored for dark.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div style="display: grid; grid-template-columns: auto minmax(280px, 1fr); gap: 20px; align-items: baseline; margin-bottom: 24px">
+      <h2 style="margin: 0; font-size: 34px">04 · The knock-ons — what else was green</h2>
+      <div style="border-bottom: 1px solid var(--color-divider); padding-bottom: 6px; font-size: 14px; color: var(--color-neutral-700)">Five things in batch 1 used the accent and were not fuel. Each needs a ruling, not a sweep.</div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 26px 22px">
+
+      <div>
+        <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px; gap: 8px">
+          <span style="font-family: var(--font-heading); font-size: 20px; line-height: 1.1">Option chips</span>
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.06em; color: #A32D22; white-space: nowrap">→ INK</span>
+        </div>
+        <div style="background: #FBF9F5; border: 1px solid #E6E1D8; padding: 18px 16px; min-height: 118px; display: grid; place-items: center">
+          <div style="display: flex; gap: 6px; flex-wrap: wrap; justify-content: center">
+            <span style="background: #F2EFE8; border: 1px solid #1C1A17; color: #1C1A17; font-family: -apple-system, system-ui, sans-serif; font-size: 13px; padding: 6px 13px; border-radius: 999px; display: inline-flex; gap: 5px; align-items: center"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>Petrol</span>
+            <span style="border: 1px solid #E6E1D8; color: #1C1A17; font-family: -apple-system, system-ui, sans-serif; font-size: 13px; padding: 6px 13px; border-radius: 999px">Diesel</span>
+            <span style="border: 1px solid #E6E1D8; color: #1C1A17; font-family: -apple-system, system-ui, sans-serif; font-size: 13px; padding: 6px 13px; border-radius: 999px">Electric</span>
+          </div>
+        </div>
+        <p style="font-size: 13px; line-height: 1.5; margin: 11px 0 0; color: var(--color-neutral-800); text-wrap: pretty">The only case where accent filled a shape for a non-fuel reason — and on the fuel sheet it put a green <em>Petrol</em> chip beside a green fuel well meaning two different things. Selected is now an ink hairline plus a real check glyph, so selection is carried by mark and weight, not hue.</p>
+      </div>
+
+      <div>
+        <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px; gap: 8px">
+          <span style="font-family: var(--font-heading); font-size: 20px; line-height: 1.1">Picker ✓</span>
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.06em; color: #1F6F63; white-space: nowrap">STAYS ACCENT</span>
+        </div>
+        <div style="background: #FBF9F5; border: 1px solid #E6E1D8; padding: 18px 16px; min-height: 118px; display: grid; place-items: center">
+          <div style="width: 100%; font-family: -apple-system, system-ui, sans-serif">
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 9px 4px; border-bottom: 1px solid #E6E1D8; font-size: 14px; color: #1C1A17">Cost <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color: #35692F"><path d="M20 6 9 17l-5-5"></path></svg></div>
+            <div style="padding: 9px 4px; border-bottom: 1px solid #E6E1D8; font-size: 14px; color: #1C1A17">Fuel</div>
+            <div style="padding: 9px 4px; font-size: 14px; color: #1C1A17">Distance</div>
+          </div>
+        </div>
+        <p style="font-size: 13px; line-height: 1.5; margin: 11px 0 0; color: var(--color-neutral-800); text-wrap: pretty">A bare glyph on a hairline row, never a fill. It is the iOS convention for "this is the chosen one" and carries no weight — the row's text is what you read. Changing it would cost clarity and gain nothing.</p>
+      </div>
+
+      <div>
+        <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px; gap: 8px">
+          <span style="font-family: var(--font-heading); font-size: 20px; line-height: 1.1">Back links</span>
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.06em; color: #1F6F63; white-space: nowrap">STAYS ACCENT</span>
+        </div>
+        <div style="background: #FBF9F5; border: 1px solid #E6E1D8; padding: 18px 16px; min-height: 118px; display: grid; place-items: center">
+          <div style="width: 100%; font-family: -apple-system, system-ui, sans-serif">
+            <div style="display: flex; justify-content: space-between; align-items: center; gap: 10px; padding-bottom: 10px; border-bottom: 1px solid #E6E1D8">
+              <span style="font-size: 14px; color: #35692F; display: inline-flex; align-items: center; gap: 2px; flex-shrink: 0; white-space: nowrap"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"></path></svg>Garage</span>
+              <span style="font-size: 14.5px; font-weight: 600; color: #1C1A17; flex-shrink: 0; white-space: nowrap">Golf GTI</span>
+              <span style="font-size: 13.5px; color: #35692F; flex-shrink: 0; white-space: nowrap">Edit</span>
+            </div>
+            <div style="font-size: 12.5px; color: #787166; margin-top: 9px">Discard · Save · Cancel all read the same way</div>
+          </div>
+        </div>
+        <p style="font-size: 13px; line-height: 1.5; margin: 11px 0 0; color: var(--color-neutral-800); text-wrap: pretty">Tinted type in a nav bar is the platform's own signal for "tappable", and it is the one place users look without being told. Ink here would make Back look like a title.</p>
+      </div>
+
+      <div style="grid-column: span 2">
+        <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px; gap: 8px">
+          <span style="font-family: var(--font-heading); font-size: 20px; line-height: 1.1">Toast actions</span>
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.06em; color: #1F6F63; white-space: nowrap">STAYS ACCENT</span>
+        </div>
+        <div style="background: #FBF9F5; border: 1px solid #E6E1D8; padding: 18px 16px; min-height: 118px; display: grid; place-items: center">
+          <div style="width: 100%; background: #FFFFFF; border: 1px solid #E6E1D8; border-radius: 12px; overflow: hidden; box-shadow: 0 6px 18px rgba(28,26,23,0.09)">
+            <div style="padding: 12px 13px; display: flex; gap: 10px; align-items: center">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="color: #5B564E; flex-shrink: 0"><path d="M3 7v6h6"></path><path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"></path></svg>
+              <span style="font-family: -apple-system, system-ui, sans-serif; font-size: 13.5px; color: #1C1A17; flex: 1; min-width: 0">Reading deleted.</span>
+              <span style="font-family: -apple-system, system-ui, sans-serif; font-size: 13.5px; font-weight: 500; color: #35692F; flex-shrink: 0">Undo</span>
+            </div>
+            <div style="height: 2px; background: #E6E1D8"><div style="height: 2px; width: 58%; background: #5B564E"></div></div>
+          </div>
+        </div>
+        <p style="font-size: 13px; line-height: 1.5; margin: 11px 0 0; color: var(--color-neutral-800); text-wrap: pretty">Undo and Retry are the only actions allowed in a toast, they are time-boxed, and they must be reachable at a glance without shouting. Tinted type on a card that is already floating is exactly enough.</p>
+      </div>
+
+      <div>
+        <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px; gap: 8px">
+          <span style="font-family: var(--font-heading); font-size: 20px; line-height: 1.1">Filter chips</span>
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.06em; color: #7a7a7d; white-space: nowrap">ALREADY INK</span>
+        </div>
+        <div style="background: #FBF9F5; border: 1px solid #E6E1D8; padding: 18px 16px; min-height: 118px; display: grid; place-items: center">
+          <div style="display: flex; gap: 6px; flex-wrap: wrap; justify-content: center">
+            <span style="background: #1C1A17; color: #FBF9F5; font-family: -apple-system, system-ui, sans-serif; font-size: 13px; padding: 6px 13px; border-radius: 999px">All</span>
+            <span style="border: 1px solid #E6E1D8; color: #1C1A17; font-family: -apple-system, system-ui, sans-serif; font-size: 13px; padding: 6px 13px; border-radius: 999px">Fuel</span>
+            <span style="border: 1px solid #E6E1D8; color: #1C1A17; font-family: -apple-system, system-ui, sans-serif; font-size: 13px; padding: 6px 13px; border-radius: 999px">Service</span>
+          </div>
+        </div>
+        <p style="font-size: 13px; line-height: 1.5; margin: 11px 0 0; color: var(--color-neutral-800); text-wrap: pretty">Selected filters were ink-filled from the start, and that decision is now the model the option chips follow. Listed because it is the proof the pattern was already half-right — the inconsistency was the option chip, not this.</p>
+      </div>
+
+    </div>
+
+    <div class="blueprint" style="margin-top: 26px; padding: 20px 24px; background: #fff">
+      <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+      <h4 style="margin: 0 0 7px; font-size: 21px">The line these five draw</h4>
+      <p style="font-size: 15px; line-height: 1.55; margin: 0; max-width: 1180px; text-wrap: pretty"><strong>Accent as a fill</strong> means fuel money — and now only that. <strong>Accent as tinted type or a hairline</strong> means "this responds to touch", which is the iOS convention the platform already teaches and which costs no visual weight. The option chip is the one that had to move: it was the only place the accent filled a shape for a reason that had nothing to do with fuel, and on the fuel sheet specifically it produced a green <em>Petrol</em> chip sitting beside a green fuel well meaning two different things.</p>
+    </div>
+  </section>
+
+  <section>
+    <div style="display: grid; grid-template-columns: auto minmax(280px, 1fr); gap: 20px; align-items: baseline; margin-bottom: 24px">
+      <h2 style="margin: 0; font-size: 34px">05 · In situ — three real surfaces</h2>
+      <div style="border-bottom: 1px solid var(--color-divider); padding-bottom: 6px; font-size: 14px; color: var(--color-neutral-700)">The three screens where the primary button is the point. Before on the left of each pair, after on the right.</div>
+    </div>
+
+    <div style="display: flex; gap: 38px; flex-wrap: wrap">
+
+      <div>
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; font-weight: 600; letter-spacing: 0.09em; color: var(--color-neutral-700); margin-bottom: 12px">HOME · NEEDS YOU · THE REVIEW CARD</div>
+        <div style="display: flex; gap: 16px">
+          <div style="width: 300px; background: #FBF9F5; border: 1px solid #E6E1D8; padding: 18px 16px; font-family: -apple-system, system-ui, sans-serif">
+            <div style="font-family: 'IBM Plex Mono', monospace; font-size: 9px; letter-spacing: 0.1em; color: #787166; margin-bottom: 12px">BEFORE</div>
+            <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 0.09em; color: #9C5A16; margin-bottom: 9px">NEEDS YOU</div>
+            <div style="background: #FFFFFF; border: 1px solid #E6E1D8; border-radius: 15px; padding: 15px">
+              <div style="display: flex; gap: 11px; align-items: center">
+                <span style="width: 34px; height: 34px; border-radius: 9px; background: #9C5A16; display: grid; place-items: center; color: #FBF9F5; font-size: 15px">▪</span>
+                <span style="font-size: 16px; font-weight: 600; color: #1C1A17">2 things need a decision</span>
+              </div>
+              <div style="font-size: 14px; color: #1C1A17; margin-top: 12px; line-height: 1.45">Two devices changed the same reading, and one other note.</div>
+              <div style="font-size: 13px; color: #5B564E; margin-top: 5px">Nothing is fixed silently.</div>
+              <div style="margin-top: 14px"><span style="display: inline-block; background: #43823B; color: #FBF9F5; font-size: 14.5px; font-weight: 500; padding: 11px 24px; border-radius: 11px">Review</span></div>
+            </div>
+          </div>
+          <div style="width: 300px; background: #FBF9F5; border: 1px solid #E6E1D8; padding: 18px 16px; font-family: -apple-system, system-ui, sans-serif">
+            <div style="font-family: 'IBM Plex Mono', monospace; font-size: 9px; letter-spacing: 0.1em; color: #35692F; margin-bottom: 12px">AFTER</div>
+            <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 0.09em; color: #9C5A16; margin-bottom: 9px">NEEDS YOU</div>
+            <div style="background: #FFFFFF; border: 1px solid #E6E1D8; border-radius: 15px; padding: 15px">
+              <div style="display: flex; gap: 11px; align-items: center">
+                <span style="width: 34px; height: 34px; border-radius: 9px; background: #F6E9DA; display: grid; place-items: center; color: #9C5A16; font-size: 15px">▪</span>
+                <span style="font-size: 16px; font-weight: 600; color: #1C1A17">2 things need a decision</span>
+              </div>
+              <div style="font-size: 14px; color: #1C1A17; margin-top: 12px; line-height: 1.45">Two devices changed the same reading, and one other note.</div>
+              <div style="font-size: 13px; color: #5B564E; margin-top: 5px">Nothing is fixed silently.</div>
+              <div style="margin-top: 14px"><span style="display: inline-block; background: #1C1A17; color: #FBF9F5; font-size: 14.5px; font-weight: 500; padding: 11px 24px; border-radius: 8px">Review</span></div>
+            </div>
+          </div>
+        </div>
+        <p style="font-size: 13.5px; line-height: 1.5; margin: 12px 0 0; max-width: 616px; color: var(--color-neutral-800); text-wrap: pretty">The attention well also goes tinted here, matching the icon decision. Before, this card had <strong>three</strong> saturated blocks — amber well, green button, and the card itself — for one message. After, the amber says "this is the flag" and the ink says "this is the action".</p>
+      </div>
+
+      <div>
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; font-weight: 600; letter-spacing: 0.09em; color: var(--color-neutral-700); margin-bottom: 12px">CAPTURE · THE FUEL SHEET · WHERE IT MATTERS MOST</div>
+        <div style="display: flex; gap: 16px">
+          <div style="width: 300px; background: #FBF9F5; border: 1px solid #E6E1D8; padding: 18px 16px; font-family: -apple-system, system-ui, sans-serif">
+            <div style="font-family: 'IBM Plex Mono', monospace; font-size: 9px; letter-spacing: 0.1em; color: #787166; margin-bottom: 12px">BEFORE</div>
+            <div style="background: #FFFFFF; border: 1px solid #E6E1D8; border-radius: 14px; overflow: hidden">
+              <div style="padding: 11px 13px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #E6E1D8">
+                <span style="font-size: 13px; color: #35692F">Discard</span>
+                <span style="font-size: 13.5px; font-weight: 600; color: #1C1A17">Fill-up</span>
+                <span style="font-size: 13px; color: #35692F; font-weight: 500">Save</span>
+              </div>
+              <div style="padding: 13px">
+                <div style="display: flex; gap: 6px">
+                  <span style="flex: 1; text-align: center; background: #E7F0E5; border: 1px solid #43823B; border-radius: 9px; padding: 8px 0; font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; color: #1C1A17">35,75 €</span>
+                  <span style="flex: 1; text-align: center; background: #E7F0E5; border: 1px solid #43823B; border-radius: 9px; padding: 8px 0; font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; color: #1C1A17">22,00</span>
+                  <span style="flex: 1; text-align: center; border: 1px solid #E6E1D8; border-radius: 9px; padding: 8px 0; font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; color: #5B564E">1,625</span>
+                </div>
+                <div style="display: flex; gap: 5px; margin-top: 12px; flex-wrap: wrap">
+                  <span style="background: #E7F0E5; border: 1px solid #43823B; color: #35692F; font-size: 11.5px; padding: 5px 10px; border-radius: 999px">Full tank ✓</span>
+                  <span style="border: 1px solid #E6E1D8; font-size: 11.5px; padding: 5px 10px; border-radius: 999px; color: #1C1A17">Repsol ▾</span>
+                  <span style="border: 1px solid #E6E1D8; font-size: 11.5px; padding: 5px 10px; border-radius: 999px; color: #1C1A17">12 Jul ▾</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style="width: 300px; background: #FBF9F5; border: 1px solid #E6E1D8; padding: 18px 16px; font-family: -apple-system, system-ui, sans-serif">
+            <div style="font-family: 'IBM Plex Mono', monospace; font-size: 9px; letter-spacing: 0.1em; color: #35692F; margin-bottom: 12px">AFTER</div>
+            <div style="background: #FFFFFF; border: 1px solid #E6E1D8; border-radius: 14px; overflow: hidden">
+              <div style="padding: 11px 13px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #E6E1D8">
+                <span style="font-size: 13px; color: #35692F">Discard</span>
+                <span style="font-size: 13.5px; font-weight: 600; color: #1C1A17">Fill-up</span>
+                <span style="font-size: 13px; color: #1C1A17; font-weight: 600">Save</span>
+              </div>
+              <div style="padding: 13px">
+                <div style="display: flex; gap: 6px">
+                  <span style="flex: 1; text-align: center; background: #FBF9F5; border: 1px solid #1C1A17; border-radius: 8px; padding: 8px 0; font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; color: #1C1A17">35,75 €</span>
+                  <span style="flex: 1; text-align: center; background: #FBF9F5; border: 1px solid #1C1A17; border-radius: 8px; padding: 8px 0; font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; color: #1C1A17">22,00</span>
+                  <span style="flex: 1; text-align: center; border: 1px solid #E6E1D8; border-radius: 8px; padding: 8px 0; font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; color: #5B564E">1,625</span>
+                </div>
+                <div style="display: flex; gap: 5px; margin-top: 12px; flex-wrap: wrap">
+                  <span style="background: #F2EFE8; border: 1px solid #1C1A17; color: #1C1A17; font-size: 11.5px; padding: 5px 10px; border-radius: 999px; display: inline-flex; gap: 4px; align-items: center"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>Full tank</span>
+                  <span style="border: 1px solid #E6E1D8; font-size: 11.5px; padding: 5px 10px; border-radius: 999px; color: #1C1A17">Repsol ▾</span>
+                  <span style="border: 1px solid #E6E1D8; font-size: 11.5px; padding: 5px 10px; border-radius: 999px; color: #1C1A17">12 Jul ▾</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p style="font-size: 13.5px; line-height: 1.5; margin: 12px 0 0; max-width: 616px; color: var(--color-neutral-800); text-wrap: pretty">This is the sheet that proves the rule. Before, the green wash on the two filled fields meant "you typed this", the green chip meant "selected", and the green <em>Save</em> meant "commit" — three meanings, one colour, on the <strong>fuel</strong> sheet where green already means fuel. After: filled fields take an ink hairline, the chip is ink-marked with a real check glyph, and <em>Save</em> is ink-weighted. <strong>Discard stays accent</strong> — it is tinted type, and the one thing that must never look like the primary.</p>
+      </div>
+
+      <div>
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; font-weight: 600; letter-spacing: 0.09em; color: var(--color-neutral-700); margin-bottom: 12px">SETTINGS · TURN ON SYNC · LIGHT AND DARK, AFTER</div>
+        <div style="display: flex; gap: 16px">
+          <div style="width: 300px; background: #FBF9F5; border: 1px solid #E6E1D8; padding: 18px 16px; font-family: -apple-system, system-ui, sans-serif">
+            <div style="font-family: 'IBM Plex Mono', monospace; font-size: 9px; letter-spacing: 0.1em; color: #787166; margin-bottom: 12px">LIGHT</div>
+            <div style="background: #FFFFFF; border: 1px solid #E6E1D8; border-radius: 15px; padding: 16px">
+              <div style="display: flex; gap: 11px; align-items: center">
+                <span style="width: 34px; height: 34px; border-radius: 9px; background: #EFEDE7; display: grid; place-items: center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="color: #5B564E"><path d="M12 13v8l-4-4"></path><path d="m12 21 4-4"></path><path d="M4.393 15.269A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.436 8.284"></path></svg></span>
+                <span style="font-size: 16px; font-weight: 600; color: #1C1A17">This device only</span>
+              </div>
+              <div style="font-size: 14px; color: #1C1A17; margin-top: 12px; line-height: 1.45">Your records are on this phone. Nothing leaves it.</div>
+              <div style="margin-top: 14px; display: flex; flex-direction: column; gap: 9px">
+                <span style="background: #1C1A17; color: #FBF9F5; font-size: 14.5px; font-weight: 500; padding: 12px 0; text-align: center; border-radius: 8px">Turn on sync</span>
+                <span style="color: #35692F; font-size: 14px; padding: 8px 0; text-align: center">What gets sent ›</span>
+              </div>
+            </div>
+          </div>
+          <div style="width: 300px; background: #14120F; border: 1px solid #2E2A24; padding: 18px 16px; font-family: -apple-system, system-ui, sans-serif">
+            <div style="font-family: 'IBM Plex Mono', monospace; font-size: 9px; letter-spacing: 0.1em; color: #8F877A; margin-bottom: 12px">DARK</div>
+            <div style="background: #211E19; border: 1px solid #2E2A24; border-radius: 15px; padding: 16px">
+              <div style="display: flex; gap: 11px; align-items: center">
+                <span style="width: 34px; height: 34px; border-radius: 9px; background: #262219; display: grid; place-items: center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="color: #B8B0A4"><path d="M12 13v8l-4-4"></path><path d="m12 21 4-4"></path><path d="M4.393 15.269A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.436 8.284"></path></svg></span>
+                <span style="font-size: 16px; font-weight: 600; color: #F4F0E8">This device only</span>
+              </div>
+              <div style="font-size: 14px; color: #F4F0E8; margin-top: 12px; line-height: 1.45">Your records are on this phone. Nothing leaves it.</div>
+              <div style="margin-top: 14px; display: flex; flex-direction: column; gap: 9px">
+                <span style="background: #F4F0E8; color: #14120F; font-size: 14.5px; font-weight: 500; padding: 12px 0; text-align: center; border-radius: 8px">Turn on sync</span>
+                <span style="color: #62A64C; font-size: 14px; padding: 8px 0; text-align: center">What gets sent ›</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p style="font-size: 13.5px; line-height: 1.5; margin: 12px 0 0; max-width: 616px; color: var(--color-neutral-800); text-wrap: pretty">The privacy card is where the old green was most wrong: a saturated green <em>Turn on sync</em> read as a marketing CTA on the one surface whose whole job is to be soberly factual. Ink is the right register. <span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px">What gets sent ›</span> stays accent — tinted type, secondary, and it wants to be findable without being urged.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div style="display: grid; grid-template-columns: auto minmax(280px, 1fr); gap: 20px; align-items: baseline; margin-bottom: 24px">
+      <h2 style="margin: 0; font-size: 34px">06 · What changes in the tokens</h2>
+      <div style="border-bottom: 1px solid var(--color-divider); padding-bottom: 6px; font-size: 14px; color: var(--color-neutral-700)">Additive. No existing hex moves, so nothing on sheet 01 is invalidated.</div>
+    </div>
+    <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 40px; align-items: start">
+      <div class="blueprint" style="background: var(--color-neutral-900); color: var(--color-neutral-100); padding: 26px 30px; overflow-x: auto">
+        <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+        <pre style="margin: 0; font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; line-height: 1.75; white-space: pre">// ADD to palette.light / palette.dark — control surfaces
+control: {
+  primaryBg:    light '#1C1A17'  dark '#F4F0E8',   // === ink, both schemes
+  primaryFg:    light '#FBF9F5'  dark '#14120F',   // === paper, both schemes
+  primaryPress: light '#3B3733'  dark '#CFC8BC',
+  secondaryBg:  light '#FFFFFF'  dark '#211E19',   // === card
+  secondaryPress: light '#F2EFE8' dark '#2B2721',
+  ghostPress:   light '#EEF3EC'  dark '#1E2A1B',   // === domainWash.fuel
+  focusRing:    light '#43823B'  dark '#4E9139',   // === accent. the one exception
+}
+
+// ADD — shape scale, so buttons/wells/fields stop being independent guesses
+radius: { field: 8, button: 8, well: 10, card: 15, sheet: 26, fab: 16, chip: 999 }
+
+// ADD — the FAB, now a described object rather than an ad-hoc circle
+fab: { size: 52, radius: 16, bg: 'control.primaryBg', fg: 'control.primaryFg',
+       shadow: '0 6px 18px rgba(28,26,23,0.18)' }   // neutral. never a glow.
+
+// UNCHANGED: every domain hue, every semantic, both grounds, the whole ink ramp.
+// accent stays === domain.fuel. It simply stops appearing on control fills.</pre>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 18px">
+        <div class="blueprint" style="padding: 18px 22px; background: #fff">
+          <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+          <h4 style="margin: 0 0 7px; font-size: 20px">Why a radius scale is worth adding now</h4>
+          <p style="font-size: 14.5px; line-height: 1.5; margin: 0; text-wrap: pretty">Batch 1 used 11, 12, 13, 14, 15, 16, 18 and 26px across the sheets — eight radii, none of them related. Naming seven roles instead means the next screen inherits its corner rather than inventing one, which is the same argument as the token set itself.</p>
+        </div>
+        <div class="blueprint" style="padding: 18px 22px; background: #fff">
+          <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+          <h4 style="margin: 0 0 7px; font-size: 20px">One accessibility gain, free</h4>
+          <p style="font-size: 14.5px; line-height: 1.5; margin: 0; text-wrap: pretty">The old primary was <span style="font-family: 'IBM Plex Mono', monospace; font-size: 13.5px">#FBF9F5</span> on <span style="font-family: 'IBM Plex Mono', monospace; font-size: 13.5px">#43823B</span> — {{ oldPrimaryRatio }}, which clears AA for the 15px label but not by much. Ink-on-paper is {{ newPrimaryRatio }}. The most-pressed control in the app went from adequate to AAA.</p>
+        </div>
+        <div class="blueprint" style="padding: 18px 22px; background: var(--color-accent-100)">
+          <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+          <h4 style="margin: 0 0 7px; font-size: 20px">What I did not touch</h4>
+          <p style="font-size: 14.5px; line-height: 1.5; margin: 0; text-wrap: pretty">No open question in §16 is affected, and no spec article needs amending — this is a reading of §D3, not a change to it. The one thing worth your explicit blessing is the <strong>tinted-type exception</strong> in §04: it is the reason the app still looks like it has an accent at all.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer style="border-top: 1px solid var(--color-text); padding-top: 18px; display: grid; grid-template-columns: 1fr auto; gap: 30px; align-items: start">
+    <div style="font-size: 14px; color: var(--color-neutral-700); max-width: 900px; line-height: 1.55; text-wrap: pretty">Sheet 08 of 08. Say the word and I roll <strong>ink primary · 8px · FAB C</strong> through sheets 01–07 in one pass, then add the <span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px">domainWash</span> and <span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px">radius</span> ramps to sheet 01's token block. If you would rather a different radius or FAB, name it and I roll that instead — the sheets are the same amount of work either way.</div>
+    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; line-height: 1.9; color: var(--color-neutral-700); text-align: right; white-space: nowrap">
+      <div>4 RADII · 5 FABS · 5 KNOCK-ONS</div>
+      <div>0 HEXES MOVED</div>
+      <div>0 SPEC AMENDMENTS NEEDED</div>
+    </div>
+  </footer>
+
+</div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{
+  &quot;$preview&quot;: { &quot;width&quot;: 1596, &quot;height&quot;: 1100 }
+}">
+class Component extends DCLogic {
+  lum(hex) {
+    const v = hex.replace('#', '');
+    const ch = [0, 2, 4].map(i => parseInt(v.slice(i, i + 2), 16) / 255);
+    const lin = ch.map(c => (c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4)));
+    return 0.2126 * lin[0] + 0.7152 * lin[1] + 0.0722 * lin[2];
+  }
+  ratio(a, b) {
+    const la = this.lum(a), lb = this.lum(b);
+    return (Math.max(la, lb) + 0.05) / (Math.min(la, lb) + 0.05);
+  }
+  fmt(a, b) { return this.ratio(a, b).toFixed(2).replace('.', ',') + ':1'; }
+
+  renderVals() {
+    const radii = [
+      { name: '11px', px: '11px', inputPx: '10px', fabPx: '12px',
+        verdict: 'CURRENT', verdictColor: '#7a7a7d',
+        note: 'What batch 1 shipped. Friendly, consumer, a little soft for a ledger — and its 11px sits next to 10px wells and 15px cards for no reason.' },
+      { name: '8px', px: '8px', inputPx: '8px', fabPx: '10px',
+        verdict: 'RECOMMENDED', verdictColor: '#1F6F63',
+        note: 'Belongs on iOS, reads as a document. Same corner-to-size ratio as the 10px icon well, so buttons and wells become one family.' },
+      { name: '6px', px: '6px', inputPx: '6px', fabPx: '8px',
+        verdict: 'VIABLE', verdictColor: '#416180',
+        note: 'Crisper still, and closest to the Industry chrome. Starts to look deliberate rather than native — defensible if you want the product to feel more instrument than app.' },
+      { name: 'square', px: '0', inputPx: '0', fabPx: '0',
+        verdict: 'REJECTED', verdictColor: '#A32D22',
+        note: 'True to the blueprint language, wrong for the medium: against native sheets and the system keyboard it reads as unstyled, and the corners collide with the plate edges.' },
+    ];
+
+    const inkShadow = '0 6px 18px rgba(28,26,23,0.18)';
+    const fabs = [
+      { name: 'A · before', size: '54px', radius: '999px', bg: '#43823B', fg: '#FBF9F5', icon: 25,
+        shadow: '0 6px 18px rgba(67,130,59,0.34)', verdict: 'CURRENT', verdictColor: '#7a7a7d',
+        note: 'Green circle, coloured shadow. Promises fuel, opens a six-tile chooser — and the shadow is a glow, which §D7 does not have.' },
+      { name: 'B · ink circle', size: '54px', radius: '999px', bg: '#1C1A17', fg: '#FBF9F5', icon: 25,
+        shadow: inkShadow, verdict: 'VIABLE', verdictColor: '#416180',
+        note: 'Honest about what it does and much calmer. Still a circle, so it is the only round-cornered object in the app.' },
+      { name: 'C · ink squircle', size: '52px', radius: '16px', bg: '#1C1A17', fg: '#FBF9F5', icon: 24,
+        shadow: inkShadow, verdict: 'RECOMMENDED', verdictColor: '#1F6F63',
+        note: 'Same species as the buttons and wells. 52px clears 44pt comfortably, and the neutral shadow lifts it without emitting light.' },
+      { name: 'D · small squircle', size: '46px', radius: '14px', bg: '#1C1A17', fg: '#FBF9F5', icon: 22,
+        shadow: inkShadow, verdict: 'TOO QUIET', verdictColor: '#9C5A16',
+        note: 'Meets the 44pt floor with nothing spare. On the one control that must always be findable, that floor is not where you want to sit.' },
+      { name: 'E · outlined', size: '52px', radius: '16px', bg: 'rgba(251,249,245,0.92)', fg: '#1C1A17', icon: 24,
+        shadow: '0 2px 10px rgba(28,26,23,0.1)', verdict: 'REJECTED', verdictColor: '#A32D22',
+        note: 'Disappears over a dense ledger — exactly when you need it. A translucent control over scrolling content is a legibility bet you lose.' },
+    ];
+
+    return {
+      radii, fabs,
+      oldPrimaryRatio: this.fmt('#FBF9F5', '#43823B'),
+      newPrimaryRatio: this.fmt('#FBF9F5', '#1C1A17'),
+    };
+  }
+}
+</script>
+</body>
+</html>
