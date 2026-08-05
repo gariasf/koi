@@ -190,3 +190,142 @@ way to avoid needing it. Recorded rather than papered over.
   plugin endpoints (`auth.api.verifyJWT`, `.getToken`, the custom recovery/test-bootstrap
   endpoints) that calling code needs typed. Let `createAuth`'s return type infer naturally from
   the literal `betterAuth({...})` call instead.
+
+## The app surface: the wireframe pass (Build Session 7, D-057..D-059)
+
+The pass itself is `docs/build/wireframes.md` — ASCII/block screens for the four tabs, capture,
+record pages, reminders, the vault, onboarding and Settings, plus the required keep/rework/throw
+comparison against what `@koi/mobile` already has (§15 there). This section records only the
+**amendments to §C** the drawing produced. Everything the wireframes leave open for the owner is
+listed in `wireframes.md` §16 and is deliberately *not* recorded here as decided.
+
+### Where the S-4 review queue lives — DECIDED (D-057)
+§C's shell is four tabs + the detached `+`; the review queue (D-047) is not in §C at all. It now
+**participates in Home's state selection**: `Needs you` fires on an overdue reminder **or** an open
+review item; `All clear` requires zero of both. The band renders only when the queue is non-empty,
+sits under the reminder hero when both exist, and becomes the hero when nothing is overdue. A flag
+gets no Snooze and no Mark done. The queue page is pushed inside the Home tab; Settings ›
+`Review notes` is the second, always-present door so resolved items stay reachable. Zero cars wins
+the screen. Cap reminders never drive the state. Full reasoning in `wireframes.md` §14.1.
+
+### Where sync + account live — DECIDED (D-058)
+§C8's Settings sheet, under a pushed **`Sync`** page (not "Sync & devices" — there is no device
+registry). "Turn on sync" remains the sign-in step (unchanged from Session 6, only relocated off the
+garage). The recovery-codes reveal moves intact; recovery-code *entry* is wireframed and marked NOT
+BUILT (D-054), reachable only from the failed-sign-in banner. Sync is never offered in onboarding.
+No sync badge anywhere in the shell (accepted consequence, recorded). Several changes to shipped
+copy and behaviour, each because the current version is not true — the privacy card and the erase
+dialog carrying **three states, not two** (adversarially reviewed after the pass first drew only
+two — see below), no pending count while never synced, `Erase this device` + sync-off-first for any
+device that has ever synced, and a sentence for the two-Face-ID stutter. Details and exact strings
+in `wireframes.md` §12; reasoning in §14.2.
+
+**The privacy card and the erase dialog are keyed on "has this device ever synced," not on the
+toggle — three states, not two** (the release-gated privacy **page** is untouched — bucket F). The
+first draft of this pass keyed both surfaces on the sync toggle alone; the adversarial review
+caught that this makes them lie the moment a device pauses sync after using it (an account and
+server-side records both outlive the pause, per D-052), which is exactly what §H1 calls product law:
+- **Never synced (the default):** "Your data never leaves this device. No account, cloud sync or
+  analytics. Export any time." — §C8 verbatim, still literally true.
+- **Syncing:** "No ads, trackers or analytics. Export any time." + "This device syncs to your own
+  server, so your other devices see the same records. It never leaves servers you run." — the second
+  sentence is spec-delta's own reviewed wording, unchanged; the first is D-006's floor, which does
+  not stop being true when sync is turned on.
+- **Paused** (has synced before, sync now off): "No ads, trackers or analytics. Export any time." +
+  "Sync is paused. Records you already sent are still on your server." The never-synced claims
+  ("no account", "never leaves this device") never return once an account exists — not on this
+  device, not by pausing sync, not ever short of the S-7 erase-everywhere this build does not have.
+  The erase dialog uses the same discriminator: `Erase this device` (turning sync off first, if not
+  already) applies to any device that has ever synced, syncing or paused alike — `Erase everything`
+  is reserved for a device that has genuinely never had an account.
+
+### Dark mode — DECIDED (D-059)
+Wireframes carry colour **roles**, not palettes. The authored dark palette (plus the
+`positive === fuel` fix, the faint-ink contrast fix, and the `StatusBar`/`userInterfaceStyle`
+mismatch) is a new bucket-D board item, sequenced before History's build session. The `Appearance`
+control has its slot in Settings and ships in the same increment as the palette.
+
+### Amendments to §C the wireframes make
+
+Each of these fills a hole §C leaves; none contradicts it.
+
+- **§C1 Home.** State precedence is a four-row table including the review-queue cases (D-057).
+  `Upcoming` vs `Later` (and therefore Coming-up vs All-clear) is defined by **the reminder's own
+  earliest advance-alert window** being open — it invents no number, reuses the user's own alert
+  configuration, and makes "All quiet for the next few weeks" literally true. Multiple overdue
+  reminders render as compact rows under the hero, **never** in `Later` (the label would contradict
+  the row). `All clear` gains one quiet `All reminders ›` row — a state that says "quiet, not empty"
+  must let you check. The month pulse gets an explicit rule for the current month's km (newest
+  reading inside the month minus the last reading at or before its start; no reading inside the
+  month → dash + "No readings this month." and no €/km), which is the only reading that never
+  invents distance for an unfinished period.
+- **§C2 History.** Row anatomy is fixed per record kind (a table in `wireframes.md` §3.2),
+  including what the fold rule (inv.7) means for what the feed shows, and it extends the fold to
+  service/expense entry odometers. Month whispers describe the **filtered** view, revealed archived
+  rows never join them, and a month with records but no money reads "4 records" rather than
+  "0,00 €". Filter chips are multi-select within the type dimension, reset on cold launch, survive
+  tab switches. A flagged record carries a quiet `{attention}` dot on its own row — otherwise inv.12's
+  "the user decides" has no anchor in the ledger.
+- **§C3 Insights.** `Where it went`'s top-5 truncation gains an ink `Other (N kinds)` row so the bars
+  reconcile with the headline. A page with no records says so instead of showing a `0,00 €` headline.
+  Record lists are amount-descending. `All time` keeps the rate as its headline **and** carries the
+  lifetime total in its sentence. An empty page inside the range is rendered, never skipped.
+  Ownership's subject under a swap lineage, the `≈` on interpolated distance, and `By week`'s
+  bucketing are recommendations pending owner sign-off (§16), not decisions.
+- **§C4 Garage / car page.** Archived cars are rows, not dimmed photo cards. The attention dot fires
+  on overdue-or-over-cap. "Insurance in N days" uses a 60-day window, matching §B1's own advance-alert
+  default so the chip and the notification cannot disagree. `Full history ›` switches to the History
+  tab with the car scope chip set. The car form's `Remove` requires **the car's name** typed (§I9's
+  "demands its name understood"), not a generic word. The car photo gets an entry point (a row at
+  the head of the form). The form's odometer field is explicitly the acquisition **baseline**; new
+  readings are only ever minted by the odometer sheet.
+- **§C5 Capture.** The derived-pill rule is "your last two edits win". A car picker rides in the
+  **sheet header**, not the chooser, because capture is entered from four doors and only the sheet is
+  common to all of them. Save gates are defined per type. The trip sheet gains §B1's `note` field (a
+  persisted field with no door is unreachable data, and the importer writes into it). Decimal
+  precision is fixed per unit (€ 2 · L 2 · €/L 3 · km 0) with the decimal key disabled on odometer
+  wells. A dirty guard **wins** over a notification deep-link's modal teardown — a half-typed fill is
+  unrecoverable, a notification is still in Notification Center.
+- **§C6 Record pages.** Which kinds get a Computed panel is fixed (a table in `wireframes.md` §8.1),
+  and a "part of June's total" line is explicitly **refused** — it would give one figure two homes.
+  The fuel panel gains a **composition line** ("Includes this fill and 1 partial before it.") because
+  the basis line's litres are the interval's, not the fill's, and without it two litre figures on one
+  page look like a bug. Two degraded states are added for cases the domain and the importer actually
+  produce: chain-not-started, and a money-only fill. The verdict reuses inv.4's ±5% dead band so the
+  record page and the fuel lens cannot disagree about "your usual". A fill's delete confirmation gains
+  a third clause: **the next fill's interval is measured again**. The milestone set is fixed at eight
+  kinds, and an import is explicitly not one.
+- **§C7 Reminders.** A synthesized cap reminder is read-only with **no detail page** — its row pushes
+  the car page, where the gauge already lives. The detail gains an **`Anchor` row**, without which
+  inv.32's "never scheduled into the past" and "a 31st anchor never decays" are unverifiable by the
+  user. Zero alerts is legal and says "no alerts" plainly. A km target behind the current odometer is a
+  **soft** confirm. The pre-prompt fires after `Save → dismiss → toast`, because §D1 forbids a sheet
+  presenting another. A morning-digest tap lands on the reminders list (a bundled note has no single
+  target). A per-reminder occurrence history is **refused** — it would need a column.
+- **§C8 Vault / onboarding / settings.** The vault's user-facing title is **"Insurance & papers"**
+  ("vault" stays internal), reached by **one** Care row rather than §C4's two. The renewal flow gains a
+  post-date string and a third action, **"It lapsed"** — otherwise a genuinely lapsed policy can only
+  be recorded as a fake renewal. `InsurancePolicy.premium` is a **fact, never a charge** (the inv.15
+  purchase-price pattern), so the same money cannot be counted twice. Onboarding's three fields are
+  make / model / fuel type, and the one local suggestion is anchored to **"the first car exists"**
+  rather than to "onboarding ran" (a user who skips beat 2 would otherwise burn it unshown). A
+  signed-in second device with no records yet reads "Waiting for your records to arrive." instead of
+  "Add your car to begin", which is the cheapest possible prevention of the duplicate-car outcome
+  D-052 scenario B documents. Unit and currency rows show no example at all when there is no number to
+  convert. The currency page repeats that it relabels and never converts. Export rows carry "Exports
+  what's on this device." while sync is on and the queue is non-empty. A faint version row sits at the
+  foot of the sheet — with no analytics and no crash reporting, the user is the only telemetry channel.
+
+### Two facts about the spec's own text, so they are not re-derived
+- **Article 7 is already renegotiated** (D-012: articles 1–6 and 8 hold verbatim, article 7 within
+  D-005/D-006). The binding text for any surface that touches sync or accounts is **D-006's privacy
+  floor**, not article 7's "no accounts, no servers, no network calls… permanent". The public
+  reconciliation is the bucket-F privacy-page rewrite.
+- **Income tracking is IN scope** (D-008/D-014 formally superseded the refusals-table income row). It
+  has no surface yet, and `wireframes.md` §16 #9 says why it stays off the capture chooser for the
+  shell build — plus the colour-law collision it will bring (the income sketch wants the *positive*
+  hue, which §D3 reserves).
+- **H2's "one JSON document" no longer describes persistence** (the build is SQLite via PowerSync), so
+  "Export JSON" is a *generated* full-fidelity document rather than a copy of the store, and H2's
+  `.corrupt` backup behaviour does not describe reality. No surface change; recorded so nobody wires
+  Export JSON to a file that does not exist.

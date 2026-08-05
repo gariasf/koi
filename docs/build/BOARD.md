@@ -14,6 +14,44 @@ lives in §4 — this board tracks status, not prose.
 
 ## Now / Next
 
+- **OWNER REVIEW OWED (2026-07-28): Session 7 done — the wireframe pass (D-057..D-059).** Bucket D's
+  first item, opened on the owner's own Session 7 brief (the brief being typed into the session was the
+  Session 6 sign-off). Deliverable is `docs/build/wireframes.md`, a reviewable design document — **no
+  screen code was written, and none should be until this is reviewed.** ASCII/block screens for the
+  whole surface: the shell (four tabs + detached `+` + floating Settings + per-tab stacks + the route
+  map the four tabs imply), Home's three states with the month pulse and Last-fill card, History's
+  month-grouped feed with row anatomy per record kind, the Insights header + the time-as-pages
+  carousel and all four lenses card by card, Garage/car page/car form, all six capture surfaces
+  including the fuel keypad's derived-pill state machine and the saved moment, record pages with every
+  degraded fuel panel, reminders + notifications, the vault, onboarding, and the Settings sheet.
+  **Three gaps resolved rather than drawn:** the S-4 review queue joins Home's *state machine* — so
+  `All clear` can no longer say "Everything OK" while two devices disagree — with a second door in
+  Settings (D-057); sync, the passkey sign-in, the recovery-codes reveal and the privacy card move off
+  the garage into the §C8 Settings sheet under a page called `Sync` (not "Sync & devices" — there is no
+  device registry), with the sharpest honesty fix being that **`Erase everything` becomes `Erase this
+  device` for any device that has ever synced**, on or paused alike, turning sync off first — because a
+  local wipe on an enrolled device re-bootstraps from the checkpoint (D-058); and dark mode carries
+  colour **roles** now, with the authored palette as its own board item sequenced before History
+  (D-059). **The comparison against existing code earned the pass:** 21 places where `@koi/mobile`
+  already contradicts §C/§D, with file:line — notably the car page re-introducing a shipped-and-fixed
+  defect (it lists the whole ledger; §C4 caps it at 3 rows + `Full history ›`, and §E round 1 records
+  Tester R finding exactly this in the old app), `positive === domain.fuel`, every number formatted by
+  a bare `toLocaleString()` while `@koi/domain`'s own `formatAmount` is imported nowhere, and a sync
+  card whose "N records kept here so far" counts upload-queue rows. Verdicts: `_layout.tsx` scaffolding
+  · `index.tsx`/`car/[id].tsx`/`review/*`/`components.tsx`/`theme.ts` rework with a carry-out list of
+  every proven string · all sync/domain plumbing keep. 18 owner questions in §16 (the sharpest: do
+  plan charges become ledger rows, so History's whisper and the Cost lens stop disagreeing), and §17
+  carries the build order. Method: two workflows — 10 agents producing per-surface spec-element
+  inventories + the code audit, then 6 adversarial lenses (constitution/invariants, honesty/voice,
+  nav/time, colour/chart, completeness vs §C, internal consistency) with a refute-first verify pass,
+  **which caught a real product-law violation of its own** — the privacy card and erase dialog were
+  keyed on the sync toggle rather than on "has ever synced," so a paused device (synced once, then
+  turned off) would falsely claim "no account, never leaves this device" while its passkey and
+  server-side records both still existed. Fixed in-session along with 47 other confirmed findings
+  (cap-gauge math against the bare cap instead of the pooled budget, the car page rendering
+  OWNERSHIP on the subscription fixture, arithmetic that didn't reconcile, missing car-form controls);
+  see the Session 7 follow-up entry below for the full account. **Owner review owed on the current,
+  already-corrected document.**
 - **Session 6 done — real auth end-to-end (D-053..D-056).** Opened on the owner's own Session 6
   brief (the gate below — the owner typing the brief directly into the session was the sign-off).
   better-auth mounted in-process, Drizzle-integrated (no separate migration mechanism), replacing
@@ -124,13 +162,18 @@ lives in §4 — this board tracks status, not prose.
 |---|---|---|
 | done | ▲ | on-device (RN-bundled) Hermes golden-vector CI step — Session 4, D-050: new `conformance-rn-hermes` job builds Hermes from the tag the installed react-native pins, asserts compiler identity + HBC version (RN 0.86 is HBC 98; the jsvu proxy is 96), runs the vectors from source AND as RN-hermesc bytecode — md5 f93b1d6b… both ways. jsvu job kept as a canary. Still owed, narrowly: a device/emulator run for the per-OS Unicode provider (normalize NFC) |
 | done | ▽ | @koi/domain primitives build-out — Session 1: money/civil-date/ordering/ids/economy, ESLint bans, vectors byte-identical tri-engine (md5 f93b1d6b…). date-fns v4 stays the sanctioned calendar dep; primitives needed none of it (hardening calls delegated to assistant at gate; kept) |
-| todo | ▽ | i18n setup: i18next + shared JSON catalogs (@koi/i18n); adopt the Selector API from the start — i18next v27 plans to drop type-level string keys (parking-lot promotion, D-035) |
+| todo | ▽ | i18n setup: i18next + shared JSON catalogs (@koi/i18n); adopt the Selector API from the start — i18next v27 plans to drop type-level string keys (parking-lot promotion, D-035). **Promoted in urgency by the wireframe pass**: this package is also where the locale formatter edge layer belongs (bucket D) |
+| todo | ▲ | **TimelineEvent projection (§B1) in @koi/domain** — pure, read-only, deterministic; tint expressed as a token name (`'fuel' \| 'service' \| 'expense' \| 'contract' \| 'ink'`), never a hex, so the palette stays at the edge. History's mixed feed, the car page's 3 recent rows and Insights' record lists all need it, and it is the one place inv.7's fold rule should be decided (wireframes §3.2, §15.4) |
+| todo | ▲ | **lens derivation engines in @koi/domain** — the full→full economy chain walker (inv.1-4: partial accumulation, `missedPrevious` restart, recent-mean-of-≤5 with the ±5% dead band and the trend word) · distance bucket interpolation + today-anchored projection (inv.21-23) · the plan billing series (inv.13-15, 19) · cap cycle + pooling (inv.24-27) · page bucketing (weeks in a month, months in a year, years across all). Domain today has only `economyL100km` for a single interval; Fuel, Distance, Cost and Ownership all block on these (wireframes §15.4) |
 
 ### D · Clients (mobile + web)
 | st | sev | item |
 |---|---|---|
-| todo | ▲ | **wireframe pass FIRST** — ASCII/block screens translating §C (functional reqs) + §D (nav model, time-as-pages, color law, chart grammar) into concrete layouts for the four tabs + capture + record + reminders + vault/settings, sanity-checked against what @koi/mobile already has (garage/car/review) before writing more screen code. Queued for right after Session 6 (passkey) gates — prep for opening this bucket, not a parallel side-track. |
-| todo | ▲ | full Bundle A app build (capture + ledger + record + Insights) — Session 4 scaffolded @koi/mobile and built the sync surfaces only (garage · car page · review queue); §C's four-tab shell + capture sheets + dark palette are this item; **starts from the wireframe pass above** |
+| done | ▲ | **wireframe pass** — Session 7, D-057..D-059: `docs/build/wireframes.md` (18 sections, ~3.2k lines) — shell · Home · History · Insights header+pager · four lenses card-by-card · Garage/car/car-form · capture (chooser, keypad, other-type, trip, odometer, note) · record pages incl. every degraded fuel panel · reminders+notifications · vault · onboarding · Settings. Three gaps RESOLVED, not just drawn: the S-4 queue joins Home's state machine (D-057), sync+account+privacy-card land in the §C8 Settings sheet (D-058), dark mode carries roles now with the authored palette as its own item (D-059). 21 places the existing code already contradicts §C/§D are listed with file:line (§15.3), and §17 carries the build order that falls out. **Adversarially reviewed**: 6 lenses (constitution/34 invariants, honesty/voice, nav/time-as-pages, colour/chart grammar, completeness vs §C sentence-by-sentence, internal consistency) with a refute-first skeptic pass, 66 raw findings → 48 confirmed (2 blocker, 25 important, 21 minor) → all 48 fixed same session. The blocker: the privacy card and erase dialog were keyed on the sync toggle, not on whether the device has ever synced, so a device that paused sync after using it would see "no account, never leaves this device" while its founding passkey and server-side records both still existed (§H1 violation) — both now carry a third "paused" state, keyed on "has ever synced". Also fixed: cap-gauge math drawn against the bare cap instead of the pooled budget (inv.25), a car page rendering the OWNERSHIP group on the subscription-plan fixture car (inv.15), the Ownership lens example switched to the owned Ibiza, a stale cap cycle window dated before "today", several arithmetic reconciliation errors (trips summing past their own page's headline km, a `km/day` computed over more days than the page contains), the review queue reusing Home's reserved "Everything OK"/"Needs you" strings, the car form missing photo/mark-paid-off/mark-as-sold controls, a no-policy vault state, and 4 stale `§6.3`/`§9` cross-references. **Owner review owed before the four-tab build.** |
+| todo | ▲ | **the four-tab shell + app-level toast host** — Home/History/Insights/Garage + detached `+` + floating Settings on every root + per-tab stacks that reset on tab-leave (§D1); one toast host above all layers (§D7's "one at a time" is currently only true per screen, which is why a car delete smuggles its message through a route param). First item of the app-surface build (wireframes §17) |
+| todo | ▲ | **authored dark palette + token layer (D-059)** — the second half of every §D3 pair, `useKoiTheme()` (scheme + reduce-motion + fontScale), and three light-pair defects found while drawing: `positive === accent === domain.fuel` (`theme.ts:27`), faint-ink contrast (§H4's own named debt, and archived rows depend on it), and `"userInterfaceStyle": "automatic"` vs a hard-coded `<StatusBar style="dark" />`. Ships **with** the `Appearance` control and **before History's build session** |
+| todo | ▲ | **locale formatter edge layer** — separators, currency placement, unit suffixes (`km`, `L/100km`, `€/L`, `€/km`, `€/day`), the `≈` rule, month/date labels. `@koi/domain` supplies the deterministic core (`formatAmount`/`parseAmount`) and by its own conformance rules cannot host the rest; belongs in `@koi/i18n` (bucket C) + a `useFormat()` hook, shared with the web client. Today every number in the app is a bare `toLocaleString()` and `formatAmount` is imported by zero app files |
+| todo | ▲ | full Bundle A app build (capture + ledger + record + Insights) — Session 4 scaffolded @koi/mobile and built the sync surfaces only (garage · car page · review queue); §C's four-tab shell + capture sheets are this item, in the order wireframes §17 sets out (shell → palette → formatters → Garage/car rebuilt to §C4 → Home → Settings/Sync → capture-Odometer → **the remaining §B1 record kinds' tables, which are the real gate on §C** → Insights, Ownership first). **Starts from the wireframe pass above** |
 | todo | ▲ | chart §D4 finish: ghost bars, on-canvas peak label; iOS large-title inset fix |
 | todo | ▲ | Recharts web charts (share selectors only) |
 | todo | ▲ | web companion scope: read+edit no capture, import console, export, WCAG 2.2 AA |
@@ -383,3 +426,74 @@ lives in §4 — this board tracks status, not prose.
   surface decided and recorded (spec-delta.md): no separate screen, "Turn on sync" IS the sign-in
   step; a one-time recovery-codes reveal card is the one new screen. **Owner gate owed before bucket
   D (app surface) or S-7** — brief explicitly named both as out of scope this session.
+- **2026-07-28 · Session 7 — the wireframe pass, bucket D opened on paper (D-057..D-059).** No screen
+  code, by design: the BOARD's own first bucket-D item asks for ASCII/block screens *before* more
+  screens get written, so layout and information-architecture problems get caught on paper while they
+  are cheap. Read §C and §D in full, then drew the whole surface into `docs/build/wireframes.md`
+  (17 sections): the shell and the expo-router layout the four tabs imply — including the one real
+  routing problem, that a record page is reachable from three tabs and so must be one *destination*
+  registered per tab rather than one route owned by a tab; Home's three states plus the month pulse's
+  rules and the Last-fill card's four variants; History's feed with a row-anatomy table per record kind
+  that makes inv.7's fold rule concrete; the Insights control row, both fitted pickers, the three-page
+  carousel, the four principled pager exceptions, and the Cost and Fuel lenses card by card with an
+  exhaustive degraded-state table (money-only fills, `missedPrevious` chain breaks, partials, no
+  odometer, under-minimum spans), Distance with the cap gauge pinned above the paged region, and
+  Ownership with the pager folded away; Garage, car page and car form; all six capture surfaces
+  including the derived-pill state machine ("your last two edits win"), the odometer well's four states
+  and the saved moment's six variants; record pages with every §C6 degraded panel plus two §C6 never
+  wrote (chain-not-started, money-only import) and the composition line that stops two litre figures on
+  one page from looking like a bug; reminders and notifications; the vault; onboarding; and the
+  Settings sheet. **Three gaps resolved, per the brief:** D-057 puts the S-4 queue into Home's state
+  selection (`Needs you` fires on an overdue reminder *or* an open flag; `All clear` requires zero of
+  both; the band renders only when non-empty, so article 2 holds and the calm owner never meets it),
+  with a second always-present door in Settings; D-058 moves sync, sign-in, recovery codes and the
+  privacy card into the §C8 Settings sheet under a page named `Sync`, keeps the always-true privacy
+  claims in *both* sync states, drops the mislabelled off-state count, and relabels the erase button
+  `Erase this device` while sync is on (turning sync off first) because S-7 does not exist and a local
+  wipe on an enrolled device re-bootstraps from the checkpoint; D-059 keeps colour **roles** in the
+  wireframes and makes the authored dark palette its own board item, sequenced before History, carrying
+  three light-pair defects found while drawing. **The required code comparison found 21 real
+  contradictions** with file:line — loudest being `app/car/[id].tsx` listing every reading on the car
+  page, the same defect Tester R reported in the old app and whose structural fix (§C4's "exactly 3
+  recent rows + Full history ›") is in the spec because of him. Verdicts cover every file:
+  `_layout.tsx` scaffolding; `index.tsx` (four surfaces in one screen), `car/[id].tsx`, both review
+  screens, `components.tsx` and `theme.ts` rework; all sync/auth/domain plumbing keep — with a
+  carry-out list of every spec-verbatim string and every piece of hard-won reasoning (the D-051 payload
+  fix, the toast-timer trick, D-047's re-enter rule) so nothing dies with the files. 18 owner questions
+  in §16; build order in §17. **Method:** two workflows, 16 agents — 10 producing exhaustive
+  per-surface spec-element inventories plus the code audit, then 6 adversarial lenses (constitution +
+  the 34 invariants, honesty/voice, nav + time-as-pages, colour + chart grammar, completeness
+  sentence-by-sentence against §C and §I, internal consistency), each with a refute-first skeptic.
+  Example data was then reconciled by hand so bars sum to their headlines and every rate divides by the
+  window it claims (§0.6 states how far to trust the numbers). **Owner review owed before the four-tab
+  build.**
+- **2026-07-29 · Session 7 follow-up — adversarial review of the wireframes, 48 findings fixed.** The
+  hand-reconciliation the Session 7 entry above describes was necessary but not sufficient — a
+  6-lens adversarial workflow (constitution/34 invariants, honesty/voice, nav + time-as-pages,
+  colour + chart grammar, completeness vs §C sentence-by-sentence, internal consistency), each lens
+  followed by its own refute-first skeptic, read `wireframes.md` against `koi-core-spec.md` and
+  against itself. 66 raw findings → 48 survived the skeptic pass (2 blocker, 25 important, 21
+  minor) → all 48 fixed in the document, none deferred. **The blocker (both lenses caught it
+  independently):** the privacy card and the erase dialog were keyed on the sync toggle rather than
+  on "has this device ever synced" — so a device that turned sync off after using it (a pause, not
+  an erase, per D-052) would show "no account, cloud sync or analytics… never leaves this device"
+  while its founding passkey and its server-side records both still existed. That is exactly what
+  §H1 calls product law, not marketing. Both surfaces now carry a third state — **paused** — keyed
+  correctly, and D-058/spec-delta were updated to describe three states, not two. Other confirmed
+  defects, mostly self-inflicted by the hand-reconciliation pass itself: the Distance lens and car
+  page's cap gauge were drawn against the bare cap (1.500 km) instead of the pooled budget
+  (cap + carry-over = 1.760 km per inv.25), which made an under-budget car read as over-cap; the car
+  page rendered the OWNERSHIP purchase-price group on the Golf GTI, which §0.6 fixes as the
+  subscription car — inv.15 forbids that combination outright, so the Ownership lens example moved
+  to the owned Ibiza instead (with its own numbers, and the purchase-price row pulled into a
+  separate `FACTS` group so the summed total still reconciles); the cap cycle's drawn window
+  ("23 Jun – 22 Jul") had already ended relative to the fixture's own "today" (now stated explicitly
+  in §0.6 as 28 July 2026), which put a future-tense pace sentence on a past date; a `km/day` figure
+  divided by more days than its own "to date" page contained; a Trips card summed to more kilometres
+  than the same page's own headline; the review queue reused Home's reserved "Everything OK" /
+  "Needs you" strings one push away from Home itself; the car form had no photo well, no working
+  `Mark paid off` control (only a sentence), and no way to record a car as sold despite the Ownership
+  lens and §I use case 10 depending on it; the vault had no state for a car with no policy on file at
+  all; and four `§6.3`/`§9` cross-references pointed at the wrong section after an earlier edit
+  renumbered things around them. Full findings list and fixes are in the session transcript;
+  `wireframes.md` itself carries no changelog — the fixed document **is** the record.

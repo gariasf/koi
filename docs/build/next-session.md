@@ -1,99 +1,139 @@
-# Next session kickoff — Session 7: the wireframe pass (opens bucket D)
+# Next session kickoff — Session 8: the four-tab shell, built to the design
 
-Paste the block below to start Session 7, **after** signing off Session 6 at the gate.
-Working-memory artifact; refresh or delete it once Session 7 is underway.
+Paste the block below to start Session 8. The visual-design phase is done: the handoff lives at
+`~/Documents/gariasf/koi-project/design_handoff_koi` (outside the repo — the session copies it in).
+
+Working-memory artifact; refresh or delete it once Session 8 is underway.
 
 ---
 
-Build phase, Session 7. Repo: ~/Documents/gariasf/koi, remote github.com/gariasf/koi.
+Build phase, Session 8. Repo: ~/Documents/gariasf/koi, remote github.com/gariasf/koi.
 
-Sessions 1–6 done. The whole spine is built and proven: `@koi/domain` pure and untouchable
-(md5 f93b1d6b…, tri-engine + RN-Hermes); the sync server complete for cars + odometer_readings
-(⑤ base_version D-037, exhaustive op-handling D-038, the full S-6 delete model D-039..D-046 with
+Sessions 1–7 done. The spine is built and proven — `@koi/domain` pure and untouchable (md5
+f93b1d6b…, tri-engine + RN-Hermes); the sync server complete for cars + odometer_readings (⑤
+base_version D-037, exhaustive op-handling D-038, the full S-6 delete model D-039..D-046 with
 bucket-filter); `@koi/mobile` on Expo SDK 57 / RN 0.86 with the S-6 client contract (D-049) and the
-S-4 review queue (D-047); ③ local-only → sync-on (D-052); and **real auth end-to-end** (D-053..D-056)
-— better-auth in-process, passkey-primary with a native Face ID round-trip proven on device
-(registration → session → recovery codes → a JWT PowerSync actually synced with), recovery codes as
-a standalone plugin, `KOI_DEV_AUTH` retired. 25 sync scenarios green across three tiers under real
-auth. **Bucket A is fully closed. Every ⛔ blocker in the backlog is done.**
+S-4 review queue (D-047); ③ local-only → sync-on (D-052); real auth end-to-end, passkey-primary,
+proven on device (D-053..D-056). Bucket A is closed. Session 7 drew the app surface as ASCII
+wireframes (D-057..D-059); **its doc changes are still uncommitted — commit them first**, authored
+as the owner, no co-author trailer.
 
-Read first: koi/CLAUDE.md (ritual + ground rules), docs/build/BOARD.md (bucket D), then
-**koi-core-spec.md §C in full** (functional requirements by surface — C1 Home, C2 History,
-C3 Insights, C4 Garage, C5 Capture, C6 Record pages, C7 Reminders, C8 Vault/onboarding/settings)
-and **§D in full** (UX pattern language — D1 nav "a book, not a deck of cards", D2 time-as-pages,
-D3 color law, D4 chart grammar, D5 honesty patterns, D6 voice, D7 type/motion/controls), plus
-docs/build/spec-delta.md (every amendment the build has already made to §C, including the Session 6
-sign-in placement and the Session 4 "re-enter, never restore" honesty rule). Architecture is LOCKED
-(D-032) — this session designs surfaces, not systems.
+**Since Session 7 a multi-day visual-design phase ran and closed.** Its handoff is at
+`~/Documents/gariasf/koi-project/design_handoff_koi` — 18 HTML design sheets covering the *whole*
+surface at high fidelity (final hex, type scale, spacing, radii, copy, motion), an authoritative
+`spec-amendments.md`, and a `decisions.md` that answers **all 18** of the wireframes' open owner
+questions plus two more that surfaced while drawing. **Step 0 of this session: copy that bundle into
+`docs/build/design/` (everything except its `spec/` subfolder, which is just stale copies of docs we
+already own) so it is version-controlled with the build.** The `.dc.html` sheets open in a browser;
+the steel-blue "Industry" chrome around each phone frame is documentation only and never appears in
+the app — only what is *inside* the frames is the product.
 
-**This session is a WIREFRAME PASS, not a build session.** The BOARD names it explicitly as
-bucket D's first item: "wireframe pass FIRST — ASCII/block screens … before writing more screen
-code." Deliverable is a reviewable design document (suggest `docs/build/wireframes.md`), not
-shipped screens. Resist the urge to start implementing; the point is to catch layout and
-information-architecture problems on paper, cheaply, while they are still cheap.
+**Read in this order, and mind the precedence — it changed:**
 
-Produce ASCII/block wireframes for:
-1. **Home (C1)** — all three states (Needs you / Coming up / All clear), month pulse strip, Last
-   fill card. Home never grows charts (article 2, constitutional).
-2. **History (C2)** — month-grouped feed, filter chips, row anatomy, swipe actions, empty +
-   filtered-to-nothing states.
-3. **Insights (C3)** — the hard one. Four lenses (Cost / Fuel / Distance / Ownership) × the
-   time-as-pages pager (§D2: calendar-aligned, never overlapping, carousel-swiped). Wireframe the
-   header control row + at least the Cost and Fuel lenses card-by-card; note where Ownership folds
-   the pager away.
-4. **Garage + car page (C4)** — car cards with status chips, archived section, the car page's
-   groups, and the "exactly 3 recent rows + Full history ›" rule.
-5. **Capture (C5)** — the `+` chooser, the fuel keypad sheet (the 10-second surface: three pills,
-   derived-pill marking, odometer well with delta hint, saved-moment), the other-type form sheet,
-   the trip sheet with its live derivation card.
-6. **Record pages (C6)** — the fuel flagship with its Computed panel, including the degraded states
-   ("This fill is partial…", "A fill was missed…") which are never red.
-7. **Reminders (C7)** — list, the builder-as-a-sentence with its live plain-words card, detail.
-8. **Vault / onboarding / settings (C8)**.
+1. `docs/build/design/spec-amendments.md` — **the authoritative amendment set.** Where anything else
+   disagrees with it, it wins. Short. Start here.
+2. `docs/build/design/README.md` — tokens, screens, interactions, state, the fixture, and the list of
+   contradictions with current code.
+3. `docs/build/design/decisions.md` — the running log: §B is the reconciled fixture ledger with every
+   derivation, §H holds the 18 answers.
+4. The sheets themselves, starting with `Koi Palette` and `Koi Control Language` — **build those two
+   sheets' components first; every screen is assembled from them.**
+5. `koi-core-spec.md` §A (thesis + the nine constitutional articles) and §D (pattern language) —
+   still product law **except where §1 amends it**.
+6. `koi/CLAUDE.md` (ritual + ground rules) and `docs/build/BOARD.md` (bucket D).
+7. `docs/build/wireframes.md` — **reference now, not authority.** It is the structural pass the sheets
+   were drawn from and they cite its § numbers, so it is the fastest way to find the reasoning behind
+   a layout, the exhaustive degraded-state catalogue (§3.6, §5.2, §8.2), and the file-by-file code
+   audit (§15). But the design supersedes it on layout, and its §0.6 fixture numbers and §16
+   recommendations are **stale** — see below. Same for `spec-delta.md`, which predates the design pass.
 
-Three things the wireframe pass must RESOLVE, not just draw — these are real gaps, and they are the
-reason this pass exists:
+**Two things in the older docs are actively wrong now; do not copy from them:**
 
-- **Where does the S-4 review queue live?** It is not in §C at all — it was invented in Session 4
-  (D-047) and currently sits on a scaffold screen with its own route. §C's model is four tabs
-  (Home / History / Insights / Garage) + the detached `+`. Does the queue become part of Home's
-  "Needs you" state (it is literally "does anything need me?"), a Settings surface, or something
-  else? It must land somewhere honest without turning Home into a dashboard (article 2). Record the
-  decision in spec-delta.md.
-- **Where do sync + account settings actually live?** Session 5/6 put a sync toggle, passkey
-  sign-in and a recovery-codes reveal on the garage screen as an admitted stand-in. §C8's Settings
-  sheet is the real home. Wireframe it there, including what the privacy card says now that sync
-  and an account genuinely exist (but do NOT rewrite the release-gated privacy page itself — that
-  is still its own owner-reviewed task, bucket F).
-- **Dark mode (§D3, co-primary, explicitly not an inversion pass)** is owed and unbuilt — the
-  scaffold ships the light pair only. Decide whether the wireframes carry both palettes now or
-  whether the authored dark palette is its own follow-up item, and say which.
+- **The fixture numbers.** `wireframes.md` §0.6 stated July three different ways; the design pass
+  found and corrected seven arithmetic contradictions. The authored ledger is **487,90 € · 412 km ·
+  72,54 L · 3 fills · 0,77 €/km** (both live cars, 1–28 Jul 2026), Golf at 91.240 km read 12 Jul,
+  rate 412 ÷ 28 = 14,714 km/day, projection ≈92.388 km · 28 Sep. Read `decisions.md` §B before
+  touching any number.
+- **Two of `wireframes.md`'s own recommendations were overridden.** The cap chip and the car-page
+  gauge now use **one denominator** (the pooled budget, `268/1.760 km`) — the wireframes let the chip
+  show the bare cap, which lets two surfaces reach opposite verdicts about one car. And Home's
+  `ALSO COMING` band is bounded by the same 28 days the state machine uses, so it no longer lists
+  things 2 and 8 months out.
 
-Sanity-check every wireframe against what `@koi/mobile` ALREADY has (garage, car page, review
-queue, sync card, passkey sign-in, recovery-codes card) and note per screen whether the existing
-code is keepable, needs rework, or was always scaffolding to throw away. That comparison is a
-required output, not a nicety — it is how this pass earns its place before more screen code.
+**Scope — the design covers everything, the schema does not.** The client carries `cars`,
+`odometer_readings`, `flags`, `app_meta` and nothing else, so build only what has data:
 
-Do NOT start: S-7 erase-everywhere, the archive write flow, the web companion, the privacy-page
-rewrite, income tracking, installing chart libraries (Skia + Victory Native XL are re-confirmed on
-paper per D-048 but deliberately NOT installed — they arrive with the chart work, not with
-wireframes). `@koi/domain` stays untouched. Commits authored as owner only — no co-author trailer.
-Update BOARD.md + session log + decisions.md before ending. **Stop for owner review when the
-wireframes are done** — the actual four-tab build is the session after this one.
+1. **The shell** — four tabs + detached `+` + floating Settings on every root, per-tab stacks that
+   reset the *stack* but **preserve screen state** (filter chips, scope, lens, page size), and the
+   shared destinations (a record page is reachable from 3 tabs, the reminder detail from 2 — register
+   per tab, never one route owned by one tab). Replaces the flat `Stack` in `app/_layout.tsx`.
+   Includes the **app-level toast host**: it is a prerequisite for the queued-undo fix (amendment
+   B10), which is a real data-loss bug today — a second delete inside six seconds silently makes the
+   first permanent.
+2. **The token layer** — `palette.light` + `palette.dark` + `control` + `radius` + `motion` verbatim
+   from the handoff README, behind a `useKoiTheme()` hook reading `useColorScheme()`, plus
+   `prefersReducedMotion` and `fontScale`. Dark is authored, not inverted. This also lands four fixes
+   the amendments name: `positive` becomes teal (it was literally the fuel hue), `inkFaint` gets its
+   AA-passing value, the `StatusBar style="dark"` / `userInterfaceStyle: automatic` mismatch, and the
+   off-palette `#F6EFE3` in `sync/provider.tsx`. Record the shipped palette as a D-0xx entry —
+   D-059 promised the authored pair and this is where it lands.
+3. **The control library** — `Koi Control Language` in full: rows, the eight icon wells
+   (`domainWash` + `domainText` glyph, radius 10, never a saturated fill), three chip species, four
+   button variants (**emphasis is ink, not accent** — the accent means fuel money and nothing else),
+   the toast, the three layer species, the stat table, the gauge, the confirmations.
+4. **The formatter layer** — `@koi/i18n` + a `useFormat()` hook. Two hard rules from the amendments:
+   bundle **IBM Plex Mono** for the data voice (Menlo is Apple-only and falls back to a proportional
+   face on Android, so numbers jitter on a co-equal target), and **never `toLocaleString('es-ES')`
+   for a Koi figure** — Intl applies `minimumGroupingDigits: 2`, so four-digit values silently lose
+   their separator (`1148`, not `1.148`). Micro-labels are uppercased **in the style layer**, never
+   typed uppercase, or the screen reader has nothing to strip.
+5. **Garage + car page + car form** (`Koi Garage`) — the two ownership shapes (`PLAN` and `OWNERSHIP`
+   groups never both appear), three recent rows and a link to History on the car page (**never** a
+   readings list — that defect regressed once already), car rows stop wearing the fuel green, fuel
+   type becomes an enum entered by chip. **Archive has no write path yet** — inv.30 is broken by
+   omission today, so the archive write flow belongs in this session.
+6. **Home** (`Koi Home`) — four states, strict precedence, exactly one renders; the flag count that
+   already works (`OPEN_FLAG_COUNT_SQL`) blocks `All clear`; the reminder half stubbed until that
+   table lands. Alert lines are future tense (amendment B6): "Next alert 9 August, 7 days before."
+7. **Settings + Sync** (`Koi Settings`) — the three-state privacy card and erase dialog keyed on
+   **"has this device ever synced"**, not on the toggle (D-058). §12.5 recovery-code entry stays
+   marked PROPOSED / NOT BUILT.
+8. **Capture → Odometer** (`Koi Capture`) — the one capture surface whose table exists: the sheet, the
+   custom in-sheet keypad with a locale decimal key, the delta hint, the soft/hard validation split
+   (soft confirms do not exist in the app at all today), inv.10's edit exclusion, and the dirty guard
+   — which **wins over a notification deep-link's modal teardown**. The odometer error must name the
+   conflicting record and offer to open it.
 
-## Also outstanding (not this session unless the owner says so)
+Also land the two unimplemented mechanics the amendments call out, since the surfaces above need
+them: **swipeable rows** and the **sheet dirty guard**. Both gesture libraries are already installed
+and imported nowhere.
 
-- **Android build path is unverified** — no JDK on the dev machine. Bundle A's "one codebase" claim
-  needs one Gradle run plus the Android-over-network initial-sync measurement (bucket B).
-- **A device/emulator golden-vector run** is the narrow remainder of Ⓒ: the per-OS Unicode provider
-  (`normalize('NFC')`) is the one thing D-050's host build cannot cover.
-- **build-ops/test-integrity review lenses never ran** (Session 4's adversarial review hit a token
-  quota) — a narrower follow-up pass on CI correctness + test integrity is owed.
-- **Scripted iOS UI is still blocked** — no Accessibility grant, no `idb`, no Maestro (bucket H).
-  Session 6 hit this again for the passkey ceremony (owner drove the taps). Worth fixing before
-  something needs it that can't fall back to a manual step.
-- **No client screen for entering a recovery code** (D-054) — server-side proof only. A device with
-  no reachable passkey currently has no in-app way back in.
-- **First-time passkey setup shows two Face ID prompts** (D-055) — correct but reads as a stutter;
-  bucket D should smooth or explain it.
-- The capture-feel spike seed is still unmined; `spikes/` deletes once it is.
+New dependencies this sanctions, and only these: `lucide-react-native` (icons, stroke-width 1.75)
+and whatever bundles IBM Plex Mono. Charts stay uninstalled — the sheets deliberately draw them as
+stat tables per §D4's own escape hatch, and the target mark grammar is documented for later.
+
+**Do NOT build**, even though it is designed: History, Insights, reminders, the vault, onboarding,
+and the other five capture sheets. They need the §B1 record tables — their own batch, and new-table
+work rather than an architecture change. Also not this session: S-7 erase-everywhere, the web
+companion, the privacy-page rewrite (bucket F, ⛔), income tracking, the plan-lineage model amendment
+B8 needs, or the inv.21/inv.23 reconciliation amendment B13 leaves open.
+
+Carry out, do not re-derive: `wireframes.md` §15.5 lists every spec-verbatim string and every piece
+of hard-won reasoning that must survive the rewrite (the D-051 payload fix, the toast-timer ref
+trick, D-047's re-enter rule, the no-undo-on-car-delete rule).
+
+**Prove it, don't assert it.** Both sync tiers stay green (`pnpm turbo run test:sync
+--concurrency=1`), both unit tiers too, and the golden vectors stay byte-identical (md5
+`f93b1d6b…`) — `@koi/domain` should not be touched at all. Screens get checked on the iOS simulator
+in **both** schemes. Scripted iOS UI is still blocked (no Accessibility grant / idb / Maestro, bucket
+H), so follow the Session 5/6 precedent: back every claim with a database check, a server log, or a
+screenshot you actually took.
+
+Still outstanding, not this session: Android build unverified (no JDK); the device/emulator
+golden-vector run (Unicode provider) is Ⓒ's narrow remainder; build-ops/test-integrity review lenses
+never ran; no client screen for entering a recovery code (D-054, server-proven only); first-time
+passkey setup shows two Face ID prompts (D-055); capture-feel spike seed still unmined.
+
+Update BOARD.md + the session log + decisions.md before ending. Commits authored as owner only — no
+co-author trailer. Stop for owner review when the surfaces above are on screen in both schemes and
+both sync tiers are green.

@@ -514,3 +514,69 @@ Format: `D-NNN · <date> · <status> — <one-line decision>. <why, one or two s
   flaked once under the added latency) before the cache fix; caching is both faster and more honest,
   since a real client signs in once and only re-mints the short-lived PowerSync JWT per upload, never
   re-establishes a whole session.
+- D-057 · 2026-07-28 · LOCKED — **The S-4 review queue joins Home's state machine** (bucket D's
+  wireframe pass, Build Session 7). The queue was invented in Session 4 (D-047) and is absent from
+  `koi-core-spec.md` §C entirely; it has been sitting on a scaffold route behind a permanent card at
+  the top of the garage screen. Resolved: **Home selects its state on both counts** — `Needs you`
+  fires on an overdue reminder **or** an open review item, and `All clear` requires zero overdue
+  **and** zero open flags, so the one surface that promises "Everything OK" cannot say it while two
+  devices disagree in a drawer. The band renders **only** when the queue is non-empty (the calm
+  owner who never has a conflict never meets it, so article 2 is intact — Home does not grow a fifth
+  always-present thing); it sits under the reminder hero when both exist and **becomes** the hero
+  when nothing is overdue (an overdue ITV has a date in the real world, a data disagreement does
+  not). A flag gets no `Snooze` and no `Mark done` — the only honest action is to go look. The queue
+  page is **pushed inside the Home tab**, and a second always-present door lives in Settings ›
+  `Review notes` so resolved items stay reachable (D-047: a decision is part of the record, not a
+  deletion). Zero cars wins the screen: with no live car the queue's real action ("enter it again")
+  has nowhere honest to put the record, so `Add your car to begin` stays the hero and the queue gets
+  a quiet row beneath it. Cap reminders never drive the state (`mileageCap` never notifies by
+  design; §I use case 3 insists nothing flashes) — over-cap surfaces in the garage chip and the
+  car-page gauge per inv.26. Cost: one reactive query over both counts, half of which already exists
+  and is already live-queried (`OPEN_FLAG_COUNT_SQL`). Wireframes: `docs/build/wireframes.md` §2,
+  §14.1; amendment recorded in `spec-delta.md`.
+- D-058 · 2026-07-28 · LOCKED — **Sync, account and the privacy card live in §C8's Settings sheet**
+  (Build Session 7). Sessions 5 and 6 put the sync toggle, passkey sign-in and the one-time
+  recovery-codes reveal on the garage screen and said in writing it was a stand-in until the real
+  app surface existed. Resolved: a pushed **`Sync`** page inside the Settings sheet owns the
+  reversible toggle, connection status, pending-upload count, device alias, `Recovery codes ›` and
+  the failure sentence. Named `Sync`, **not** "Sync & devices" — there is no device registry, only
+  this device's id, and a title promising a list Koi cannot produce would be a §D5 violation in the
+  surface whose whole job is trustworthiness. Four substantive changes to what the build ships, each
+  because the current version is not true: (1) **the privacy card keeps its always-true claims in
+  both sync states** — D-006's floor (no ads, no trackers, no analytics, free complete export, sync
+  strictly opt-in) does not change when sync comes on, and Session 5's card dropped the whole line
+  wholesale, letting a user infer analytics might now exist; the sync-on sentence itself stays
+  spec-delta's exact reviewed wording. (2) **No pending count in the sync-off state** — the number
+  came from `ps_crud`, an upload *queue*, so a created-then-edited record counts twice and "N records
+  kept here so far" over-reports (§D5: sums that would lie are withheld). (3) **`Erase everything`
+  becomes `Erase this device` while sync is on, and turns sync off first**, saying so — with sync on
+  a local wipe re-bootstraps from the checkpoint and the records come straight back, S-7 is not
+  built, and a mislabelled destructive button is the worst possible place to break §D5. (4) **the
+  two-Face-ID stutter gets a sentence now** ("twice the first time, once after that."), with the real
+  fix (registration establishing a session) left as a server obligation. Recovery-code **entry** is
+  wireframed and marked NOT BUILT (D-054), reachable only from the failed-sign-in banner — never as
+  an always-present row that invites burning one-use codes. Sync is never offered in onboarding
+  (opt-in from Settings only). No sync badge anywhere in the shell — accepted and recorded: a
+  long-broken sync is discovered on a visit to Settings, and a dot on four roots would nag about
+  something the car does not need. The release-gated privacy **page** is untouched (bucket F, ⛔,
+  carrying D-023/D-016's obligations). Note for the record: article 7 was already renegotiated at
+  the investigation gate (D-012 → D-005/D-006), so these surfaces bind to D-006's floor rather than
+  to article 7's original wording. Wireframes: `wireframes.md` §12, §14.2.
+- D-059 · 2026-07-28 · LOCKED — **Dark mode: the wireframes carry colour ROLES; the authored dark
+  palette is its own follow-up item** (Build Session 7, discharging the Session 4 "dark mode is
+  owed" note into a plan). §D3 makes dark co-primary and explicitly not an inversion pass; the
+  scaffold ships the light pair only. Resolved: every element in the wireframe pass names its colour
+  **role** (`{fuel}` `{service}` `{expense}` `{contract}` `{ink}` `{attention}` `{critical}`
+  `{paper}`), which is palette-independent and is the part ASCII can actually settle — and the
+  authored palette becomes a **new bucket-D board item**, sequenced **before History's build
+  session** (History is the surface a bad dark palette breaks worst: dimmed archived rows over
+  faint-ink metas). Two hex columns in a text file would have been unreviewable as colour and would
+  have read as decided. The same item carries three defects the light pair already has, found while
+  drawing: `positive === accent === domain.fuel` in `theme.ts` (a positive state and fuel money are
+  literally the same pixel, which §D3 forbids — "semantic colors … never used as 'series 4'");
+  `inkFaint` is the exact faint-ink contrast risk §H4 lists as debt, and archived rows plus every
+  degraded meta depend on it; and the app declares `"userInterfaceStyle": "automatic"` while
+  `_layout.tsx` hard-codes `<StatusBar style="dark" />`, so in dark mode that status bar is dark on
+  dark. **The `Appearance` control (System / Light / Dark) has its slot in Settings and ships in the
+  same increment as the palette, not earlier** — a Dark option that selects a palette nobody drew is
+  worse than no control. Wireframes: `wireframes.md` §0.3, §12.1, §14.3.
