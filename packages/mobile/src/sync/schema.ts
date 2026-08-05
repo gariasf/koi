@@ -16,9 +16,15 @@
  *    buckets carry only live rows, so a delete arrives as a checkpoint
  *    ROW-REMOVAL and a client never holds a tombstone. Nothing here filters
  *    `deleted_at IS NULL`, because there is nothing to filter.
- *  - **No `archived_at`.** It is not in the sync rules yet; a column visible
- *    locally but strict-rejected on upload is a dead-letter trap. It joins with
- *    its write flow. `resolved_at` DID join, with the S-4 resolve flow (D-047).
+ *  - **`archived_at` joins here, WITH its write flow** (Build Session 8). It was
+ *    held out of the rules precisely because a column visible locally but
+ *    strict-rejected on upload is a dead-letter trap — the trap closes the moment
+ *    the server accepts it, which is what the Garage's archive/restore action
+ *    needed. It is an ordinary client-authored column on a client-authored table,
+ *    so it takes ordinary per-column conflict analysis: two devices archiving and
+ *    restoring the same car is a column conflict like any other, and the loser is
+ *    flagged rather than silently overwritten. `resolved_at` joined the same way,
+ *    with the S-4 resolve flow (D-047).
  *
  * `app_meta` is local-only: this device's own identity never leaves it as a
  * record (it travels as the `deviceId` in the upload envelope, which is what the
@@ -37,6 +43,7 @@ const carColumns = {
   year: column.integer,
   tank_capacity_l: column.integer,
   initial_odometer_km: column.integer,
+  archived_at: column.text,
   record_version: column.integer,
 };
 
@@ -103,6 +110,7 @@ export const PATCHABLE_COLUMNS: ReadonlyMap<string, readonly string[]> = new Map
       'year',
       'tank_capacity_l',
       'initial_odometer_km',
+      'archived_at',
     ],
   ],
   ['odometer_readings', ['reading_km', 'recorded_date', 'source', 'device_id']],

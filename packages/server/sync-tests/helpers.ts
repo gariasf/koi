@@ -31,10 +31,11 @@ export const POWERSYNC_URL = 'http://localhost:8080';
 export const CAR_ID = 'car-golf';
 export const HOUSEHOLD_ID = 'household-default';
 
-// Mirrors infra/powersync/sync_rules.yaml exactly — a column visible locally
-// but strict-rejected on upload (archived_at) is a dead-letter trap, so it stays
-// off both sides until its write flow lands. resolved_at DID land (D-047): the
-// flags table below carries it, and flags:PATCH is its accepting handler.
+// Mirrors infra/powersync/sync_rules.yaml exactly. archived_at landed WITH its
+// write flow (Build Session 8, the Garage's archive/restore action): it is an
+// ordinary client-writable column now, so the dead-letter trap it was held back
+// to avoid is closed. resolved_at landed the same way (D-047): the flags table
+// below carries it, and flags:PATCH is its accepting handler.
 const carColumns = {
   household_id: column.text,
   make: column.text,
@@ -45,6 +46,7 @@ const carColumns = {
   year: column.integer,
   tank_capacity_l: column.integer,
   initial_odometer_km: column.integer,
+  archived_at: column.text,
   // S-6 (D-046, bucket-filter): the bucket carries only live rows
   // (`WHERE deleted_at IS NULL`), so clients never receive a tombstone — there
   // is no deleted_at column client-side. A delete arrives as a row-removal.

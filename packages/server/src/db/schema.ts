@@ -60,7 +60,14 @@ export const cars = pgTable(
     year: integer('year'),
     tank_capacity_l: integer('tank_capacity_l'),
     initial_odometer_km: integer('initial_odometer_km'),
-    archived_at: timestamp('archived_at', { withTimezone: true }),
+    /**
+     * The archive latch (inv.30), client-authored — `mode: 'string'` because it
+     * arrives as ISO text in an upload payload and is projected to clients as
+     * text. Only the JS mapping changes; the column is still `timestamptz` and
+     * no migration moves. `deleted_at` keeps the Date mapping: it is
+     * server-stamped with `now()` and never crosses the wire inbound.
+     */
+    archived_at: timestamp('archived_at', { withTimezone: true, mode: 'string' }),
     deleted_at: timestamp('deleted_at', { withTimezone: true }),
     deleted_by: text('deleted_by'),
     deleted_by_device: text('deleted_by_device'),

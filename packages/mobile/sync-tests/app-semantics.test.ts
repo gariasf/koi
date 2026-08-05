@@ -22,6 +22,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterAll, beforeAll, expect, it } from 'vitest';
 
+import { archiveCar, insertCar, restoreCar, type CarRow } from '../src/data/cars';
 import { runS6Scenarios, SCENARIO_COUNT, type ScenarioResult } from '../src/selftest/scenarios';
 import { KoiConnector } from '../src/sync/connector';
 import { crudQueueSettler } from '../src/sync/queue';
@@ -80,3 +81,53 @@ it('proves the S-6 and S-4 semantics from the app itself', () => {
     'scenarios that failed',
   ).toEqual([]);
 });
+
+/**
+ * `archived_at` joined the sync rules WITH its write flow (Build Session 8), and this
+ * is the proof the trap it was held back for is actually closed.
+ *
+ * The assertion is `record_version`, not the local value: a local `UPDATE` sets
+ * `archived_at` on this device whether or not the server ever accepts it, so a test
+ * that only read the local row would pass just as happily against a dead-letter.
+ * `record_version` is **server-authored** and syncs down (S-2), so an increment means
+ * the op was applied server-side — and a dead-lettered op is accepted with 2xx and
+ * leaves the version alone, which is exactly the failure this catches.
+ */
+it('archives and restores a car through the real write path', async () => {
+  const app = db as unknown as KoiDb;
+  const settle = crudQueueSettler(db);
+  const id = `car-archive-${DEVICE}`;
+
+  const read = async (): Promise<CarRow> => {
+    const rows = await app.getAll<CarRow>(`SELECT * FROM cars WHERE id = ?`, [id]);
+    const row = rows[0];
+    if (row === undefined) throw new Error('the archive fixture car is not on this device');
+    return row;
+  };
+  const waitForVersionAbove = async (base: number): Promise<CarRow> => {
+    const deadline = Date.now() + 30_000;
+    for (;;) {
+      const row = await read();
+      if ((row.record_version ?? 0) > base) return row;
+      if (Date.now() > deadline) {
+        throw new Error(`record_version stayed at ${String(row.record_version)} — op not applied`);
+      }
+      await new Promise((r) => setTimeout(r, 200));
+    }
+  };
+
+  await insertCar(app, { id, make: 'VW', model: 'Golf GTI', fuelType: 'petrol' });
+  await settle();
+  const created = await waitForVersionAbove(0);
+  expect(created.archived_at).toBeNull();
+
+  await archiveCar(app, id, '2020-06-01T00:00:00.000Z');
+  await settle();
+  const archived = await waitForVersionAbove(created.record_version ?? 1);
+  expect(archived.archived_at).not.toBeNull();
+
+  await restoreCar(app, id);
+  await settle();
+  const restored = await waitForVersionAbove(archived.record_version ?? 2);
+  expect(restored.archived_at).toBeNull();
+}, 120_000);

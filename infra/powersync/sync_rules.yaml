@@ -6,12 +6,18 @@
 # per-column attribution ledger for the base_version protocol) and server-only
 # tables (dead_letters) never reach clients. record_version DOES sync down —
 # it is the version clients echo back as base_version on upload (S-2/S-5).
-# archived_at (archive flow) is NOT synced yet: a column clients can see
-# locally but the server strict-rejects on upload is a dead-letter trap — it
-# joins the rules WITH its write flow. resolved_at DID join, with the S-4
-# review-queue resolve flow (D-047): `flags:PATCH` accepts the latch (and
-# nothing else about a flag), so the trap is closed. flags:PUT/DELETE stay
-# unhandled on purpose — a client never authors or destroys evidence.
+# archived_at joined the rules WITH its write flow (Build Session 8, the
+# Garage's archive/restore action) — which was always the condition: a column
+# clients can see locally but the server strict-rejects on upload is a
+# dead-letter trap, and the trap closes the moment the server accepts it. It is
+# an ordinary client-writable column on cars, so archive and restore take
+# ordinary per-column conflict analysis. Archive is NOT a delete and the two are
+# never conflated (inv.30): an archived car keeps every record and stays in the
+# bucket, which is exactly why it needs a column rather than a tombstone.
+# resolved_at joined the same way, with the S-4 review-queue resolve flow
+# (D-047): `flags:PATCH` accepts the latch (and nothing else about a flag).
+# flags:PUT/DELETE stay unhandled on purpose — a client never authors or
+# destroys evidence.
 #
 # S-6 (D-046, bucket-filter): the buckets carry only LIVE rows —
 # `WHERE deleted_at IS NULL`. A delete sets deleted_at server-side, the row
@@ -30,6 +36,6 @@
 bucket_definitions:
   household:
     data:
-      - SELECT id, household_id, make, model, nickname, plate, fuel_type, year, tank_capacity_l, initial_odometer_km, record_version FROM cars WHERE deleted_at IS NULL
+      - SELECT id, household_id, make, model, nickname, plate, fuel_type, year, tank_capacity_l, initial_odometer_km, archived_at, record_version FROM cars WHERE deleted_at IS NULL
       - SELECT id, household_id, car_id, reading_km, recorded_date, source, device_id, record_version FROM odometer_readings WHERE deleted_at IS NULL
       - SELECT id, household_id, record_table, record_id, car_id, column_name, kind, message, displaced_value, incoming_value, actor, device_id, record_version, created_at, resolved_at FROM flags

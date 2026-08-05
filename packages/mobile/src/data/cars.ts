@@ -15,8 +15,16 @@
  *
  * There is no undo for a car (inv.30 / §C4: "There is no undo."). A car never
  * resurrects via PUT server-side, so offering one would be a lie; the confirmation
- * is typed instead. Archive — the reversible one — is a separate flow entirely
- * and is not built yet (`archived_at` is still out of the sync rules).
+ * is typed instead, and it demands the car's own name.
+ *
+ * **Archive is the reversible one, and it is never conflated with delete** (inv.30).
+ * Archive shelves: the car keeps every record, leaves the tallies and the all-cars
+ * feed, and one tap brings it back. Delete purges. They are a column and a
+ * tombstone respectively, they live in different places in the UI (archive in the
+ * car form's foot beside Remove, restore on the Garage's archived row), and the
+ * archive write flow is what let `archived_at` join the sync rules at all — a
+ * column clients could see but the server rejected would have been a dead-letter
+ * trap (Build Session 8).
  */
 
 import type { KoiDb, KoiTx } from './db';
@@ -32,6 +40,8 @@ export interface CarRow {
   readonly year: number | null;
   readonly tank_capacity_l: number | null;
   readonly initial_odometer_km: number | null;
+  /** An instant, or null for a live car. Never a delete (inv.30). */
+  readonly archived_at: string | null;
   readonly record_version: number | null;
 }
 
@@ -47,11 +57,67 @@ export interface NewCar {
   readonly initialOdometerKm?: number | null;
 }
 
+/**
+ * The full identity, used where a car is named among other records — the review
+ * queue's subject lines and the toasts. Unchanged from Session 4: proven strings.
+ */
 export const carLabel = (car: Pick<CarRow, 'make' | 'model' | 'nickname'>): string =>
   car.nickname ?? `${car.make} ${car.model}`;
 
-export async function listCars(db: KoiDb): Promise<CarRow[]> {
-  return db.getAll<CarRow>(`SELECT * FROM cars ORDER BY make, model`);
+/**
+ * The familiar short name, used as a card title, a page title and — deliberately —
+ * as the phrase a delete confirmation demands. The design repeats the make in the
+ * meta line beneath (`Golf GTI` over `VW Golf GTI · 2019 · 1234-ABC`): the title is
+ * what the owner calls the car, the meta is what the registration says.
+ */
+export const carTitle = (car: Pick<CarRow, 'model' | 'nickname'>): string =>
+  car.nickname ?? car.model;
+
+/**
+ * The Garage's order: **most-recently-active first, archived always last**
+ * (§16 #12, answered). An alphabetical garage buries the car you actually drive.
+ * "Active" is the newest reading on the car; a car with no readings yet sorts after
+ * the ones that have them, then alphabetically — it has no activity to rank by, and
+ * inventing one would be inventing data.
+ *
+ * `NULLS LAST` is avoided deliberately: the ordering has to mean the same thing
+ * under op-sqlite on device and better-sqlite3 in the integration tier, so the
+ * null-ness is ranked explicitly instead of relying on a dialect extension.
+ */
+export const CARS_ORDERED_SQL = `
+  SELECT c.*,
+         (SELECT MAX(r.recorded_date) FROM odometer_readings r WHERE r.car_id = c.id) AS last_activity
+  FROM cars c
+  ORDER BY (c.archived_at IS NOT NULL) ASC,
+           (last_activity IS NULL) ASC,
+           last_activity DESC,
+           c.make ASC, c.model ASC
+`;
+
+export interface CarListRow extends CarRow {
+  readonly last_activity: string | null;
+}
+
+export async function listCars(db: KoiDb): Promise<CarListRow[]> {
+  return db.getAll<CarListRow>(CARS_ORDERED_SQL);
+}
+
+/**
+ * Archive: shelved, not deleted. An ordinary PATCH on an ordinary column, so two
+ * devices disagreeing about it is a column conflict like any other and the loser is
+ * flagged rather than silently overwritten.
+ *
+ * `at` is passed in — the clock lives at the edge (`src/clock.ts`), never in a
+ * write function, which is what keeps this callable from the integration tier with
+ * a fixed instant.
+ */
+export async function archiveCar(db: KoiDb, id: string, at: string): Promise<void> {
+  await db.execute(`UPDATE cars SET archived_at = ? WHERE id = ?`, [at, id]);
+}
+
+/** Restore: one tap, and every record comes back with it. */
+export async function restoreCar(db: KoiDb, id: string): Promise<void> {
+  await db.execute(`UPDATE cars SET archived_at = NULL WHERE id = ?`, [id]);
 }
 
 export async function insertCar(db: KoiDb, car: NewCar): Promise<void> {

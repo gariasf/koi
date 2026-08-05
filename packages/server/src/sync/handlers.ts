@@ -152,6 +152,14 @@ const carsConfig: TableConfig = {
     'year',
     'tank_capacity_l',
     'initial_odometer_km',
+    // Archive is a client-authored fact about a car the client owns, so it takes
+    // the ordinary writable-column path and with it ordinary per-column conflict
+    // analysis (D-037/D-038). Deliberately NOT server-stamped like a flag's
+    // `resolved_at`: a flag is server-authored evidence where a client value is
+    // only intent, while a car is a row the client authors end to end — and a
+    // local-only device, which by design never reaches a server, still has to be
+    // able to archive a car and see the date it did.
+    'archived_at',
   ],
   putSchema: carPutSchema as z.ZodType<Record<string, unknown>>,
   patchSchema: carPatchSchema as z.ZodType<Record<string, unknown>>,

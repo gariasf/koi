@@ -70,6 +70,14 @@ const carFields = {
   year: z.number().int().nullish(),
   tank_capacity_l: z.number().int().nullish(),
   initial_odometer_km: z.number().int().nullish(),
+  /**
+   * The archive latch (inv.30) — an instant, or null for a live car. Never a
+   * delete: an archived car keeps every record, stays in the bucket and is one
+   * tap from being restored, which is the whole reason it is a column and not a
+   * tombstone. Typed as a string rather than a coerced date because the column is
+   * `timestamptz` and Drizzle takes the ISO text.
+   */
+  archived_at: z.string().min(1).nullish(),
 };
 
 export const carPutSchema = z.strictObject({ ...carFields, ...serverManaged });
