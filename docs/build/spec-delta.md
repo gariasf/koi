@@ -329,3 +329,51 @@ Each of these fills a hole §C leaves; none contradicts it.
   "Export JSON" is a *generated* full-fidelity document rather than a copy of the store, and H2's
   `.corrupt` backup behaviour does not describe reality. No surface change; recorded so nobody wires
   Export JSON to a file that does not exist.
+
+---
+
+## Precedence changed at Session 8 — read this before treating anything below as current
+
+The visual-design pass (vendored at `docs/build/design/`) supersedes this file and
+`koi-core-spec.md` on everything it covers. The order is:
+
+1. `docs/build/design/spec-amendments.md` — the authoritative amendment set
+2. `docs/build/design/README.md` — tokens, screens, interactions, state, the fixture
+3. `docs/build/design/decisions.md` — §B the reconciled fixture ledger, §H the eighteen answers
+4. the `.dc.html` sheets themselves
+5. `koi-core-spec.md` §A + §D, then this file
+6. `docs/build/wireframes.md` — reference, no longer authority
+
+Everything above the line stands; it was written against the wireframes and the design pass agreed
+with almost all of it. What follows is only what Session 8 found while building to the design.
+
+### One number in the amendment set is stale
+`spec-amendments.md` §D and the handoff README's fixture summary both print **0,77 €/km** for July.
+The design's own §B derives 487,90 ÷ 412 = 1,1842 → **1,18 €/km**, and `Koi Home` renders 1,18 eight
+times including the arithmetic. 0,77 is the pre-correction rate (318,60 ÷ 412) surviving as scenery on
+sheet 08, which was drawn before §B's correction 7 re-authored July. **1,18 is the figure** (D-063).
+
+### What Session 8 shipped that amends the spec rather than the design
+- **§C1 Home withholds what it cannot support.** The month pulse is three numbers when there are three
+  to state. With no money records in the schema, money and €/km do not render at all and the Last-fill
+  card is absent — annex A's rule that *not applicable does not render*, applied to a whole card
+  (D-063). The pulse's distance uses the strict km rule and is withheld, never zeroed, when no live car
+  has a measurable month.
+- **§C4 archive is a synced column with a write flow.** `archived_at` is client-authored and takes
+  ordinary per-column conflict analysis; it is never conflated with delete (D-061). The Garage's
+  archived row carries `Restore`; archive and remove sit together in the car form's foot.
+- **§C8 Settings renders only rows whose destination exists.** Units, Currency, Notifications, Import
+  from MyCar, Export JSON/CSV and `Privacy ›` are drawn in the design and absent here: a row that goes
+  nowhere is worse than an absent one. `Appearance` is present because the palette it selects now
+  exists (D-059/D-060). Recovery codes state what is true — nothing stores the count or the creation
+  date the design's later-state copy names, so that sentence is not printed.
+- **§C5 capture skips the chooser while there is nothing to choose.** The design's own rule already
+  says `+` skips the chooser at zero cars and opens the car form; with exactly one buildable capture
+  kind it skips it the same way and opens the odometer sheet. The chooser lands with the second
+  surface, which is the first moment there is a choice.
+- **§D1's fitted pick stands in for a date picker.** The date pill opens a fourteen-day fitted list
+  rather than a calendar: a real picker is a dependency this session did not sanction, and the pill's
+  own rule ("backdatable and never future") a list honours exactly. Older dates wait for the picker.
+- **The car page's `Full history ›` renders only when there is history it cannot show** (more than the
+  three recent rows). The design shows it unconditionally; until History exists, an always-present door
+  to a placeholder is a dead end rather than a door.

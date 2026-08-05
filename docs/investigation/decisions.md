@@ -580,3 +580,96 @@ Format: `D-NNN · <date> · <status> — <one-line decision>. <why, one or two s
   dark. **The `Appearance` control (System / Light / Dark) has its slot in Settings and ships in the
   same increment as the palette, not earlier** — a Dark option that selects a palette nobody drew is
   worse than no control. Wireframes: `wireframes.md` §0.3, §12.1, §14.3.
+- D-060 · 2026-08-05 · LOCKED — **The authored palette ships, and with it the token layer, the control
+  language and the `Appearance` control** (Build Session 8, discharging D-059's promise). Every hex is
+  the design pass's, none invented here: `palette.light` + `palette.dark` as full siblings behind
+  `useKoiTheme()`, plus `control` (primary/secondary/ghost/chip/focus), `radius` (eight named roles
+  replacing eight unrelated ad-hoc values), `fab` and `motion` — which `theme.ts` had no tokens for at
+  all. Dark is a **selection, not a transform**: a warm near-black ground (`#14120F`) in the light
+  paper's hue family, its own ink ramp, its own semantics, because an inverted `#43823B` is a mud green
+  that stops being *the* accent. Four defects ride in with it, each named by the design and each now
+  fixed in code: **`positive` was the fuel hue** — `positive === accent === domain.fuel`, one pixel
+  meaning both a positive state and fuel money, which §D3 forbids; it is now a teal (`#1F6F63` /
+  `#4FA795`) held for the future income surface, and "one green in the app" is true again.
+  **`inkFaint` failed AA** at 3,47:1 on paper in the exact role §H4 names as worst (dimmed archived
+  rows over faint metas); `#787166` is 4,59:1. **`StatusBar style="dark"`** was pinned while `app.json`
+  declared `userInterfaceStyle: automatic` — dark content on a dark ground in dark mode; it is `"auto"`.
+  And **`#F6EFE3`** in `sync/provider.tsx` is gone with the shell banner that used it. Three token
+  groups that did not exist are now required: `domainWash` (the well fill), `domainText` (the only step
+  a domain hue may carry type at) and `control` — because **emphasis is ink**, not accent: a primary
+  button is the darkest object on the surface, which took the most-pressed control in the app from
+  4,10:1 to 15,29:1. The accent survives in exactly one role, tinted interactive *type* (back links,
+  `Discard`, toast `Undo`, picker checkmarks), which inverts correctly where ink IS the near-white.
+  `Appearance` (System / Light / Dark) ships in the same increment and not earlier, per D-059: it is a
+  fitted pick over `app_meta`, device-local, because which appearance THIS device prefers is not itself
+  something to sync. Verified on the simulator in both schemes.
+- D-061 · 2026-08-05 · LOCKED — **`archived_at` joins the sync rules, with its write flow** (Build
+  Session 8). It was held out of `sync_rules.yaml` for one reason — a column clients can see locally
+  but the server strict-rejects on upload is a dead-letter trap — and that condition is discharged the
+  moment the server accepts it, which is what the Garage's archive/restore action needed. It is an
+  **ordinary client-writable column** on `cars`, so archive and restore take ordinary per-column
+  conflict analysis: two devices disagreeing about whether a car is shelved is a column conflict like
+  any other and the loser is flagged, not silently overwritten. Deliberately **not** server-stamped
+  like a flag's `resolved_at`: a flag is server-authored evidence where a client value is only intent,
+  while a car is a row the client authors end to end — and a local-only device, which by design never
+  reaches a server, still has to be able to archive a car and see the date it did. Drizzle maps the
+  column `mode: 'string'` so the ISO text in an upload payload passes through unconverted; the column
+  is still `timestamptz` and no migration moves. Archive is **never** conflated with delete (inv.30):
+  archive shelves (kept, restorable, out of the tallies and the all-cars feed, one tap back), delete
+  purges and demands the car's own name typed. Proved in the mobile sync tier by asserting
+  **`record_version` increments** after the archive PATCH rather than reading the local row — a local
+  `UPDATE` sets the value whether or not the server ever accepts it, so a test that only read locally
+  would pass just as happily against a dead-letter. Server receipt: `applied 1 · dead-lettered 0`.
+- D-062 · 2026-08-05 · LOCKED — **The app-level toast host, and the shell that makes it possible**
+  (Build Session 8). Before this, "one toast at a time" was true only *per screen* across three
+  separate mounts — which is why a car delete had to smuggle its message to the garage through a route
+  param — and, worse, the undo closure lived in the same state as the toast, so **a second delete
+  inside six seconds silently made the first permanent.** The user was offered an undo, did nothing
+  wrong, and lost it. That is data loss, not a copy problem. The fix is the separation amendment B10
+  names: **the toast is a view, the undo closure is state.** Toasts still supersede one another
+  visually (the newest message wins the surface and restarts the draining hairline) while closures
+  accumulate in a queue and each expires on its own 6 s; the collapsed copy — `2 records deleted.` —
+  is then an honest label for a queue that already exists, and one `Undo` restores all of it. The
+  hard-won timer discipline from the per-screen version carries over verbatim: **a timer must never
+  depend on a closure identity**, because every call site writes a fresh lambda each render and a live
+  query re-renders constantly, so the effects key on ids and counters only. The shell around it
+  replaces the flat five-route Stack: four tabs (never five — creating is not a place you go, so `+`
+  floats and Settings floats), **per-tab stacks with `popToTopOnBlur`** so leaving resets the stack
+  while screen state survives (popping to the top never unmounts the root), and **shared destinations
+  registered per tab rather than owned by one** — the review queue is registered in Home's stack and
+  in the Settings sheet's, which is what keeps `Back` honest from either door. Route bodies live in
+  `src/screens/` and the route files are one-line re-exports, which is what makes registering one
+  destination twice a two-line act instead of a refactor.
+- D-063 · 2026-08-05 · LOCKED — **July's rate is `1,18 €/km`, not `0,77`; and where the schema cannot
+  support a figure, Home withholds it** (Build Session 8). Two arithmetic facts, both load-bearing.
+  First: the design's own reconciled ledger derives 487,90 ÷ 412 = 1,1842 → **1,18 €/km**, and `Koi
+  Home` renders it eight times including the derivation. The `0,77` that reached `spec-amendments.md`
+  §D and the handoff README's one-line fixture summary is the **pre-correction** rate (318,60 ÷ 412),
+  surviving as scenery on sheet 08's FAB comparison — which was drawn in batch 1b before §B's
+  correction 7 re-authored July. So the amendment set's summary line is stale in exactly one number;
+  the sheets and §B are right. Second, and the reason it matters less than it looks: **this build has
+  no money records at all** (no fuel, service, expense or contract tables), so Home's pulse renders
+  distance only. Money and €/km are **not rendered** rather than shown as zero — annex A's three
+  renderings say zero is a number, unknown is a dash plus a sentence, and not-applicable does not
+  render at all, and a `0,00 €` here would claim a real sum of no records when the truth is that Koi
+  cannot yet be told about a euro. The `LAST FILL` card is absent for the same reason, not by
+  oversight: its own empty state (*No fills yet. Log one and Koi starts measuring.*) is an instruction
+  the app cannot honour. The distance that IS shown uses the strict km rule (newest reading inside the
+  month minus the last reading at or before its start), never invents distance for an unfinished
+  period, and is withheld outright when no live car has a measurable month — unit-tested case by case.
+- D-064 · 2026-08-05 · LOCKED — **`@koi/i18n` is the locale edge, and `Intl` is banned inside it**
+  (Build Session 8, promoting the D-035 parking-lot item's formatter half). `@koi/domain` supplies the
+  deterministic core (`formatAmount`/`parseAmount`, the civil-date primitives) and by its own purity
+  rules cannot host unit suffixes, month names or the `≈` convention; this package is that rest, and it
+  is still pure. The ban is a correctness rule, not style: **`toLocaleString('es-ES')` applies
+  `minimumGroupingDigits: 2`, so four-digit values silently lose their separator** — `1148`, not
+  `1.148` — and Koi groups every four-digit quantity; `Intl` is also not engine-uniform (Hermes
+  delegates to per-OS facilities), so the same odometer would render differently on two phones. Every
+  number in the app went through a bare `toLocaleString()` before this. The trap is asserted in the
+  test suite against `Intl` itself rather than described. The app reaches the formatters only through
+  `useFormat()`, which is where the Units setting (km/mi · L/100km / km/L / mpg · L/gal) lands later —
+  a screen that reached past it would keep printing kilometres to a user who asked for miles. The
+  **data voice is bundled**: IBM Plex Mono ships with the app because `Menlo` is Apple-only and falls
+  back to a proportional face on Android, which breaks the one promise the voice exists to keep on a
+  co-equal target. Micro-labels are authored in sentence case and uppercased in the style layer, so a
+  screen reader has something to strip. i18next and the shared catalogs stay a separate, later item.

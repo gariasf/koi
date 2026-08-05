@@ -14,6 +14,44 @@ lives in §4 — this board tracks status, not prose.
 
 ## Now / Next
 
+- **OWNER REVIEW OWED (2026-08-05): Session 8 done — the app surface, built to the design
+  (D-060..D-064).** The visual-design phase's handoff is vendored at `docs/build/design/` (18 sheets,
+  the authoritative `spec-amendments.md`, the reconciled fixture ledger) and **precedence changed**:
+  design first, `wireframes.md` demoted to reference. Shipped, in the order the design asks for:
+  **the token layer** — `palette.light` + `palette.dark` as authored siblings behind `useKoiTheme()`,
+  plus `control`/`radius`/`fab`/`motion`, and the four defects the design named (positive was literally
+  the fuel hue; inkFaint failed AA; StatusBar pinned dark under `userInterfaceStyle: automatic`; an
+  off-palette `#F6EFE3`) — **the control language** (rows, the eight `domainWash` + `domainText` wells,
+  three chip species, four button variants with emphasis as ink, the toast, the three layer species,
+  the stat table, the gauge, the confirmations) — **`@koi/i18n`** with the `Intl` grouping trap asserted
+  in a test rather than described, and IBM Plex Mono bundled — **the four-tab shell** with per-tab
+  stacks, the detached `+`, the floating Settings and an app-level toast host — **Garage · car page ·
+  car form** rebuilt to §C4 (car rows stop wearing the fuel green; the car page shows three recent rows
+  and a link, not a second ledger; fuel type is an enum by chip; archive has a write path now) —
+  **Home's state machine** — **Settings + Sync** with the three-state privacy card and the erase dialog
+  keyed on *has ever synced* — and **capture → Odometer** with Koi's own keypad, the five well states,
+  the soft/hard validation split, inv.10's edit exclusion and the dirty guard. Two unimplemented
+  mechanics landed with them: **swipeable rows** and the **sheet dirty guard** (both gesture libraries
+  were installed and imported nowhere). Three things the session refused to fake, each recorded rather
+  than smuggled: Home's **money and €/km do not render** because no money records exist and a `0,00 €`
+  would claim a sum of no records (D-063); the car page's **`PLAN`/`OWNERSHIP`/`CARE` groups are
+  absent** because the schema has no ownership kind, plan, cap, reminder or document; and Settings
+  renders **only rows whose destination exists**. One number in the amendment set is stale and is now
+  corrected in `spec-delta.md`: July's rate is **1,18 €/km** (487,90 ÷ 412), not the `0,77` that
+  survived as scenery on sheet 08 — the sheets and the ledger derivation agree, the summary line did
+  not. `archived_at` **joined the sync rules with its write flow** (D-061), which is the one contract
+  change: an ordinary client-writable column, so archive/restore takes ordinary per-column conflict
+  analysis, proved by asserting `record_version` increments rather than reading the local row.
+  **Proof:** both sync tiers green (server 11 files/17 tests; mobile 2/6 including the new archive
+  round-trip, server receipt `applied 1 · dead-lettered 0`), all unit tiers green (i18n 12, mobile 47,
+  server 42, domain 71), golden vectors **byte-identical** on node + jsc + hermes
+  (md5 `f93b1d6b1717043d97f16b0a17416681`) — `@koi/domain` untouched — and eight simulator screenshots
+  in **both schemes**: Home zero-car (light + dark), Home *All clear* with the August pulse computed
+  from the trail (378 km), Garage with two live cars + one archived (light + dark), the car page, the
+  odometer sheet with its keypad, and Settings. Scripted taps are still blocked (bucket H), so the
+  screens were reached by seeding the design's fixture and landing the app on each route — the
+  temporary entry file is reverted, not committed. **Owner review owed on the surfaces.**
+
 - **OWNER REVIEW OWED (2026-07-28): Session 7 done — the wireframe pass (D-057..D-059).** Bucket D's
   first item, opened on the owner's own Session 7 brief (the brief being typed into the session was the
   Session 6 sign-off). Deliverable is `docs/build/wireframes.md`, a reviewable design document — **no
@@ -162,7 +200,7 @@ lives in §4 — this board tracks status, not prose.
 |---|---|---|
 | done | ▲ | on-device (RN-bundled) Hermes golden-vector CI step — Session 4, D-050: new `conformance-rn-hermes` job builds Hermes from the tag the installed react-native pins, asserts compiler identity + HBC version (RN 0.86 is HBC 98; the jsvu proxy is 96), runs the vectors from source AND as RN-hermesc bytecode — md5 f93b1d6b… both ways. jsvu job kept as a canary. Still owed, narrowly: a device/emulator run for the per-OS Unicode provider (normalize NFC) |
 | done | ▽ | @koi/domain primitives build-out — Session 1: money/civil-date/ordering/ids/economy, ESLint bans, vectors byte-identical tri-engine (md5 f93b1d6b…). date-fns v4 stays the sanctioned calendar dep; primitives needed none of it (hardening calls delegated to assistant at gate; kept) |
-| todo | ▽ | i18n setup: i18next + shared JSON catalogs (@koi/i18n); adopt the Selector API from the start — i18next v27 plans to drop type-level string keys (parking-lot promotion, D-035). **Promoted in urgency by the wireframe pass**: this package is also where the locale formatter edge layer belongs (bucket D) |
+| doing | ▽ | i18n setup: **the package exists and the formatter half is done** — Session 8, D-064: `@koi/i18n` ships the locale edge (km/litres/economy/€ per L/€ per km/km per day/dates/`≈`/counts/`parseKm`), 12 tests including the one that asserts `Intl`'s `minimumGroupingDigits: 2` trap directly (`1148` vs `1.148`), and an ESLint ban on `Intl`/`toLocale*` inside `src/`. Still todo: **i18next + shared JSON catalogs**, adopting the Selector API from the start — i18next v27 plans to drop type-level string keys (parking-lot promotion, D-035) |
 | todo | ▲ | **TimelineEvent projection (§B1) in @koi/domain** — pure, read-only, deterministic; tint expressed as a token name (`'fuel' \| 'service' \| 'expense' \| 'contract' \| 'ink'`), never a hex, so the palette stays at the edge. History's mixed feed, the car page's 3 recent rows and Insights' record lists all need it, and it is the one place inv.7's fold rule should be decided (wireframes §3.2, §15.4) |
 | todo | ▲ | **lens derivation engines in @koi/domain** — the full→full economy chain walker (inv.1-4: partial accumulation, `missedPrevious` restart, recent-mean-of-≤5 with the ±5% dead band and the trend word) · distance bucket interpolation + today-anchored projection (inv.21-23) · the plan billing series (inv.13-15, 19) · cap cycle + pooling (inv.24-27) · page bucketing (weeks in a month, months in a year, years across all). Domain today has only `economyL100km` for a single interval; Fuel, Distance, Cost and Ownership all block on these (wireframes §15.4) |
 
@@ -170,10 +208,10 @@ lives in §4 — this board tracks status, not prose.
 | st | sev | item |
 |---|---|---|
 | done | ▲ | **wireframe pass** — Session 7, D-057..D-059: `docs/build/wireframes.md` (18 sections, ~3.2k lines) — shell · Home · History · Insights header+pager · four lenses card-by-card · Garage/car/car-form · capture (chooser, keypad, other-type, trip, odometer, note) · record pages incl. every degraded fuel panel · reminders+notifications · vault · onboarding · Settings. Three gaps RESOLVED, not just drawn: the S-4 queue joins Home's state machine (D-057), sync+account+privacy-card land in the §C8 Settings sheet (D-058), dark mode carries roles now with the authored palette as its own item (D-059). 21 places the existing code already contradicts §C/§D are listed with file:line (§15.3), and §17 carries the build order that falls out. **Adversarially reviewed**: 6 lenses (constitution/34 invariants, honesty/voice, nav/time-as-pages, colour/chart grammar, completeness vs §C sentence-by-sentence, internal consistency) with a refute-first skeptic pass, 66 raw findings → 48 confirmed (2 blocker, 25 important, 21 minor) → all 48 fixed same session. The blocker: the privacy card and erase dialog were keyed on the sync toggle, not on whether the device has ever synced, so a device that paused sync after using it would see "no account, never leaves this device" while its founding passkey and server-side records both still existed (§H1 violation) — both now carry a third "paused" state, keyed on "has ever synced". Also fixed: cap-gauge math drawn against the bare cap instead of the pooled budget (inv.25), a car page rendering the OWNERSHIP group on the subscription-plan fixture car (inv.15), the Ownership lens example switched to the owned Ibiza, a stale cap cycle window dated before "today", several arithmetic reconciliation errors (trips summing past their own page's headline km, a `km/day` computed over more days than the page contains), the review queue reusing Home's reserved "Everything OK"/"Needs you" strings, the car form missing photo/mark-paid-off/mark-as-sold controls, a no-policy vault state, and 4 stale `§6.3`/`§9` cross-references. **Owner review owed before the four-tab build.** |
-| todo | ▲ | **the four-tab shell + app-level toast host** — Home/History/Insights/Garage + detached `+` + floating Settings on every root + per-tab stacks that reset on tab-leave (§D1); one toast host above all layers (§D7's "one at a time" is currently only true per screen, which is why a car delete smuggles its message through a route param). First item of the app-surface build (wireframes §17) |
-| todo | ▲ | **authored dark palette + token layer (D-059)** — the second half of every §D3 pair, `useKoiTheme()` (scheme + reduce-motion + fontScale), and three light-pair defects found while drawing: `positive === accent === domain.fuel` (`theme.ts:27`), faint-ink contrast (§H4's own named debt, and archived rows depend on it), and `"userInterfaceStyle": "automatic"` vs a hard-coded `<StatusBar style="dark" />`. Ships **with** the `Appearance` control and **before History's build session** |
-| todo | ▲ | **locale formatter edge layer** — separators, currency placement, unit suffixes (`km`, `L/100km`, `€/L`, `€/km`, `€/day`), the `≈` rule, month/date labels. `@koi/domain` supplies the deterministic core (`formatAmount`/`parseAmount`) and by its own conformance rules cannot host the rest; belongs in `@koi/i18n` (bucket C) + a `useFormat()` hook, shared with the web client. Today every number in the app is a bare `toLocaleString()` and `formatAmount` is imported by zero app files |
-| todo | ▲ | full Bundle A app build (capture + ledger + record + Insights) — Session 4 scaffolded @koi/mobile and built the sync surfaces only (garage · car page · review queue); §C's four-tab shell + capture sheets are this item, in the order wireframes §17 sets out (shell → palette → formatters → Garage/car rebuilt to §C4 → Home → Settings/Sync → capture-Odometer → **the remaining §B1 record kinds' tables, which are the real gate on §C** → Insights, Ownership first). **Starts from the wireframe pass above** |
+| done | ▲ | **the four-tab shell + app-level toast host** — Session 8, D-062: `app/(tabs)/` with four per-tab stacks and `popToTopOnBlur` (leaving resets the stack, screen state survives because the root never unmounts), the detached ink FAB and the floating Settings button on every root, and `ToastHost` above every layer. The toast host closes a **data-loss bug**: the undo closure used to live in the toast's own state, so a second delete inside six seconds silently made the first permanent — closures now queue and each expires on its own 6 s, collapsing to `2 records deleted.` with one Undo. Shared destinations are registered per tab (the review queue in Home's stack *and* the Settings sheet's) with screen bodies in `src/screens/` and one-line route re-exports. The route-param smuggling a car delete needed is gone |
+| done | ▲ | **authored dark palette + token layer** — Session 8, D-060: `palette.light` + `palette.dark` as full siblings behind `useKoiTheme()` (scheme · reduce-motion · fontScale · `stacked`), plus `control`, `radius` (eight named roles), `fab` and `motion` — tokens `theme.ts` had none of. All four named defects fixed: `positive` is a teal and no longer the fuel hue, `inkFaint` clears AA (4,59:1 on paper), `StatusBar` is `"auto"` against `userInterfaceStyle: automatic`, and the off-palette `#F6EFE3` went with the shell banner that used it. Emphasis is ink (primary buttons 4,10:1 → 15,29:1); the accent keeps exactly one job, tinted interactive type. `Appearance` (System/Light/Dark) ships in the same increment per D-059, device-local in `app_meta`. Verified on the simulator in both schemes |
+| done | ▲ | **locale formatter edge layer** — Session 8, D-064: `@koi/i18n` + a `useFormat()` hook, which is also where the Units setting lands later. Every number in the app now goes through it; the bare `toLocaleString()` calls are gone, and `Intl` is banned in the package that replaced them because it drops the separator on four-digit values. IBM Plex Mono is **bundled** (Menlo is Apple-only and falls back to a proportional face on Android) |
+| doing | ▲ | full Bundle A app build (capture + ledger + record + Insights) — Session 8 built everything the schema supports: the shell, the control language, Garage/car page/car form (rebuilt to §C4, archive included), Home's state machine, Settings + Sync, and capture → Odometer with the keypad, the soft/hard split and the dirty guard. **What remains is gated on tables, not on architecture:** History, Insights' four lenses, record pages, reminders, the vault, onboarding and the other five capture sheets all need the §B1 record kinds (fuel · service · expense · contract · trip · note) — their own batch. Also owed inside this item: the capture chooser (lands with the second capture surface), a real date picker, and the plan/ownership/cap groups on the car page |
 | todo | ▲ | chart §D4 finish: ghost bars, on-canvas peak label; iOS large-title inset fix |
 | todo | ▲ | Recharts web charts (share selectors only) |
 | todo | ▲ | web companion scope: read+edit no capture, import console, export, WCAG 2.2 AA |
@@ -216,6 +254,50 @@ lives in §4 — this board tracks status, not prose.
   hostage-taking regardless.
 
 ## Session log
+
+- **2026-08-05 · Session 8 — the app surface, built to the design (D-060..D-064).** Step 0 committed
+  Session 7's uncommitted wireframe docs and vendored the visual-design handoff into
+  `docs/build/design/` (1.2 MB: 18 `.dc.html` sheets, `spec-amendments.md`, the decisions log with §B's
+  reconciled fixture ledger and §H's eighteen answers), which moves precedence to design-first and
+  demotes `wireframes.md` to reference. Then built, sheet by sheet: the token layer, the control
+  language, `@koi/i18n`, the four-tab shell with an app-level toast host, Garage/car page/car form,
+  Home's state machine, Settings + Sync, and capture → Odometer. Deleted `src/ui/theme.ts` and
+  `src/ui/components.tsx` outright — they were explicitly scaffolds, and every screen now assembles
+  from `tokens.ts` + `theme.tsx` + `controls.tsx` + `icons.tsx` + `toast.tsx` + `sheet.tsx` +
+  `keypad.tsx` + `swipe.tsx`. Method: rather than read 1.2 MB of design HTML into context, wrote a
+  throwaway extractor that renders each sheet as an indented digest carrying every product style value
+  (hex, size, radius, spacing) and every string, then read the digests — 9.2k lines for 18 sheets.
+  **Four findings worth the session on their own.** (1) The undo closure lived in the toast's own state,
+  so a second delete inside six seconds *silently made the first permanent* — a data-loss bug the
+  design had already diagnosed (B10) and the new host fixes by separating the view from the queue.
+  (2) July's rate in the amendment set (`0,77 €/km`) is the pre-correction figure; the ledger derives
+  `1,18` and `Koi Home` renders it eight times, so the summary line is stale in exactly one number.
+  (3) `positive` really was `domain.fuel` — the same hex — so a positive state and fuel money were one
+  pixel; it is a teal now and reserved. (4) Adding the two sanctioned dependencies re-resolved pnpm's
+  peer graph and flipped `better-auth`'s `better-call` copy to the older one `@better-auth/cli` drags
+  in, which broke `@koi/server`'s build with TS2742 (an inferred type nameable only through a
+  `.pnpm/...` path). Pinned in `pnpm-workspace.yaml` to the versions better-auth itself pins, with the
+  reason written above the pin; **the failure reproduced with the session's own server changes stashed**,
+  which is how it was attributed to the graph rather than to the code. New deps, exactly as sanctioned:
+  `lucide-react-native` (+ its required `react-native-svg` peer) and `@expo-google-fonts/ibm-plex-mono`;
+  charts stay uninstalled. **What was refused rather than faked:** Home's money and €/km (no money
+  records exist, and zero would be a claim about records that cannot exist), the Last-fill card, the
+  car page's PLAN/OWNERSHIP/CARE groups, the cap chip and gauge on a schema with no cap, Settings' rows
+  whose destinations are unbuilt, and the capture chooser while there is exactly one capture kind to
+  choose. Each is recorded in `spec-delta.md` with the rule it follows. **Proof:** `turbo run lint
+  typecheck test build` green across six packages; both sync tiers green against a real stack (server
+  11 files/17 tests, mobile 2/6 including a new archive round-trip asserting `record_version` increments
+  — server receipt `applied 1 · dead-lettered 0` — which is what proves `archived_at` is applied rather
+  than dead-lettered); golden vectors byte-identical on node + jsc + hermes (md5 `f93b1d6b…`), with
+  `@koi/domain` not touched at all; eight simulator screenshots across both schemes. One flake seen and
+  re-run green: `04-dead-letter`'s "a DELETE on an unknown table still dead-letters" saw only the PUT on
+  the first run and both ops on the second — a timing race in the test's queue-drain wait, not a
+  server behaviour change, and worth a look before it bites CI. Still blocked: scripted iOS taps
+  (bucket H), so screens were reached by seeding the design's own fixture into the local database and
+  landing the app on each route in turn; the temporary entry file that did it is reverted and not
+  committed, and the odometer sheet's screenshot shows its header under the status bar only because a
+  modal presented as the *first* route has nothing to present over (the header insets itself when it is
+  genuinely full-screen).
 
 - **2026-07-21 · Session 1 — repo reset (D-034) + @koi/domain.** git-init `koi`
   monorepo at `koi-project/koi`; commit 1 carried in spec + investigation record.
